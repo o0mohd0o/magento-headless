@@ -1,0 +1,182 @@
+/* =========================================================================
+   magezon.css — self-contained styles for the headless Magezon renderer.
+
+   This intentionally does NOT import Magezon's storefront CSS bundle
+   (mgz_bootstrap / owl-carousel / animate.css). It reimplements the pieces the
+   React components rely on: the 12-col responsive grid, visibility utilities,
+   the element wrapper/inner/parallax structure, the container, and base styles
+   for the bundled components. Breakpoints match Magezon (mobile-first grid).
+
+   Import once in your app:  import '@/lib/magezon/styles/magezon.css';
+   ========================================================================= */
+
+/* ---- Container & row ---------------------------------------------------- */
+.mgz-builder { width: 100%; }
+.mgz-container { max-width: 1280px; margin-left: auto; margin-right: auto; padding-left: 15px; padding-right: 15px; }
+.mgz-row,
+.inner-content { display: flex; flex-wrap: wrap; }
+
+/* ---- Element wrapper structure ----------------------------------------- */
+.mgz-element { position: relative; box-sizing: border-box; }
+.mgz-element * { box-sizing: border-box; }
+.mgz-element-inner { position: relative; }
+.mgz-column-inner { width: 100%; }
+
+/* Background / parallax layer (static — no parallax motion in headless) */
+.mgz-parallax { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+.mgz-parallax-inner { position: absolute; inset: 0; background-position: center; background-repeat: no-repeat; }
+.mgz-element-inner > *:not(.mgz-parallax) { position: relative; z-index: 1; }
+
+/* ---- 12-col grid (mobile-first; xs = base) ----------------------------- */
+[class*="mgz-col-"] { position: relative; width: 100%; padding-left: 15px; padding-right: 15px; }
+
+.mgz-col-xs-1{width:8.3333%}.mgz-col-xs-2{width:16.6667%}.mgz-col-xs-3{width:25%}
+.mgz-col-xs-4{width:33.3333%}.mgz-col-xs-5{width:41.6667%}.mgz-col-xs-6{width:50%}
+.mgz-col-xs-7{width:58.3333%}.mgz-col-xs-8{width:66.6667%}.mgz-col-xs-9{width:75%}
+.mgz-col-xs-10{width:83.3333%}.mgz-col-xs-11{width:91.6667%}.mgz-col-xs-12{width:100%}
+
+@media (min-width:576px){
+  .mgz-col-sm-1{width:8.3333%}.mgz-col-sm-2{width:16.6667%}.mgz-col-sm-3{width:25%}
+  .mgz-col-sm-4{width:33.3333%}.mgz-col-sm-5{width:41.6667%}.mgz-col-sm-6{width:50%}
+  .mgz-col-sm-7{width:58.3333%}.mgz-col-sm-8{width:66.6667%}.mgz-col-sm-9{width:75%}
+  .mgz-col-sm-10{width:83.3333%}.mgz-col-sm-11{width:91.6667%}.mgz-col-sm-12{width:100%}
+}
+@media (min-width:768px){
+  .mgz-col-md-1{width:8.3333%}.mgz-col-md-2{width:16.6667%}.mgz-col-md-3{width:25%}
+  .mgz-col-md-4{width:33.3333%}.mgz-col-md-5{width:41.6667%}.mgz-col-md-6{width:50%}
+  .mgz-col-md-7{width:58.3333%}.mgz-col-md-8{width:66.6667%}.mgz-col-md-9{width:75%}
+  .mgz-col-md-10{width:83.3333%}.mgz-col-md-11{width:91.6667%}.mgz-col-md-12{width:100%}
+}
+@media (min-width:992px){
+  .mgz-col-lg-1{width:8.3333%}.mgz-col-lg-2{width:16.6667%}.mgz-col-lg-3{width:25%}
+  .mgz-col-lg-4{width:33.3333%}.mgz-col-lg-5{width:41.6667%}.mgz-col-lg-6{width:50%}
+  .mgz-col-lg-7{width:58.3333%}.mgz-col-lg-8{width:66.6667%}.mgz-col-lg-9{width:75%}
+  .mgz-col-lg-10{width:83.3333%}.mgz-col-lg-11{width:91.6667%}.mgz-col-lg-12{width:100%}
+}
+@media (min-width:1200px){
+  .mgz-col-xl-1{width:8.3333%}.mgz-col-xl-2{width:16.6667%}.mgz-col-xl-3{width:25%}
+  .mgz-col-xl-4{width:33.3333%}.mgz-col-xl-5{width:41.6667%}.mgz-col-xl-6{width:50%}
+  .mgz-col-xl-7{width:58.3333%}.mgz-col-xl-8{width:66.6667%}.mgz-col-xl-9{width:75%}
+  .mgz-col-xl-10{width:83.3333%}.mgz-col-xl-11{width:91.6667%}.mgz-col-xl-12{width:100%}
+}
+
+/* Offsets (margin-left). xs base + responsive. */
+.mgz-col-xs-offset-1{margin-left:8.3333%}.mgz-col-xs-offset-2{margin-left:16.6667%}.mgz-col-xs-offset-3{margin-left:25%}
+.mgz-col-xs-offset-4{margin-left:33.3333%}.mgz-col-xs-offset-5{margin-left:41.6667%}.mgz-col-xs-offset-6{margin-left:50%}
+@media (min-width:768px){
+  .mgz-col-md-offset-0{margin-left:0}.mgz-col-md-offset-1{margin-left:8.3333%}.mgz-col-md-offset-2{margin-left:16.6667%}
+  .mgz-col-md-offset-3{margin-left:25%}.mgz-col-md-offset-4{margin-left:33.3333%}.mgz-col-md-offset-6{margin-left:50%}
+}
+
+/* ---- Visibility utilities ---------------------------------------------- */
+@media (max-width:575px){ .mgz-hidden-xs{display:none!important} }
+@media (min-width:576px) and (max-width:767px){ .mgz-hidden-sm{display:none!important} }
+@media (min-width:768px) and (max-width:991px){ .mgz-hidden-md{display:none!important} }
+@media (min-width:992px) and (max-width:1199px){ .mgz-hidden-lg{display:none!important} }
+@media (min-width:1200px){ .mgz-hidden-xl{display:none!important} }
+.mgz-hidden{display:none!important}
+
+/* ---- Text / Heading ----------------------------------------------------- */
+.mgz-element-heading-text { margin: 0; }
+.mgz-text { width: 100%; }
+.mgz-element-title-align-left  > .mgz-element-inner { text-align: left; }
+.mgz-element-title-align-center> .mgz-element-inner { text-align: center; }
+.mgz-element-title-align-right > .mgz-element-inner { text-align: right; }
+
+/* ---- Button ------------------------------------------------------------- */
+.mgz-button { display: inline-block; }
+.mgz-button .mgz-btn {
+  display: inline-block; cursor: pointer; text-decoration: none; line-height: 1.2;
+  border: 1px solid transparent; transition: all .2s ease; background: #1979c3; color: #fff;
+}
+.mgz-btn-size-small  .mgz-btn { padding: 6px 14px;  font-size: 12px; }
+.mgz-btn-size-medium .mgz-btn { padding: 10px 20px; font-size: 14px; }
+.mgz-btn-size-large  .mgz-btn { padding: 14px 28px; font-size: 16px; }
+.mgz-btn-size-extra-large .mgz-btn { padding: 18px 36px; font-size: 18px; }
+.mgz-button .mgz-link i { vertical-align: middle; }
+.mgz-button .mgz-link i:first-child { margin-right: .5em; }
+.mgz-button .mgz-link i:last-child  { margin-left: .5em; }
+
+/* ---- Single image ------------------------------------------------------- */
+.mgz-single-image { position: relative; }
+.mgz-single-image-inner { position: relative; overflow: hidden; }
+.mgz-single-image img { max-width: 100%; height: auto; display: block; }
+.mgz-single-image-inner.hover-type-zoom img { transition: transform .4s ease; }
+.mgz-single-image-inner.hover-type-zoom:hover img { transform: scale(1.08); }
+.mgz-single-image .image-content { margin-top: .5rem; }
+.mgz-single-image .image-title { font-weight: 600; }
+.mgz-flex-position-over .image-content {
+  position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center;
+  align-items: center; color: #fff; margin: 0;
+}
+.mgz-overlay { position: absolute; inset: 0; pointer-events: none; }
+
+/* ---- Dev fallback marker ----------------------------------------------- */
+.mgz-fallback { outline: 1px dashed #c00; padding: 8px; }
+.mgz-fallback-label { display: inline-block; font: 12px/1.4 monospace; color: #c00; background: #fff0f0; padding: 2px 6px; }
+.mgz-fallback-label code { color: #900; }
+
+/* ---- Scroll animations (animation_in, played on scroll into view) ------- */
+.mgz-animated { animation-duration: 1s; animation-fill-mode: both; }
+.mgz-animated.mgz-anim-armed { opacity: 0; }              /* armed by JS; no-JS stays visible */
+.mgz-animated.mgz-anim-armed.mgz-in { opacity: 1; }       /* fallback reveal for unmapped names */
+.mgz-animated-infinite { animation-iteration-count: infinite; }
+
+/* name -> keyframes (curated animate.css subset; add more as needed) */
+.mgz-animated.mgz-in.fadeIn        { animation-name: mgzFadeIn; }
+.mgz-animated.mgz-in.fadeInUp      { animation-name: mgzFadeInUp; }
+.mgz-animated.mgz-in.fadeInDown    { animation-name: mgzFadeInDown; }
+.mgz-animated.mgz-in.fadeInLeft    { animation-name: mgzFadeInLeft; }
+.mgz-animated.mgz-in.fadeInRight   { animation-name: mgzFadeInRight; }
+.mgz-animated.mgz-in.zoomIn        { animation-name: mgzZoomIn; }
+.mgz-animated.mgz-in.slideInUp     { animation-name: mgzSlideInUp; }
+.mgz-animated.mgz-in.slideInDown   { animation-name: mgzSlideInDown; }
+.mgz-animated.mgz-in.slideInLeft   { animation-name: mgzSlideInLeft; }
+.mgz-animated.mgz-in.slideInRight  { animation-name: mgzSlideInRight; }
+.mgz-animated.mgz-in.bounceIn      { animation-name: mgzBounceIn; }
+.mgz-animated.mgz-in.bounce        { animation-name: mgzBounce; }
+.mgz-animated.mgz-in.pulse         { animation-name: mgzPulse; }
+.mgz-animated.mgz-in.flipInX       { animation-name: mgzFlipInX; }
+.mgz-animated.mgz-in.rotateIn      { animation-name: mgzRotateIn; }
+
+@keyframes mgzFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes mgzFadeInUp { from { opacity: 0; transform: translate3d(0, 40px, 0); } to { opacity: 1; transform: none; } }
+@keyframes mgzFadeInDown { from { opacity: 0; transform: translate3d(0, -40px, 0); } to { opacity: 1; transform: none; } }
+@keyframes mgzFadeInLeft { from { opacity: 0; transform: translate3d(-40px, 0, 0); } to { opacity: 1; transform: none; } }
+@keyframes mgzFadeInRight { from { opacity: 0; transform: translate3d(40px, 0, 0); } to { opacity: 1; transform: none; } }
+@keyframes mgzZoomIn { from { opacity: 0; transform: scale3d(.3, .3, .3); } to { opacity: 1; transform: none; } }
+@keyframes mgzSlideInUp { from { transform: translate3d(0, 100%, 0); } to { transform: none; } }
+@keyframes mgzSlideInDown { from { transform: translate3d(0, -100%, 0); } to { transform: none; } }
+@keyframes mgzSlideInLeft { from { transform: translate3d(-100%, 0, 0); } to { transform: none; } }
+@keyframes mgzSlideInRight { from { transform: translate3d(100%, 0, 0); } to { transform: none; } }
+@keyframes mgzBounceIn {
+  0% { opacity: 0; transform: scale3d(.3, .3, .3); }
+  50% { opacity: 1; transform: scale3d(1.05, 1.05, 1.05); }
+  70% { transform: scale3d(.95, .95, .95); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes mgzBounce {
+  0%, 20%, 53%, 100% { transform: none; }
+  40%, 43% { transform: translate3d(0, -20px, 0); }
+  70% { transform: translate3d(0, -10px, 0); }
+  90% { transform: translate3d(0, -4px, 0); }
+}
+@keyframes mgzPulse { 0% { transform: scale3d(1,1,1); } 50% { transform: scale3d(1.05,1.05,1.05); } 100% { transform: scale3d(1,1,1); } }
+@keyframes mgzFlipInX {
+  from { transform: perspective(400px) rotate3d(1, 0, 0, 90deg); opacity: 0; }
+  to { transform: perspective(400px); opacity: 1; }
+}
+@keyframes mgzRotateIn { from { transform: rotate3d(0, 0, 1, -200deg); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* ---- Parallax / video background layer --------------------------------- */
+.mgz-parallax .mgz-bg-video,
+.mgz-parallax iframe { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
+  width: auto; height: auto; transform: translate(-50%, -50%); border: 0; object-fit: cover; pointer-events: none; }
+
+/* ---- Commerce (product/category elements) ------------------------------ */
+.mgz-commerce-title { margin: 0 0 16px; font-size: 20px; }
+.mgz-product-item, .mgz-category-item { transition: opacity .15s ease; }
+.mgz-product-item:hover, .mgz-category-item:hover { opacity: .85; }
+.mgz-product-name { font-weight: 500; }
+.mgz-product-slider::-webkit-scrollbar { height: 8px; }
+.mgz-product-slider::-webkit-scrollbar-thumb { background: #d6d6d6; border-radius: 4px; }

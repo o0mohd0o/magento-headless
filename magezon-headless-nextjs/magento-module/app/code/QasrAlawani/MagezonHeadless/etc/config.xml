@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <qasralawani_magezonheadless>
+            <preview>
+                <!-- Base URL of your Next.js storefront, e.g. https://shop.qasralawani.com -->
+                <frontend_base_url/>
+                <!-- Route to the preview page inside the Next.js app. -->
+                <preview_path>/magezon-preview</preview_path>
+            </preview>
+        </qasralawani_magezonheadless>
+    </default>
+</config>

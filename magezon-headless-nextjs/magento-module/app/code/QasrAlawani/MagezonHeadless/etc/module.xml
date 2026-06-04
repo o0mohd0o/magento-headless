@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * QasrAlawani_MagezonHeadless
+ *
+ * Sequence guarantees the Magezon modules (which provide the renderer/helpers
+ * this resolver reuses for {{mgzlink}} resolution) are loaded first.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="QasrAlawani_MagezonHeadless">
+        <sequence>
+            <module name="Magento_CmsGraphQl"/>
+            <module name="Magezon_Core"/>
+            <module name="Magezon_Builder"/>
+            <module name="Magezon_PageBuilder"/>
+            <!-- Provides the navbar config-provider extension point + the live
+                 preview table (mgz_pagebuilder_preview_profile) the headless
+                 preview reuses. -->
+            <module name="Magezon_PageBuilderPreview"/>
+        </sequence>
+    </module>
+</config>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * QasrAlawani_MagezonHeadless
+ *
+ * Injects window.QASR_HEADLESS_PREVIEW (the Next.js preview URL) on admin pages so
+ * the Magezon builder navbar directive can open the headless preview. Mirrors how
+ * Magezon_PageBuilderPreview attaches its assets via adminhtml default.xml.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="QasrAlawani_MagezonHeadless::css/headless-preview.css"/>
+    </head>
+    <body>
+        <referenceContainer name="before.body.end">
+            <block class="QasrAlawani\MagezonHeadless\Block\Adminhtml\PreviewConfig"
+                   name="qasr.magezonheadless.preview.config"
+                   template="QasrAlawani_MagezonHeadless::preview-config.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

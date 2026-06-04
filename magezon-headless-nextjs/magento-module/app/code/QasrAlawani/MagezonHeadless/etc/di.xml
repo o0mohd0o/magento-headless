@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * QasrAlawani_MagezonHeadless
+ *
+ * Registers a "Headless Preview" button into the Magezon builder navbar using the
+ * SAME extension point Magezon itself uses for its preview button
+ * (Magezon\PageBuilder\Model\CompositeConfigProvider > configProviders > directives).
+ * No Magezon core files are touched, so this survives Magezon upgrades.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magezon\PageBuilder\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="directives" xsi:type="array">
+                    <item name="qasr_headless_preview" xsi:type="array">
+                        <item name="element" xsi:type="string">QasrAlawani_MagezonHeadless/js/builder/navbar/headless-preview</item>
+                        <item name="group" xsi:type="string">navbar</item>
+                        <item name="additionalClasses" xsi:type="string">mgz-pull-right</item>
+                        <item name="sortOrder" xsi:type="number">101</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

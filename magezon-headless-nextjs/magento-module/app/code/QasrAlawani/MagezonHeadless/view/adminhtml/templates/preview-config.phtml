@@ -1,0 +1,9 @@
+<?php
+/** @var \QasrAlawani\MagezonHeadless\Block\Adminhtml\PreviewConfig $block */
+if (!$block->isEnabled()) {
+    return;
+}
+?>
+<script>
+    window.QASR_HEADLESS_PREVIEW = <?= /* @noEscape */ $block->getJsonConfig() ?>;
+</script>

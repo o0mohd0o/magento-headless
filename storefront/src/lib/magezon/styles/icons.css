@@ -1,0 +1,21 @@
+/* =========================================================================
+   icons.css — icon-font support for Magezon elements (button/icon/icon_list/
+   social_icons/accordion/etc.), which render `<i class="fa ...">` glyphs.
+
+   By default this pulls Font Awesome 6 Free (solid + brands) from a CDN, which
+   covers the vast majority of Magezon icon pickers (`fa`/`fas`/`fab` classes).
+
+   For 100% parity with the monolith — including Magezon's own icon fonts
+   (`mgz-font`, openiconic) and Font Awesome 5 class names — self-host the fonts
+   instead: copy these from the Magento install and @import them here:
+     app/code/Magezon/Builder/view/.../web/css/mgz_font.css        (+ the .woff/.ttf)
+     app/code/Magezon/Builder/view/.../web/openiconic/...          (icon_list/icon)
+     app/code/Magezon/PageBuilder fontawesome5 css                  (if used)
+   Then drop the CDN @import below.
+   ========================================================================= */
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+
+/* Font Awesome 5 used `fas`/`far`/`fab` the same way; FA6 Free is backwards
+   compatible for the solid/brands sets Magezon's picker emits. If your content
+   uses FA5 Pro-only glyphs, self-host FA5 instead. */

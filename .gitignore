@@ -1,0 +1,33 @@
+# ─── Magento backend (markshust/docker-magento) ───────────────────────────
+# The Magento install itself is huge and licensed — recreate it with
+# `bin/download community 2.4.9 && bin/setup magento.test` (see README).
+# Anchored with a leading slash so it only matches the top-level Magento src,
+# NOT the storefront's Next.js src/ directory.
+/src/
+/compose.versions.yaml
+
+# ─── Proprietary vendor source ────────────────────────────────────────────
+# Magezon Page Builder is commercial code (© 2019 Magezon). Install it from
+# your own Magezon license into src/app/code/Magezon — it is not redistributed.
+/Magezon/
+
+# ─── Generated TLS certificates (regenerate with `bin/setup-ssl magento.test`)
+/certs/
+/rootCA.pem
+*.pem
+
+# ─── Local credentials / scratch notes (never commit) ─────────────────────
+/info.md
+# Install-time admin credentials — copy env/magento.env.sample -> env/magento.env
+env/magento.env
+
+# ─── Node / Next.js (the storefront also has its own .gitignore) ──────────
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# ─── OS / editor cruft ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,32 @@
+{
+  "name": "storefront",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "NODE_EXTRA_CA_CERTS=./certs/magento-rootCA.pem next dev -p 3000",
+    "build": "NODE_EXTRA_CA_CERTS=./certs/magento-rootCA.pem next build",
+    "start": "NODE_EXTRA_CA_CERTS=./certs/magento-rootCA.pem next start -p 3000",
+    "lint": "eslint",
+    "test": "node --test src/lib/*.test.ts",
+    "test:e2e": "node --test e2e.test.ts",
+    "codegen": "graphql-codegen --config codegen.ts"
+  },
+  "dependencies": {
+    "next": "16.2.7",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^7.1.2",
+    "@graphql-codegen/typescript": "^6.0.2",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.7",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

@@ -1,0 +1,15 @@
+/* Headless Preview navbar button (Magezon builder) */
+.qasr-headless-preview .mgz-navbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.qasr-headless-preview .qasr-headless-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+}
+.qasr-headless-preview .mgz-navbar-btn:hover {
+    color: #1979c3;
+}

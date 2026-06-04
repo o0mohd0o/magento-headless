@@ -1,0 +1,25 @@
+{
+    "name": "qasr-alawani/module-magezon-headless",
+    "description": "Exposes Magezon Page Builder content as a decoded element tree over GraphQL for a headless (Next.js) storefront.",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "require": {
+        "php": "~7.4.0||~8.1.0||~8.2.0||~8.3.0",
+        "magento/framework": "*",
+        "magento/module-cms": "*",
+        "magento/module-cms-graph-ql": "*",
+        "magento/module-store": "*"
+    },
+    "suggest": {
+        "magezon/module-builder": "Provides the renderer/helpers reused for {{mgzlink}} resolution",
+        "magezon/module-page-builder": "Provides the [mgz_pagebuilder] shortcode key and Profile block"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "QasrAlawani\\MagezonHeadless\\": ""
+        }
+    }
+}

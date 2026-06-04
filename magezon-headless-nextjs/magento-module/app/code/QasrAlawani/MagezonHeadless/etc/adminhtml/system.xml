@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="qasralawani_magezonheadless" translate="label" sortOrder="900" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Magezon Headless</label>
+            <tab>general</tab>
+            <resource>QasrAlawani_MagezonHeadless::config</resource>
+            <group id="preview" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Headless Preview</label>
+                <field id="frontend_base_url" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Next.js Storefront Base URL</label>
+                    <comment><![CDATA[e.g. https://shop.qasralawani.com — where the headless preview page lives. Leave empty to disable the Headless Preview button.]]></comment>
+                </field>
+                <field id="preview_path" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Preview Route Path</label>
+                    <comment>Default: /magezon-preview</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

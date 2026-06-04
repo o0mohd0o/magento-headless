@@ -1,0 +1,49 @@
+# QasrAlawani_MagezonHeadless
+#
+# Approach B contract: the front end asks for a CMS page/block by identifier and
+# gets back the DECODED Magezon element tree (as a JSON string), already having
+# had {{mgzlink ...}} tokens resolved to real URLs server-side. The Next.js
+# renderer JSON.parse()s `profile_json` and walks `elements` into React.
+#
+# Why a JSON string and not a typed graph: Magezon elements have dozens of
+# free-form, version-specific fields per type (~50 types). Modeling them as GraphQL
+# types would be brittle and huge. A JSON scalar string is the pragmatic, upgrade-
+# resilient contract for a builder tree.
+
+type Query {
+    magezonContent(
+        identifier: String! @doc(description: "CMS page or block identifier (URL key / block identifier).")
+        type: MagezonContentType = CMS_PAGE @doc(description: "Whether to load a CMS page or a CMS block.")
+    ): MagezonContent
+    @resolver(class: "QasrAlawani\\MagezonHeadless\\Model\\Resolver\\MagezonContent")
+    @doc(description: "Returns the decoded Magezon Page Builder element tree for a CMS page or block.")
+
+    magezonPreview(
+        builder_id: String! @doc(description: "The live builder id ($rootScope.builderId) the admin builder saves preview content under.")
+    ): MagezonContent
+    @resolver(class: "QasrAlawani\\MagezonHeadless\\Model\\Resolver\\MagezonPreview")
+    @doc(description: "Returns the LIVE (unsaved) Magezon builder content for the headless admin preview. Polls mgz_pagebuilder_preview_profile.")
+}
+
+enum MagezonContentType {
+    CMS_PAGE
+    CMS_BLOCK
+}
+
+type MagezonContent {
+    identifier: String @doc(description: "The requested identifier, echoed back.")
+    title: String @doc(description: "CMS page/block title.")
+    has_pagebuilder: Boolean @doc(description: "True if the content contains a Magezon [mgz_pagebuilder] profile.")
+    profile_json: String @doc(description: "JSON string: { \"elements\": [...] } — the decoded, mgzlink-resolved element tree. Null when has_pagebuilder is false.")
+    media_base_url: String @doc(description: "Store media base URL; prepend to relative image paths inside the tree.")
+    raw_html: String @doc(description: "Any non-Magezon HTML wrapping the shortcode (or the full content when has_pagebuilder is false). Render via the front end's HTML sink as a fallback.")
+    updated_at: String @doc(description: "Last-modified timestamp of the live preview row (magezonPreview only); used by the preview poller to detect edits.")
+}
+
+# Convenience: also expose it on the native CmsPage type, so a single cmsPage query
+# can fetch both standard fields and the Magezon tree.
+type CmsPage {
+    magezon_profile_json: String
+    @resolver(class: "QasrAlawani\\MagezonHeadless\\Model\\Resolver\\CmsPageMagezonProfile")
+    @doc(description: "JSON string of the decoded Magezon element tree for this CMS page (null if the page has no Magezon profile).")
+}
