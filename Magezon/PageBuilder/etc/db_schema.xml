@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magezon
+ *
+ * This source file is subject to the Magezon Software License, which is available at https://www.magezon.com/license.
+ * Do not edit or add to this file if you wish to upgrade the to newer versions in the future.
+ * If you wish to customize this module for your needs.
+ * Please refer to https://www.magezon.com for more information.
+ *
+ * @category  Magezon
+ * @package   Magezon_PageBuilder
+ * @copyright Copyright (C) 2019 Magezon (https://www.magezon.com)
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="mgz_pagebuilder_template" resource="default" engine="innodb" comment="Mgz PageBuilder Template Table">
+		<column xsi:type="int" name="template_id" unsigned="true" nullable="false" identity="true"
+			comment="Template ID"/>
+		<column xsi:type="varchar" name="name" nullable="false" length="255" comment="Template Name"/>
+		<column xsi:type="longtext" name="profile" nullable="true" comment="Template Profile"/>
+		<column xsi:type="smallint" name="is_active" unsigned="false" nullable="false" identity="false"
+				default="1" comment="Is Template Active"/>
+		<column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+				comment="Template Creation Time"/>
+		<column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+				comment="Template Modification Time"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="template_id"/>
+		</constraint>
+		<index referenceId="MGZ_PAGEBUILDER_TEMPLATE_NAME_PROFILE" indexType="fulltext">
+			<column name="name"/>
+			<column name="profile"/>
+		</index>
+	</table>
+
+	<table name="catalog_product_entity_text" resource="default" engine="innodb" comment="Catalog Product Text Attribute Backend Table">
+		<column xsi:type="longtext" name="value" nullable="true" comment="Value"/>
+	</table>
+	<table name="catalog_category_entity_text" resource="default" engine="innodb" comment="Catalog Category Text Attribute Backend Table">
+		<column xsi:type="longtext" name="value" nullable="true" comment="Value"/>
+	</table>
+	<table name="cms_block">
+		<column xsi:type="longtext" name="content" nullable="true" comment="Block Content"/>
+	</table>
+	<table name="cms_page">
+		<column xsi:type="longtext" name="content" nullable="true" comment="Page Content"/>
+	</table>
+</schema>

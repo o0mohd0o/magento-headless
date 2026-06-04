@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magezon
+ *
+ * This source file is subject to the Magezon Software License, which is available at https://www.magezon.com/license
+ * Do not edit or add to this file if you wish to upgrade the to newer versions in the future.
+ * If you wish to customize this module for your needs.
+ * Please refer to https://www.magezon.com for more information.
+ *
+ * @category  Magezon
+ * @package   Magezon_PageBuilderPreview
+ * @copyright Copyright (C) 2020 Magezon (https://www.magezon.com)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<type name="Magezon\PageBuilder\Model\CompositeConfigProvider">
+		<arguments>
+			<argument name="configProviders" xsi:type="array">
+				<item name="directives" xsi:type="array">
+					<item name="preview" xsi:type="array">
+						<item name="element" xsi:type="string">Magezon_PageBuilderPreview/js/builder/navbar/preview</item>
+						<item name="group" xsi:type="string">navbar</item>
+						<item name="additionalClasses" xsi:type="string">mgz-pull-right mgz-dropdown</item>
+						<item name="sortOrder" xsi:type="number">100</item>
+					</item>
+				</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

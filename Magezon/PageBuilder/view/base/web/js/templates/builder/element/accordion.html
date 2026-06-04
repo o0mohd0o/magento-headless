@@ -1,0 +1,58 @@
+<div class="mgz-block">
+	<div ng-if="element.title || element.description" class="mgz-block-heading mgz-block-heading-align-{{ element.title_align }} {{ element.show_line ? 'mgz-block-heading-line' : '' }}">
+		<div ng-bind-html="getTitleHtml()"></div>
+		<p class="info" ng-if="element.description" ng-bind-html="element.description"></p>
+	</div>
+	<div class="mgz-block-content">
+		<div ng-class="getClassess()" 
+			data-spacing="{{ getSpacing() }}" 
+			data-gap="{{ getGap() }}" 
+			ng-init="mainElem=element"
+			dnd-list="element.elements" 
+			dnd-drop="mgz.dropElement(item, index, element)" 
+			dnd-allowed-types="['accordion_section']">
+			<div ng-repeat="element in element.elements"
+				ng-class="mgz.getWrapperClasses()"
+				ng-style="mgz.getStyles()"
+				dnd-draggable="element"
+				ng-mouseenter="mgz.onMouseEnter($event)"
+				ng-mouseleave="mgz.onMouseLeave($event)"
+				dnd-effect-allowed="move"
+				dnd-type="element.type"
+				dnd-dragstart="mgz.onDragstart(element)"
+				dnd-dragend="mgz.onDragend(element)"
+				dnd-moved="mgz.onMoved(element)"
+				class="mgz-panel {{ $first ? 'mgz-panel-first' : '' }} {{ $last ? 'mgz-panel-last' : '' }}">
+				<div class="mgz-panel-heading mgz-text-{{ mainElem.section_align }} mgz-icon-position-{{ mainElem.icon_position }}"
+				ng-click="activeElement(element)">
+					<h4 class="mgz-panel-heading-title">
+						<a href="#tab-{{ $index }}" ng-class="{'has-icon': mainElem.accordion_icon}">
+							<i ng-if="mainElem.accordion_icon" class="mgz-accoridon-icon-{{ mainElem.accordion_icon }}"></i>
+							<span>
+								<i class="mgz-icon-element {{ element.icon }}" ng-if="element.add_icon&&element.icon&&element.icon_position=='left'"></i>
+								{{ element.title }}
+								<i class="mgz-icon-element {{ element.icon }}" ng-if="element.add_icon&&element.icon&&element.icon_position=='right'"></i>
+							</span>
+						</a>
+					</h4>
+				</div>
+				<div class="mgz-panel-body" ng-hide="!element.builder.visible">
+					<div class="mgz-panel-body-inner" ng-class="{'mgz-element-empty': !element.elements.length}">
+						<i class="mgz-icon mgz-icon-add" ng-if="element.builder.is_collection&&!element.elements.length" ng-click="$root.$broadcast('addElement', {elem: element, action: 'append' })"></i>
+						<div class="mgz-element-inner {{ mgz.getStyleHtmlId() }}"
+							dynamic-directive
+							element="element" 
+							element-name="mgz-element-{{ ::element.type }}"
+							dnd-disable-builder="!element.builder.is_collection"
+							dnd-disable-if="element.builder.dndDisabled" 
+							dnd-list="element.elements"
+							dnd-drop="mgz.dropElement(item, index, element)"
+							dnd-allowed-types="::element.builder.allowed_types"
+							>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

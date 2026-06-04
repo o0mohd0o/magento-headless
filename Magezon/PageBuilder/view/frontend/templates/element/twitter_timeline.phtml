@@ -1,0 +1,25 @@
+<?php
+$builderHelper = $this->helper(\Magezon\Builder\Helper\Data::class);
+$element     = $this->getElement();
+$pageUrl     = $element->getData('page_url');
+$showReplies = $element->getData('show_replies');
+$limit       = $element->getData('limit');
+$width       = $element->getData('box_width');
+$height      = $element->getData('box_height');
+$chrome      = $element->getData('chrome');
+$theme       = $element->getData('theme');
+$borderColor = $builderHelper->getStyleColor($element->getData('border_color'));
+$lang        = $element->getData('lang');
+?>
+<a class="twitter-timeline"
+  href="<?= $pageUrl ?>"
+  data-show-replies="<?= $showReplies ? 'true' : 'false' ?>"
+  data-tweet-limit="<?= $limit ?>"
+  data-width="<?= $width ?>"
+  data-height="<?= $height ?>"
+  data-theme="<?= $theme ?>"
+  data-chrome="<?= $chrome ?>"
+  data-border-color="<?= $borderColor ?>"
+  data-lang="<?= $lang ?>">
+</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>

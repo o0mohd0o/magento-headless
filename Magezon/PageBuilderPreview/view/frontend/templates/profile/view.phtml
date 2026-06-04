@@ -1,0 +1,4 @@
+<?php
+$profile = $this->getCurrentProfile();
+$dataHelper = $this->helper('\Magezon\PageBuilder\Helper\Data');
+echo $dataHelper->getProfileHtml($profile->getContent());

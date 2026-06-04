@@ -1,0 +1,43 @@
+<?php
+$element      = $this->getElement();
+$items        = $this->toObjectArray($element->getData('items'));
+$speed        = ((float) $element->getData('speed')) * 1000;
+$delay        = (float) $element->getData('delay');
+$unit         = $element->getData('units');
+$striped      = $element->getData('striped');
+$textPosition = $element->getData('text_position');
+?>
+<?php if ($items) { ?>
+	<div class="mgz-progress-bar mgz-progress-bar-text-position-<?= $textPosition ?>">
+	<?php foreach ($items as $i => $item) { ?>
+		<div class="mgz-single-bar mgz-waypoint mgz-single-bar-<?= $i ?>" data-mage-init='{
+					"Magezon_PageBuilder/js/number-counter" : {
+						"layout": "bars",
+						"type": "percent",
+						"number": <?= $item['value'] ?>,
+						"speed":<?= $speed ?> ,
+						"delay": <?= $delay ?>
+					}
+				}'>
+			<?php if ($textPosition == 'above') { ?>
+				<div class="mgz-single-bar-label-wrapper mgz-numbercounter-string">
+					<span class="mgz-numbercounter-label"><?= $item['label'] ?></span> <span class="mgz-numbercounter-int-wrapper"><span class="mgz-numbercounter-int">0</span><?= $unit ?></span>
+				</div>
+			<?php } ?>
+			<div class="mgz-single-bar-inner">
+				<?php if ($textPosition == 'inside') { ?>
+					<div class="mgz-single-bar-label-wrapper mgz-numbercounter-string">
+						<span class="mgz-numbercounter-label"><?= $item['label'] ?></span> <span class="mgz-numbercounter-int-wrapper"><span class="mgz-numbercounter-int">0</span><?= $unit ?></span>
+					</div>
+				<?php } ?> 
+				<div class="mgz-numbercounter-bar<?= $striped ? ' mgz-bar-striped' : '' ?>"></div>
+			</div>
+			<?php if ($textPosition == 'below') { ?>
+				<div class="mgz-single-bar-label-wrapper mgz-numbercounter-string">
+					<span class="mgz-numbercounter-label"><?= $item['label'] ?></span> <span class="mgz-numbercounter-int-wrapper"><span class="mgz-numbercounter-int">0</span><?= $unit ?></span>
+				</div>
+			<?php } ?>
+		</div>
+	<?php } ?>
+	</div>
+<?php } ?>

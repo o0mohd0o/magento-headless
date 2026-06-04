@@ -1,0 +1,18 @@
+<?php
+$element = $this->getElement();
+$attrs   = [];
+if ($element->getData('btn_url')) $attrs['data-href'] = $element->getData('btn_url');
+if ($element->getData('btn_layout')) $attrs['data-layout'] = $element->getData('btn_layout');
+if ($element->getData('btn_size')) $attrs['data-size'] = $element->getData('btn_size');
+if ($element->getData('btn_action')) $attrs['data-action'] = $element->getData('btn_action');
+$attrs['data-show-faces'] = $element->getBtnShowFaces() ? 'true' : 'false';
+$attrs['data-share']      = $element->getBtnShare() ? 'true' : 'false';
+?>
+<div class="mgz-fb-like fb-like" <?= $block->parseAttributes($attrs) ?>></div>
+<script>(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+	fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>

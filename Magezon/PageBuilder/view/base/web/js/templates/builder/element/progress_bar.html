@@ -1,0 +1,16 @@
+<div class="mgz-progress-bar mgz-progress-bar-text-position-{{ element.text_position }}">
+	<div class="mgz-single-bar mgz-waypoint mgz-single-bar-{{ $index }}" ng-repeat="item in element.items" id="{{ 'mgz-single-bar' + $index }}">
+		<div class="mgz-single-bar-label-wrapper mgz-numbercounter-string" ng-if="element.text_position=='above'">
+			<span class="mgz-numbercounter-label" ng-bind-html="item.label"></span> <span class="mgz-numbercounter-int-wrapper"><span class="mgz-numbercounter-int">0</span>{{ element.units }}</span>
+		</div>
+		<div class="mgz-single-bar-inner">
+			<div class="mgz-single-bar-label-wrapper mgz-numbercounter-string" ng-if="element.text_position=='inside'">
+				<span class="mgz-numbercounter-label" ng-bind-html="item.label"></span> <span class="mgz-numbercounter-int-wrapper"><span class="mgz-numbercounter-int">0</span>{{ element.units }}</span>
+			</div>
+			<div class="mgz-numbercounter-bar {{ element.striped ? ' mgz-bar-striped' : '' }}"></div>
+		</div>
+		<div class="mgz-single-bar-label-wrapper mgz-numbercounter-string" ng-if="element.text_position=='below'">
+			<span class="mgz-numbercounter-label" ng-bind-html="item.label"></span> <span class="mgz-numbercounter-int-wrapper"><span class="mgz-numbercounter-int">0</span>{{ element.units }}</span>
+		</div>
+	</div>
+</div>

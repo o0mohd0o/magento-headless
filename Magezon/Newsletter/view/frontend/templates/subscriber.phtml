@@ -1,0 +1,59 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Newsletter\Block\Subscribe $block */
+
+$firstname = $this->getData('show_firstname');
+$lastname  = $this->getData('show_lastname');
+$type      = $this->getData('layout_type') ? $this->getData('layout_type') : 'inline';
+$id        = $this->getHtmlId();
+?>
+<div class="mgz-newsletter-form-wrapper">
+    <form class="<?= $id ?> mgz-newsletter-form mgz-newsletter-form-<?= $type ?>"
+        novalidate
+        action="<?= $block->escapeUrl($block->getFormActionUrl()) ?>"
+        method="post"
+        data-mage-init='{"Magezon_Newsletter/js/form":{"emailAjaxUrl": "<?= $block->escapeUrl($block->getEmailUrl()) ?>"}}'>
+        <div class="mgz-newsletter-fields">
+            <div class="mgz-newsletter-field email required">
+                <input name="email" type="email"
+                       placeholder="<?= $block->escapeHtmlAttr(__('Your email')) ?>"
+                       data-mage-init='{"mage/trim-input":{}}'
+                       data-validate="{required:true, 'validate-email':true}"
+                />
+            </div>
+            <?php if ($firstname) { ?>
+            <div class="mgz-newsletter-field firstname required">
+                <input name="firstname" type="text"
+                       placeholder="<?= $block->escapeHtmlAttr(__('First Name')) ?>"
+                       data-mage-init='{"mage/trim-input":{}}'
+                       data-validate="{required:true}"
+                />
+            </div>
+            <?php } ?>
+            <?php if ($lastname) { ?>
+            <div class="mgz-newsletter-field lastname required">
+                <input name="lastname" type="text"
+                       placeholder="<?= $block->escapeHtmlAttr(__('Last Name')) ?>"
+                       data-mage-init='{"mage/trim-input":{}}'
+                       data-validate="{required:true}"
+                />
+            </div>
+            <?php } ?>
+        </div>
+        <div class="actions">
+            <button class="action primary mgz-newsletter-btn"
+                    title="<?= $block->escapeHtmlAttr(__('Subscribe')) ?>"
+                    type="submit"
+                    aria-label="Subscribe">
+                <span><?= $block->escapeHtml(__('Subscribe')) ?></span>
+            </button>
+        </div>
+    </form>
+    <?php if ($styleHtml = $this->getStyleHtml()) { ?>
+    <style class="mgz-style"><?= $styleHtml ?></style>
+    <?php } ?>
+</div>

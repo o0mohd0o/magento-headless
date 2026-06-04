@@ -1,0 +1,22 @@
+<div class="mgz-flipbox mgz-flipbox-rotate-{{ element.flip_direction }} {{ element.flip_effect }}" data-min-height="{{ element.box_min_height }}">
+	<div class="mgz-flipbox-inner">
+		<div class="mgz-flipbox-block mgz-flipbox-front" style="background-image: url('{{ $root.magezonBuilderUrl.getImageUrl(element.primary_image) }}')">
+			<div class="mgz-flipbox-block-inner mgz-flipbox-front-inner">
+				<div class="mgz-flipbox-circle {{ !element.circle ? 'flipbox-no-circle' : '' }}" ng-if="element.add_icon&&element.icon">
+					<i class="mgz-icon-element {{ element.icon }} {{ element.icon_spin ? 'mgz-fa-spin' : '' }}"></i>
+				</div>
+				<h2 class="mgz-flipbox-title" ng-if="element.primary_title" ng-bind-html="element.primary_title"></h2>
+				<div class="mgz-flipbox-back-inner-text" ng-if="element.primary_text" ng-bind-html="getTrustedHtml(element.primary_text)"></div>
+			</div>
+		</div>
+		<div class="mgz-flipbox-block mgz-flipbox-back"  style="background-image: url('{{ $root.magezonBuilderUrl.getImageUrl(element.hover_image) }}')">
+			<div class="mgz-flipbox-block-inner mgz-flipbox-back-inner">
+				<h2 class="mgz-flipbox-title" ng-if="element.hover_title" ng-bind-html="element.hover_title"></h2>
+				<div class="mgz-flipbox-back-inner-text" ng-if="element.hover_text" ng-bind-html="getTrustedHtml(element.hover_text)"></div>
+				<div class="mgz-flipbox-actions mgz-btn-style-{{ element.button_style }} mgz-btn-size-{{ element.button_size }}" ng-if="element.enable_button&&element.button_title">
+					<a ng-href="{{ element.button_link }}" class="mgz-btn">{{ element.button_title }}</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

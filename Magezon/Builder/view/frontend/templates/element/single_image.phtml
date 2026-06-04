@@ -1,0 +1,83 @@
+<?php
+
+/**
+ * @var \Magezon\Builder\Block\Element\SingleImage $block
+ */
+
+$helper = $this->helper('Magezon\Builder\Helper\Data');
+$element = $block->getElement();
+$height = $element->getData('image_height');
+$width = $element->getData('image_width');
+$onclick = $element->getData('onclick');
+$title = $element->getData('title');
+$description = $element->getData('description');
+$zoomEffect = $element->getData('zoom_effect');
+$alt = $element->getData('alt_tag');
+$contentPosition = $element->getData('content_position');
+$overlayColor = $element->getData('overlay_color');
+$hoverOverlayColor = $element->getData('hover_overlay_color');
+$imageHoverEffect = $element->getData('image_hover_effect');
+$imgId = $element->getData('img_id');
+$src = $block->getSrc();
+$link = $block->getLink();
+$srcset = $block->getSrcset();
+$wrapperClasses = $block->getImgWrapperClasses();
+$linkClasses = $block->getLinkClasses();
+$hoverImage = $helper->getImageUrl($element->getData('hover_image'));
+$image               = $helper->getImageUrl($src);
+$tabletImage         = $helper->getImageUrl($element->getData('tablet_image'));
+$landscapePhoneImage = $helper->getImageUrl($element->getData('landscape_phone_image'));
+$portraitPhoneImage  = $helper->getImageUrl($element->getData('portrait_phone_image'));
+$responsiveImages    = $element->getData('responsive_images');
+?>
+<?php if ($src) {?>
+	<?php $alt = $alt ? $alt : $block->getFilename($src);?>
+	<div class="<?=$wrapperClasses;?>">
+		<div class="mgz-single-image-inner <?=$contentPosition ? 'mgz-flex-position-' . $contentPosition : '';?> <?=$imageHoverEffect ? 'hover-type-' . $imageHoverEffect : '';?> <?=$link['url'] ? 'mgz-image-link' : '';?>">
+		<?php if ($link['url']) {?>
+			<a class="<?=$linkClasses;?>"
+			href="<?=$link['url'];?>"
+			data-type="<?=$onclick == 'video_map' ? 'iframe' : 'image';?>"
+			data-title="<?=$title;?>"
+			data-zoom="<?=$zoomEffect ? '1' : '0';?>"
+			<?=$link['blank'] ? 'target="_blank"' : '';?> <?=$link['nofollow'] ? 'rel="nofollow"' : '';?>
+			>
+		<?php }?>
+			<?php if ($responsiveImages === 'custom') { ?>
+				<picture>
+					<?php if ($portraitPhoneImage) { ?>
+					<source srcset="<?= $portraitPhoneImage ?>" media="(max-width: 575px)" />
+					<?php } ?>
+					<?php if ($landscapePhoneImage) { ?>
+					<source srcset="<?= $landscapePhoneImage ?>" media="(max-width: 767px)" />
+					<?php } ?>
+					<?php if ($tabletImage) { ?>
+					<source srcset="<?= $tabletImage ?>" media="(max-width: 1023px)" />
+					<?php } ?>
+			<?php } ?>
+					<img <?=$imgId ? 'id="' . $imgId . '"' : '';?> class="mgz-hover-main" src="<?=$src;?>" alt="<?=$alt;?>" <?=$width ? 'width="' . $width . '"' : '';?> <?=$height ? 'height="' . $height . '"' : '';?> title="<?=$block->escapeHtml($title);?>" <?php if ($hoverImage) {?>data-hover="<?=$hoverImage;?>"<?php }?>/>
+
+			<?php if ($responsiveImages === 'custom') { ?>
+				</picture>
+			<?php } ?>
+		<?php if ($link['url']) {?>
+			</a>
+		<?php }?>
+			<?php if (($title || $description) && $contentPosition && ($contentPosition != 'never')) {?>
+				<div class="image-content">
+					<?php if ($title) {?>
+					<div class="image-title"><?=$title;?></div>
+					<?php }?>
+					<?php if ($description) {?>
+					<div class="image-description"><?=$description;?></div>
+					<?php }?>
+				</div>
+			<?php }?>
+		</div>
+		<?php if ($overlayColor || $hoverOverlayColor) {?>
+			<div class="mgz-overlay"></div>
+		<?php }?>
+	</div>
+<?php }?>
+
+

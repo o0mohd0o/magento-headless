@@ -1,0 +1,80 @@
+<div class="mgz-numbercounter-content mgz-numbercounter mgz-numbercounter-{{ element.layout }}  mgz-numbercounter-number-position-{{ element.number_position }}">
+	<div class="mgz-numbercounter-text">
+		<span class="mgz-numbercounter-before-text" ng-if="element.before_number_text" ng-bind="element.before_number_text"></span>
+
+		<div ng-if="element.layout =='number' || element.layout =='circle'" class="mgz-numbercounter-string">
+			{{ element.number_prefix }}
+			<span ng-if="element.number_text||element.icon">
+				<span class="mgz-numbercounter-number-text" ng-if="element.number_text">{{ element.number_text }}</span>
+				<i class="mgz-numbercounter-icon {{ element.icon }}" ng-if="element.icon"></i>
+			</span>
+			<span ng-if="!element.number_text&&!element.icon">
+				<span class="mgz-numbercounter-int">0</span><span ng-if="element.number_type=='percent'" class="mgz-numbercounter-number-percent">%</span>
+			</span>
+			{{ element.number_suffix }}
+		</div>
+		<div class="mgz-numbercounter-string" ng-if="element.layout =='bars' && element.number_position=='above'">
+			{{ element.number_prefix }}
+			<span ng-if="element.number_text||element.icon">
+				<span class="mgz-numbercounter-number-text" ng-if="element.number_text">{{ element.number_text }}</span>
+				<i class="mgz-numbercounter-icon {{ element.icon }}" ng-if="element.icon"></i>
+			</span>
+			<span ng-if="!element.number_text&&!element.icon">
+				<span class="mgz-numbercounter-int">0</span><span ng-if="element.number_type=='percent'" class="mgz-numbercounter-number-percent">%</span>
+			</span>
+			{{ element.number_suffix }}
+		</div>
+		<div class="mgz-numbercounter-bars-container" ng-if="element.layout == 'bars'">
+			<div class="mgz-numbercounter-bar">
+				<div class="mgz-numbercounter-string" ng-if="element.number_position=='inside'">
+					{{ element.number_prefix }}
+					<span ng-if="element.number_text||element.icon">
+						<span class="mgz-numbercounter-number-text" ng-if="element.number_text">{{ element.number_text }}</span>
+						<i class="mgz-numbercounter-icon {{ element.icon }}" ng-if="element.icon"></i>
+					</span>
+					<span ng-if="!element.number_text&&!element.icon">
+						<span class="mgz-numbercounter-int">0</span><span ng-if="element.number_type=='percent'" class="mgz-numbercounter-number-percent">%</span>
+					</span>
+					{{ element.number_suffix }}
+				</div>
+			</div>
+		</div>
+		<div class="mgz-numbercounter-string" ng-if="element.layout =='bars' && element.number_position=='bellow'">
+			{{ element.number_prefix }}
+			<span ng-if="element.number_text||element.icon">
+				<span class="mgz-numbercounter-number-text" ng-if="element.number_text">{{ element.number_text }}</span>
+				<i class="mgz-numbercounter-icon {{ element.icon }}" ng-if="element.icon"></i>
+			</span>
+			<span ng-if="!element.number_text&&!element.icon">
+				<span class="mgz-numbercounter-int">0</span><span ng-if="element.number_type=='percent'" class="mgz-numbercounter-number-percent">%</span>
+			</span>
+			{{ element.number_suffix }}
+		</div>
+		<span class="mgz-numbercounter-after-text" ng-if="element.after_number_text" ng-bind="element.after_number_text"></span>
+	</div>
+	<div class="svg-container" ng-if="element.layout == 'circle' && $root.parseInt(element.circle_size)">
+		<svg class="svg" ng-style="{'height': element.circle_size,'width': element.circle_size}" ng-attr-viewBox="getViewBox()" version="1.1" preserveAspectRatio="xMinYMin meet">
+			<circle class="mgz-element-bar-bg" 
+				ng-attr-stroke="{{ element.circle_color2 }}" 
+				ng-attr-stroke-width="{{ element.circle_dash_width }}" 
+				ng-attr-fill="{{ element.circle_background_color }}" 
+				ng-attr-r="{{ ($root.parseInt(element.circle_size) / 2) - $root.parseInt(element.circle_dash_width) }}" 
+				ng-attr-cx="{{ $root.parseInt(element.circle_size) / 2 }}" 
+				ng-attr-cy="{{ $root.parseInt(element.circle_size) / 2 }}" 
+				fill="transparent" 
+				ng-attr-stroke-dasharray="{{ getCircumference() }}" 
+				stroke-dashoffset="0"></circle>
+			<circle class="mgz-element-bar" 
+				ng-attr-stroke="{{ element.circle_color1 }}" 
+				ng-attr-stroke-width="{{ element.circle_dash_width }}" 
+				ng-attr-r="{{ ($root.parseInt(element.circle_size) / 2) - $root.parseInt(element.circle_dash_width) }}" 
+				ng-attr-cx="{{ $root.parseInt(element.circle_size) / 2 }}" 
+				ng-attr-cy="{{ $root.parseInt(element.circle_size) / 2 }}" 
+				fill="transparent" 
+				ng-attr-stroke-dasharray="{{ getCircumference() }}" 
+				ng-attr-stroke-dashoffset="{{ element.countdown ? 0 : getCircumference() }}" 
+				ng-attr-transform="rotate(-90 {{ $root.parseInt(element.circle_size) / 2 }} {{ $root.parseInt(element.circle_size) / 2 }})"
+				ng-attr-stroke-linecap="{{ element.linecap }}"></circle>
+		</svg>
+	</div>
+</div>

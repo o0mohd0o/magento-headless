@@ -1,0 +1,67 @@
+<?php
+$element = $this->getElement();
+$items   = $this->toObjectArray($element->getData('items'));
+$type    = $element->getData('table_type');
+?>
+<div class="mgz-pricing-table-wrapper mgz-pricing-table-<?= $type ?>">
+	<?php foreach ($items as $item) { ?>
+		<?php
+		$title      = $item->getData('title');
+		$subTitle   = $item->getData('sub_title');
+		$features   = $this->toObjectArray($item['features']);
+		$link       = $this->getLinkParams($item->getData('button_link'));
+		$buttonText = $item->getData('button_text');
+		$price      = $item->getData('price');
+		$currency   = $item->getData('currency');
+		$period     = $item->getData('period');
+		?>
+		<div class="mgz-pricing-table <?= $item->getData('custom_classes') ?> <?= $item->getData('featured') ? 'mgz-pricing-table-featured' : '' ?>">
+			<div class="mgz-pricing-table-inner">
+				<?php if ($title) { ?>
+				<div class="mgz-pricing-table-heading">
+					<h2 class="mgz-pricing-table-title"><?= $title ?></h2>
+					<span class="mgz-pricing-table-subtitle"><?= $subTitle ?></span>
+				</div>
+				<?php } ?>
+				<div class="mgz-pricing-table-content-wrapper">
+					<?php if ($price != '') { ?>
+					<div class="mgz-pricing-table-content-top">
+						<div class="mgz-pricing-table-meta">
+							<?php if ($currency) { ?>
+							<span class="mgz-pricing-table-currency"><?= $currency ?></span>
+							<?php } ?>
+							<?php if ($price != '') { ?>
+							<span class="mgz-pricing-table-price"><?= $price ?></span>
+							<?php } ?>
+							<?php if ($period) { ?>
+							<span class="mgz-pricing-table-period"><?= $period ?></span>
+							<?php } ?>
+						</div>
+					</div>
+					<?php } ?>
+					<?php if ($features) { ?>
+					<div class="mgz-pricing-table-content">
+						<?php if ($features && is_array($features)) { ?>
+							<ul>
+							<?php foreach ($features as $_feature) { ?>
+								<li>
+									<?php if ($_feature['icon']) { ?>
+										<i class="<?= $_feature['icon'] ?>" <?= $_feature['icon_color'] ? 'style="color: ' . $_feature['icon_color'] . '"' : '' ?>></i>
+									<?php } ?>
+									<?= $_feature['title'] ?>
+								</li>	
+							<?php } ?>
+							</ul>
+						<?php } ?>
+					</div>
+					<?php } ?>
+					<?php if ($buttonText) { ?>
+					<div class="mgz-pricing-table-button">
+						<a class="mgz-btn" href="<?= $link['url'] ?>" title="<?= $block->escapeHtml($link['title']) ?>" <?= $link['blank'] ? 'target="_blank"' : '' ?> <?= $link['nofollow'] ? 'rel="nofollow"' : '' ?>><?= $buttonText ?></a>
+					</div>
+					<?php } ?>
+				</div>
+			</div>
+		</div>
+	<?php } ?>
+</div>

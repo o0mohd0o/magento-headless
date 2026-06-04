@@ -1,0 +1,7 @@
+<div class="mgz-icon-list mgz-icon-list-{{ element.layout }}">
+	<div class="mgz-icon-list-item" ng-repeat="item in element.items">
+		<a href="{{ item.link_url }}" title="{{ item.link_text }}">
+			<i class="mgz-icon-list-item-icon {{ item.icon }}"></i> <span class="mgz-icon-list-item-text" ng-bind-html="getTrustedHtml(item.link_text)"></span>
+		</a>
+	</div>
+</div>

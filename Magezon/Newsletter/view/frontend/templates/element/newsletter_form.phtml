@@ -1,0 +1,24 @@
+<?php
+/**
+ * @var \Magezon\Newsletter\Block\Element\NewsletterForm $block
+ */
+
+$element     = $this->getElement();
+$title       = $element->getData('title');
+$titleTag    = $element->getData('title_tag');
+$description = $element->getData('description');
+$form = $block->getLayout()->createBlock(\Magezon\Newsletter\Block\Subscribe::class);
+$form->setData('show_firstname', $element->getData('show_firstname'));
+$form->setData('show_lastname', $element->getData('show_lastname'));
+$form->setData('layout_type', $element->getData('layout_type'));
+//$form->setData('btn_fullwidth', $element->getData('btn_fullwidth'));
+if ($element->getData('form_width')) $form->setData('width', $element->getData('form_width'));
+if ($element->getData('form_height')) $form->setData('height', $element->getData('form_height'));
+?>
+<?php if ($title) { ?>
+    <<?= $titleTag ?> class="newsletter-title"><?= $title ?></<?= $titleTag ?>>
+<?php } ?>
+<?php if ($description) { ?>
+<div class="newsletter-description"><?= $description ?></div>
+<?php } ?>
+<?= $form->toHtml() ?>

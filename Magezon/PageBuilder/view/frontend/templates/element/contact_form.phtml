@@ -1,0 +1,15 @@
+<?php
+/**
+ * @var \Magezon\PageBuilder\Block\Element\ContactForm $block
+ */
+$input = '<input type="hidden" name="mgz" value="1"/>';
+$html = $block->getContactFormHtml();
+$start = strpos($html, '<form');
+$end   = strpos($html, '>', $start);
+
+if ($end > $start) {
+    $str = substr($html, $start, ($end - $start) + 1);
+    $html = str_replace($str, $str . $input, $html);
+}
+?>
+<?= $html; ?>

@@ -1,0 +1,131 @@
+<?php
+/**
+ * Magezon Builder Footer - Hyva Compatible
+ * Detects Hyva theme and uses vanilla JS instead of RequireJS
+ */
+
+// Check if Hyva theme is active (no RequireJS available)
+$isHyva = class_exists(\Hyva\Theme\Model\ViewModelRegistry::class) 
+    && !class_exists(\Magento\Framework\RequireJs\Config::class, false);
+
+// Alternative check: look for Hyva theme module
+if (!$isHyva) {
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    try {
+        $themeProvider = $objectManager->get(\Magento\Framework\View\Design\Theme\ThemeProviderInterface::class);
+        $design = $objectManager->get(\Magento\Framework\View\DesignInterface::class);
+        $theme = $design->getDesignTheme();
+        $themePath = $theme->getThemePath();
+        $isHyva = (strpos($themePath, 'hyva') !== false || strpos($themePath, 'Hyva') !== false);
+    } catch (\Exception $e) {
+        $isHyva = false;
+    }
+}
+
+if ($isHyva): ?>
+<script>
+(function() {
+    'use strict';
+    
+    function mgzInit() {
+        var height = window.innerHeight;
+        
+        // Full height rows
+        document.querySelectorAll('.mgz-row-full-height').forEach(function(el) {
+            el.style.minHeight = height + 'px';
+            var inner = el.querySelector('.mgz-element-inner');
+            if (inner) inner.style.minHeight = height + 'px';
+            var content = el.querySelector('.mgz-element-row-content');
+            if (content) content.style.minHeight = height + 'px';
+        });
+        
+        // Animations - using Intersection Observer instead of waypoints
+        var animatedElements = document.querySelectorAll('.mgz-animated:not(.mgz_start_animation)');
+        if (animatedElements.length && 'IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        var el = entry.target;
+                        var delayTime = parseFloat(el.dataset.animationDelay) || 0;
+                        var durationTime = parseFloat(el.dataset.animationDuration) || 0;
+                        
+                        if (durationTime) {
+                            el.style.animationDuration = durationTime + 's';
+                        }
+                        
+                        setTimeout(function() {
+                            el.classList.add('mgz_start_animation', 'animated');
+                        }, delayTime * 1000);
+                        
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.15 });
+            
+            animatedElements.forEach(function(el) {
+                observer.observe(el);
+            });
+        }
+        
+        // Waypoint elements
+        var waypointElements = document.querySelectorAll('.mgz-waypoint:not(.mgz-animation-applied)');
+        if (waypointElements.length && 'IntersectionObserver' in window) {
+            var waypointObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        var el = entry.target;
+                        if (!el.classList.contains('mgz-animation-applied')) {
+                            el.dispatchEvent(new CustomEvent('mgz:animation:run'));
+                            el.classList.add('mgz-animation-applied');
+                        }
+                        waypointObserver.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.15 });
+            
+            waypointElements.forEach(function(el) {
+                waypointObserver.observe(el);
+            });
+        }
+        
+        // Image hover effects
+        document.querySelectorAll('.mgz-element-single_image .mgz-single-image-inner').forEach(function(el) {
+            var img = el.querySelector('img');
+            if (img && img.dataset.hover) {
+                el.addEventListener('mouseenter', function() {
+                    img.dataset.src = img.src;
+                    img.src = img.dataset.hover;
+                });
+                el.addEventListener('mouseleave', function() {
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                    }
+                });
+            }
+        });
+        
+        // Remove preload class
+        document.querySelectorAll('.magezon-builder').forEach(function(el) {
+            el.classList.remove('magezon-builder-preload');
+        });
+        
+        // Trigger loaded event
+        document.body.dispatchEvent(new CustomEvent('magezonBuilderLoaded'));
+    }
+    
+    // Run on DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', mgzInit);
+    } else {
+        mgzInit();
+    }
+})();
+</script>
+<?php else:
+    $jsContent = "require(['magezonBuilder']);";
+    if (isset($secureRenderer)) {
+        echo $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $jsContent, false);
+    } else { ?>
+        <script>require(['magezonBuilder']);</script>
+    <?php }
+endif;

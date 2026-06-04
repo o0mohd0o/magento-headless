@@ -1,0 +1,82 @@
+<?php
+$coreHelper       = $this->helper('\Magezon\Core\Helper\Data');
+$builderHelper    = $this->helper('\Magezon\Builder\Helper\Data');
+$element          = $this->getElement();
+$title            = $coreHelper->filter($element->getData('title'));
+$titleAlign       = $element->getData('title_align');
+$titleTag         = $element->getData('title_tag') ? $element->getData('title_tag') : 'h2';
+$description      = $coreHelper->filter($element->getData('description'));
+$showLine         = $element->getData('show_line');
+$link             = $block->getVideoLink();
+$showPreviewImage = $element->getData('show_preview_image');
+$lightBox         = $element->getData('lightbox');
+$aspectRatio      = $element->getData('aspect_ratio');
+$lazyLink         = '';
+$previewImage     = $builderHelper->getImageUrl($element->getData('preview_image'));
+if ($showPreviewImage && $previewImage) {
+	$lazyLink = $link;
+	$link     = '';
+}
+$showPlayIcon     = $element->getData('show_play_icon');
+$playIcon         = $builderHelper->getImageUrl($element->getData('play_icon'));
+$videoTitle       = $element->getData('video_title');
+$videoDescription = $element->getData('video_description');
+$controls         = $element->getData('controls');
+$autoPlay         = $element->getData('autoplay');
+$mute             = $element->getData('mute');
+$loop             = $element->getData('loop');
+if ($autoPlay) $mute = false;
+?>
+<div class="mgz-block">
+	<?php if ($title || $description) { ?>
+	<div class="mgz-block-heading mgz-block-heading-align-<?= $titleAlign ?><?= $showLine ? ' mgz-block-heading-line' : '' ?>">
+		<?php if ($title) { ?>
+			<<?= $titleTag ?> class="title"><?= $title ?></<?= $titleTag ?>>
+		<?php } ?>
+		<?php if ($description) { ?>
+			<div class="info"><?= $description ?></div>
+		<?php } ?>
+	</div>
+	<?php } ?>
+	<div class="mgz-block-content">
+		<?php if ($link || $lazyLink) { ?>
+			<div class="mgz-video mgz-video-aspect-ratio-<?= $aspectRatio ?>">
+				<?php if ($showPreviewImage && $lightBox) { ?>
+					<a href="<?= $link ? $link : $lazyLink ?>" onclick="return false;" class="mgz-magnific" data-type="iframe" data-main-class="<?= $element->getHtmlId() ?>-popup">
+				<?php } ?>
+				<?php if (!$showPreviewImage || !$lightBox) { ?>
+					<?php if ((strpos($link, '.mp4')!==FALSE) || ($lazyLink && strpos($lazyLink, '.mp4')!==FALSE)) { ?>
+						<video <?= $controls ? 'controls' : '' ?> <?= $autoPlay ? 'autoplay' : '' ?> <?= $loop ? 'loop' : '' ?> <?= $autoPlay ? 'muted' : '' ?>>
+							<source src="<?= $lazyLink ? $lazyLink : $link ?>" type="video/mp4">
+							<?= __('Your browser does not support the video tag.') ?>
+						</video>
+					<?php } else { ?>
+						<iframe width="1110" height="624" <?php if ($lazyLink) { ?>data-src="<?= $lazyLink ?>"<?php } ?> src="<?= $link ?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					<?php } ?>
+				<?php } ?>
+				<?php if ($previewImage && $showPreviewImage) { ?>
+				<div class="mgz-video-image-overlay" style="background-image: url('<?= $previewImage ?>');<?= !$showPlayIcon ? 'cursor: pointer;' : '' ?>">
+					<?php if ($showPlayIcon) { ?>
+						<div class="mgz-video-embed-play">
+							<?php if ($playIcon) { ?>
+								<img src="<?= $playIcon ?>" title="<?= $block->escapeHtml($videoTitle) ?>"/>
+							<?php } else { ?>
+								<i class="mgz-icon mgz-icon-play"></i>
+							<?php } ?>
+							<?php if ($videoTitle) { ?>
+								<h2 class="mgz-video-title"><?= $videoTitle ?></h2>
+							<?php } ?>
+							<?php if ($videoDescription) { ?>
+							<div class="mgz-video-description"><?= $videoDescription ?></div>
+							<?php } ?>
+						</div>
+					<?php } ?>
+				</div>
+				<?php } ?>
+				<?php if ($lightBox) { ?>
+					</a>
+				<?php } ?>
+			</div>
+		<?php } ?>
+	</div>
+</div>

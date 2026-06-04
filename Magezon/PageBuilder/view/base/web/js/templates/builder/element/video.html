@@ -1,0 +1,22 @@
+<div class="mgz-block">
+	<div ng-if="element.title || element.description" class="mgz-block-heading mgz-block-heading-align-{{ element.title_align }} {{ element.show_line ? 'mgz-block-heading-line' : '' }}">
+		<div ng-bind-html="getTitleHtml()"></div>
+		<p class="info" ng-if="element.description" ng-bind-html="element.description"></p>
+	</div>
+	<div class="mgz-block-content">
+		<div class="mgz-video mgz-video-aspect-ratio-{{ element.aspect_ratio }}">
+			<video ng-if="link.indexOf('.mp4') !== -1" controls>
+				<source src="{{ link }}" type="video/mp4">
+			</video>
+			<iframe ng-if="!element.show_preview_image && link.indexOf('.mp4') === -1" width="1110" height="624" ng-src="{{ link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<div class="mgz-video-image-overlay" ng-style="{'background-image':'url('+ $root.magezonBuilderUrl.getImageUrl(element.preview_image) +')'}" ng-if="element.preview_image && element.show_preview_image">
+				<div class="mgz-video-embed-play" ng-if="element.show_play_icon && element.show_preview_image">
+					<img ng-if="element.play_icon" ng-src="{{ $root.magezonBuilderUrl.getImageUrl(element.play_icon) }}" title="<?= $block->escapeHtml($videoTitle) ?>"/>
+					<i ng-if="!element.play_icon" class="mgz-icon mgz-icon-play"></i>
+					<h2 ng-if="element.video_title" class="mgz-video-title" ng-bind-html="getTrustedHtml(element.video_title)"></h2>
+					<div ng-if="element.video_description" class="mgz-video-description" ng-bind-html="getTrustedHtml(element.video_description)"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

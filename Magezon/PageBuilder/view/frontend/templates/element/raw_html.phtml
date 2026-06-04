@@ -1,0 +1,5 @@
+<?php
+$dataHelper = $this->helper('\Magezon\Core\Helper\Data');
+$element    = $this->getElement();
+?>
+<?= $dataHelper->filter($element->getContent()) ?>

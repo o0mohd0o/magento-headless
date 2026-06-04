@@ -1,0 +1,21 @@
+<div class="mgz-block">
+	<div ng-if="element.title || element.description" class="mgz-block-heading mgz-block-heading-align-{{ element.title_align }} {{ element.show_line ? 'mgz-block-heading-line' : '' }} mgz-block-heading-line-position-{{ element.line_position }}">
+		<div ng-bind-html="getTitleHtml()"></div>
+		<p class="info" ng-if="element.description" ng-bind-html="element.description"></p>
+	</div>
+	<div class="mgz-block-content" ng-if="show">
+		<mgz-owl-carousel additional-class="additionalClass" owl-items="owlItems" owl-properties="owlSettings">
+		    <div class="item mgz-carousel-item {{ element.hover_effect ? 'hover-type-' + element.hover_effect : '' }}" ng-repeat="item in owlItems">
+		    	<div class="item-inner mgz-flex-position-{{ element.content_position }}">
+					<img class="owl-item-image" alt="{{ item.alt }}" ng-if="item.image" ng-src="{{ $root.magezonBuilderUrl.getImageUrl(item.image) }}"/>
+					<div class="item-content" ng-if="item.description && (!element.content_position || element.content_position != 'none')"></div>
+					<div class="item-content" ng-if="(item.title || item.description) && (!element.content_position || element.content_position != 'none')">
+						<div class="item-title" ng-if="item.title" ng-bind-html="getTrustedHtml(item.title)"></div>
+						<div class="item-description" ng-if="item.description" ng-bind-html="getTrustedHtml(item.description)"></div>
+					</div>
+					<div class="mgz-overlay" ng-if="element.overlay_color"></div>
+				</div>
+			</div>
+		</mgz-owl-carousel>
+	</div>
+</div>

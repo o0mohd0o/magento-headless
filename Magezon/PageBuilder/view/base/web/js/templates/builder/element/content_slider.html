@@ -1,0 +1,12 @@
+<div class="mgz-block">
+	<div ng-if="element.title || element.description" class="mgz-block-heading mgz-block-heading-align-{{ element.title_align }} {{ element.show_line ? 'mgz-block-heading-line' : '' }} mgz-block-heading-line-position-{{ element.line_position }}">
+		<div ng-bind-html="getTitleHtml()"></div>
+		<p class="info" ng-if="element.description" ng-bind-html="element.description"></p>
+	</div>
+	<div class="mgz-block-content">
+		<mgz-owl-carousel additional-class="additionalClass" owl-items="owlItems" owl-properties="owlSettings">
+			<div class="mgz-testimonial" ng-repeat="item in owlItems" ng-bind-html="getTrustedHtml(item.content)">
+			</div>
+		</mgz-owl-carousel>
+	</div>
+</div>

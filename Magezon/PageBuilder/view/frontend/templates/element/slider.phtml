@@ -1,0 +1,176 @@
+<?php
+$coreHelper                  = $this->helper('\Magezon\Core\Helper\Data');
+$builderHelper               = $this->helper('\Magezon\Builder\Helper\Data');
+$element                     = $this->getElement();
+$items                       = $this->toObjectArray($element->getItems());
+$id                          = time() . uniqid();
+$htmlId                      = $element->getHtmlId();
+$carouselOptions             = $this->getOwlCarouselOptions();
+$classes                     = $this->getOwlCarouselClasses();
+$sliderHeight                = $element->getData('slider_height');
+$lazyLoad                    = $element->getData('owl_lazyload');
+$hoverEffect                 = $element->getData('image_hover_effect');
+if ($hoverEffect) $classes[] = 'mgz-image-hovers';
+?>
+<div id="<?= $id ?>" class="mgz-carousel owl-carousel <?= implode(' ', $classes) ?>" data-slider_height="<?= $sliderHeight ?>">
+	<?php foreach ($items as $i => $item) { ?>
+		<?php
+		$backgroundType         = $item['background_type'];
+		$src                    = $builderHelper->getImageUrl($item['image']);
+		$heading                = $item['heading'];
+		$headingType            = $item['heading_type'] ? $item['heading_type'] : 'h2';
+		$headingAnimation       = $item['heading_animation'];
+		$headingAnimationDelay  = $item['heading_animation_delay'];
+		$headingFontSize        = $item['heading_font_size'] ? $item['heading_font_size'] : 60;
+		$headingLineHeight      = $item['heading_line_height'] ? $item['heading_line_height'] : 80;
+		$caption1               = $item['caption1'];
+		$caption1Type           = $item['caption1_type'] ? $item['caption1_type'] : 'div';
+		$caption1Animation      = $item['caption1_animation'];
+		$caption1AnimationDelay = $item['caption1_animation_delay'];
+		$caption1FontSize       = $item['caption1_font_size'] ? $item['caption1_font_size'] : 24;
+		$caption1LineHeight     = $item['caption1_line_height'] ? $item['caption1_line_height'] : 38;
+		$caption2               = $item['caption2'];
+		$caption2Type           = $item['caption2_type'] ? $item['caption2_type'] : 'div';
+		$caption2Animation      = $item['caption2_animation'];
+		$caption2AnimationDelay = $item['caption2_animation_delay'];
+		$caption2FontSize       = $item['caption2_font_size'] ? $item['caption2_font_size'] : 24;
+		$caption2LineHeight     = $item['caption2_line_height'] ? $item['caption2_line_height'] : 38;
+		$linkType               = $item['link_type'] ? $item['link_type'] : 'full';
+		$slideTarget            = $item['slide_target'];
+		$slideLink              = $this->getLinkParams($item['slide_link']);
+		$contentPosition        = $item['content_position'] ? $item['content_position'] : 'middle-center';
+		$button1                = $item['button1'];
+		$button1Animation       = $item['button1_animation'];
+		$button1AnimationDelay  = $item['button1_animation_delay'];
+		$button1Link            = $this->getLinkParams($item['button1_link']);
+		$button1Style           = $item['button1_style'];
+		$button1Size            = $item['button1_size'];
+		$button1FontSize        = $item['button1_font_size'] ? $item['button1_font_size'] : 18;
+		$button1LineHeight      = $item['button1_line_height'] ? $item['button1_line_height'] : 24;
+		$button2                = $item['button2'];
+		$button2Animation       = $item['button2_animation'];
+		$button2AnimationDelay  = $item['button2_animation_delay'];
+		$button2Link            = $this->getLinkParams($item['button2_link']);
+		$button2Style           = $item['button2_style'];
+		$button2Size            = $item['button2_size'];
+		$button2FontSize        = $item['button2_font_size'] ? $item['button2_font_size'] : 18;
+		$button2LineHeight      = $item['button2_line_height'] ? $item['button2_line_height'] : 24;
+		$aspectRatio            = $item['aspect_ratio'] ? $item['aspect_ratio'] : 219;
+		$ifrmeSrc               = $this->getIframeSrc($item);
+		$localLink              = $item['local_link'];
+		$controls               = $item['controls'];
+		$autoPlay               = $item['autoplay'];
+		$mute                   = $item['mute'];
+		$loop                   = $item['loop'];
+		$controls               = false;
+		$autoPlay               = true;
+		$mute                   = true;
+		$loop                   = true;
+		if ($autoPlay) $mute    = false;
+		?>
+		<div id="<?= $htmlId ?>-slider-item<?= $i ?>" class="item mgz-carousel-item <?= ($lazyLoad && !($backgroundType == 'local' && $localLink)) ? 'owl-lazy' : '' ?> <?= $hoverEffect ? 'hover-type-' . $hoverEffect : '' ?>" <?= $lazyLoad ? 'data-src="' . $src . '"' : '' ?> style="background-image:url(<?= $lazyLoad ? '' : $src ?>)">
+			<?php if ($slideLink['url'] && $linkType == 'full') { ?>
+			<a href="<?= $slideLink['url'] ?>" class="overlay-link" title="<?= $block->escapeHtml($slideLink['title']) ?>" <?= $slideLink['blank'] ? 'target="_blank"' : '' ?> <?= $slideLink['nofollow'] ? 'rel="nofollow"' : '' ?>></a>
+			<?php } ?>
+			<?php if ($backgroundType == 'local' && $localLink) { ?>
+				<video <?= $controls ? 'controls' : '' ?>  <?= $autoPlay ? 'data-autoplay="true"' : '' ?> <?= $loop ? 'loop' : '' ?> <?= $autoPlay ? 'muted' : '' ?>>
+					<source src="<?=  $localLink ?>" type="video/mp4">
+					<?= __('Your browser does not support the video tag.') ?>
+				</video>
+			<?php } ?>
+			<?php if ($ifrmeSrc) { ?>
+				<iframe width="1110" height="624" src="<?= $ifrmeSrc ?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<?php } ?>			
+			<?php if (!$ifrmeSrc && ($heading || $caption1 || $caption2 || ($linkType == 'button' && ($button1 || $button2)))) { ?>
+			<div class="item-content-wrapper mgz-flex-position-<?= $contentPosition ?>">
+				<div class="item-content">
+					<?php if ($heading) { ?>
+						<div class="slide-heading slide-animation" <?= $headingAnimation ? 'data-animate-in="' . $headingAnimation . '"' : '' ?> <?= $headingAnimationDelay ? 'data-animate-delay="' . $headingAnimationDelay . '"' : '' ?>>
+							<<?= $headingType ?> class="slide-text" 
+							<?php if ($headingFontSize) { ?>
+							data-inline-fontsize="true" 
+							data-fontsize="<?= $headingFontSize ?>" 
+							<?php } ?>
+							<?php if ($headingLineHeight) { ?>
+							data-inline-lineheight="true" 
+							data-lineheight="<?= $headingLineHeight ?>"
+							<?php } ?>
+							><?= $heading ?></<?= $headingType ?>>
+						</div>
+					<?php } ?>
+					<?php if ($caption1) { ?>
+						<div class="slide-caption1 slide-animation" <?= $caption1Animation ? 'data-animate-in="' . $caption1Animation . '"' : '' ?> <?= $caption1AnimationDelay ? 'data-animate-delay="' . $caption1AnimationDelay . '"' : '' ?>>
+							<<?= $caption1Type ?> class="slide-text"  
+							<?php if ($caption1FontSize) { ?>
+							data-inline-fontsize="true" 
+							data-fontsize="<?= $caption1FontSize ?>" 
+							<?php } ?>
+							<?php if ($caption1LineHeight) { ?>
+							data-inline-lineheight="true" 
+							data-lineheight="<?= $caption1LineHeight ?>"
+							<?php } ?>
+							><?= $caption1 ?></<?= $caption1Type ?>>
+						</div>
+					<?php } ?>
+					<?php if ($caption2) { ?>
+						<div class="slide-caption2 slide-animation" <?= $caption2Animation ? 'data-animate-in="' . $caption2Animation . '"' : '' ?> <?= $caption2AnimationDelay ? 'data-animate-delay="' . $caption2AnimationDelay . '"' : '' ?>>
+							<<?= $caption2Type ?> class="slide-text"   
+							<?php if ($caption2FontSize) { ?>
+							data-inline-fontsize="true" 
+							data-fontsize="<?= $caption2FontSize ?>" 
+							<?php } ?>
+							<?php if ($caption2LineHeight) { ?>
+							data-inline-lineheight="true" 
+							data-lineheight="<?= $caption2LineHeight ?>"
+							<?php } ?>
+							><?= $caption2 ?></<?= $caption2Type ?>>
+						</div>
+					<?php } ?>
+					<?php if ($linkType == 'button' && ($button1 || $button2)) { ?>
+						<div class="slide-buttons">
+							<?php if ($button1) { ?>
+								<div class="mgz-button slide-button1 mgz-btn-style-<?= $button1Style ?> mgz-btn-size-<?= $button1Size ?>">
+									<a href="<?= $button1Link['url'] ?>" class="mgz-btn" title="<?= $block->escapeHtml($button1Link['title']) ?>" <?= $button1Link['blank'] ? 'target="_blank"' : '' ?> <?= $button1Link['nofollow'] ? 'rel="nofollow"' : '' ?> 
+										<?= $button1Animation ? 'data-animate-in="' . $button1Animation . '"' : '' ?> 
+										<?= $button1AnimationDelay ? 'data-animate-delay="' . $button1AnimationDelay . '"' : '' ?>
+										<?php if ($button1FontSize) { ?>
+										data-inline-fontsize="true" 
+										data-fontsize="<?= $button1FontSize ?>" 
+										<?php } ?>
+										<?php if ($button1LineHeight) { ?>
+										data-inline-lineheight="true" 
+										data-lineheight="<?= $button1LineHeight ?>"
+										<?php } ?>
+									><?= $button1 ?></a>
+								</div>
+							<?php } ?>
+							<?php if ($button2) { ?>
+								<div class="mgz-button slide-button2 mgz-btn-style-<?= $button2Style ?> mgz-btn-size-<?= $button2Size ?>">
+									<a href="<?= $button2Link['url'] ?>" class="mgz-btn" title="<?= $block->escapeHtml($button2Link['title']) ?>"  <?= $button2Link['blank'] ? 'target="_blank"' : '' ?> <?= $button2Link['nofollow'] ? 'rel="nofollow"' : '' ?> 
+										<?= $button2Animation ? 'data-animate-in="' . $button2Animation . '"' : '' ?> 
+										<?= $button2AnimationDelay ? 'data-animate-delay="' . $button2AnimationDelay . '"' : '' ?> 
+										<?php if ($button2FontSize) { ?>
+										data-inline-fontsize="true" 
+										data-fontsize="<?= $button2FontSize ?>" 
+										<?php } ?>
+										<?php if ($button2LineHeight) { ?>
+										data-inline-lineheight="true" 
+										data-lineheight="<?= $button2LineHeight ?>"
+										<?php } ?>
+									><?= $button2 ?></a>
+								</div>
+							<?php } ?>
+						</div>
+					<?php } ?>
+				</div>
+			</div>
+			<?php } ?>
+			<div class="slide-background slide-background-<?= $backgroundType ?>"></div>
+		</div>
+	<?php } ?>
+</div>
+<script>
+	require(['jquery', 'Magezon_PageBuilder/js/slider'], function($) {
+		$('#<?= $id ?>').sliders(<?= $coreHelper->serialize($carouselOptions) ?>);
+	})
+</script>

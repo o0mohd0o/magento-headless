@@ -1,0 +1,116 @@
+<?php
+$element               = $this->getElement();
+$beforeNumberText      = $element->getData('before_number_text');
+$afterNumberText       = $element->getData('after_number_text');
+$layout                = $element->getData('layout');
+$numberPrefix          = $element->getData('number_prefix');
+$numberSuffix          = $element->getData('number_suffix');
+$numberPosition        = $element->getData('number_position');
+$type                  = $element->getData('number_type');
+$number                = (float) $element->getData('number');
+$max                   = (float) $element->getData('max');
+$speed                 = ((float) $element->getData('speed')) * 1000;
+$delay                 = (float) $element->getData('delay');
+$circleSize            = (int) $element->getData('circle_size');
+$halfSize              = $circleSize ? $circleSize / 2 : 0;
+$circleDashWidth       = (int) $element->getData('circle_dash_width');
+$circleBackgroundColor = $element->getData('circle_background_color');
+$numberText            = $element->getData('number_text');
+$icon                  = $element->getData('icon');
+$radius                = $halfSize - $circleDashWidth;
+$lineCap               = $element->getData('linecap');
+$countDown             = $element->getData('countdown');
+$icon                  = $element->getData('icon');
+?>
+<div class="mgz-numbercounter-content mgz-waypoint mgz-numbercounter mgz-numbercounter-<?= $layout ?> mgz-numbercounter-number-position-<?= $numberPosition ?>" data-mage-init='{
+		"Magezon_PageBuilder/js/number-counter" : {
+			"layout": "<?= $layout ?>",
+			"type": "<?= $type ?>",
+			"number": <?= $number ?>,
+			"max": <?= $max ?>,
+			"speed":<?= $speed ?> ,
+			"delay": <?= $delay ?>,
+			"radius": <?= $radius ?>
+		}
+	}'>
+	<div class="mgz-numbercounter-text">
+		<?php if ($beforeNumberText) { ?>
+			<span class="mgz-numbercounter-before-text"><?= $beforeNumberText ?></span>
+		<?php } ?>
+
+		<?php if ($layout == 'number' || $layout == 'circle') { ?>
+			<div class="mgz-numbercounter-string">
+				<?= $numberPrefix ?>
+				<?php if ($numberText || $icon) { ?>
+					<?php if ($numberText) { ?><span class="mgz-numbercounter-number-text"><?= $numberText ?></span><?php } ?>
+					<?php if ($icon) { ?><i class="mgz-numbercounter-icon <?= $icon ?>"></i><?php } ?>
+				<?php } else { ?>
+					<span class="mgz-numbercounter-int">0</span><?= $type=='percent' ? '<span class="mgz-numbercounter-number-percent">%</span>' : '' ?>
+					<?php if ($icon) { ?><i class="mgz-numbercounter-icon <?= $icon ?>"></i><?php } ?>
+				<?php } ?>
+				<?= $numberSuffix ?>
+			</div>
+		<?php } ?>
+
+		<?php if ($layout == 'bars') { ?>
+			<?php if ($numberPosition == 'above') { ?>
+				<div class="mgz-numbercounter-string">
+					<?= $numberPrefix ?>
+					<?php if ($numberText || $icon) { ?>
+						<?php if ($numberText) { ?><span class="mgz-numbercounter-number-text"><?= $numberText ?></span><?php } ?>
+						<?php if ($icon) { ?><i class="mgz-numbercounter-icon <?= $icon ?>"></i><?php } ?>
+					<?php } else { ?>
+						<span class="mgz-numbercounter-int">0</span><?= $type=='percent' ? '<span class="mgz-numbercounter-number-percent">%</span>' : '' ?>
+						<?php if ($icon) { ?><i class="mgz-numbercounter-icon <?= $icon ?>"></i><?php } ?>
+					<?php } ?>
+					<?= $numberSuffix ?>
+				</div>
+			<?php } ?>
+			<div class="mgz-numbercounter-bars-container">
+				<div class="mgz-numbercounter-bar">
+					<?php if ($numberPosition == 'inside') { ?>
+						<div class="mgz-numbercounter-string">
+							<?= $numberPrefix ?>
+							<?php if ($numberText || $icon) { ?>
+								<?php if ($numberText) { ?><span class="mgz-numbercounter-number-text"><?= $numberText ?></span><?php } ?>
+								<?php if ($icon) { ?><i class="mgz-numbercounter-icon <?= $icon ?>"></i><?php } ?>
+							<?php } else { ?>
+								<span class="mgz-numbercounter-int">0</span><?= $type=='percent' ? '<span class="mgz-numbercounter-number-percent">%</span>' : '' ?>
+								<?php if ($icon) { ?><i class="mgz-numbercounter-icon <?= $icon ?>"></i><?php } ?>
+							<?php } ?>
+							<?= $numberSuffix ?>
+						</div>
+					<?php } ?>
+				</div>
+			</div>
+			<?php if ($numberPosition == 'bellow') { ?>
+				<div class="mgz-numbercounter-string">
+					<?= $numberPrefix ?>
+					<?php if ($numberText || $icon) { ?>
+						<?php if ($numberText) { ?><span class="mgz-numbercounter-number-text"><?= $numberText ?></span><?php } ?>
+						<?php if ($icon) { ?><i class="mgz-numbercounter-icon <?= $icon ?>"></i><?php } ?>
+					<?php } else { ?>
+						<span class="mgz-numbercounter-int">0</span><?= $type=='percent' ? '<span class="mgz-numbercounter-number-percent">%</span>' : '' ?>
+						<?php if ($icon) { ?><i class="mgz-numbercounter-icon <?= $icon ?>"></i><?php } ?>
+					<?php } ?>
+					<?= $numberSuffix ?>
+				</div>
+			<?php } ?>
+		<?php } ?>
+
+		<?php if ($afterNumberText) { ?>
+			<span class="mgz-numbercounter-after-text"><?= $afterNumberText ?></span>
+		<?php } ?>
+	</div>
+	<?php if ($layout == 'circle' && $circleSize) { ?>
+		<?php
+			$circumference = ($circleSize - ($circleDashWidth * 2)) * pi();
+		?>
+		<div class="svg-container">
+			<svg class="svg" viewBox="0 0 <?= $circleSize ?> <?= $circleSize ?>" version="1.1" preserveAspectRatio="xMinYMin meet">
+				<circle fill="<?= $circleBackgroundColor ?>" class="mgz-element-bar-bg" r="<?= $radius ?>" cx="<?= $halfSize ?>" cy="<?= $halfSize ?>" stroke-dasharray="<?= $circumference ?>" stroke-dashoffset="0" stroke-linecap="<?= $lineCap ?>"></circle>
+				<circle class="mgz-element-bar" r="<?= $radius ?>" cx="<?= $halfSize ?>" cy="<?= $halfSize ?>" fill="transparent" stroke-dasharray="<?= $circumference ?>" stroke-dashoffset="<?= $countDown ? 0 : $circumference ?>" transform="rotate(-90 <?= $halfSize ?> <?= $halfSize ?>)" stroke-linecap="<?= $lineCap ?>"></circle>
+			</svg>
+		</div>
+	<?php } ?>
+</div>

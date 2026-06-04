@@ -1,0 +1,718 @@
+Back,Back
+Delete,Delete
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Save,Save
+"Save & New","Save & New"
+"Save & Duplicate","Save & Duplicate"
+"Save & Close","Save & Close"
+"You saved the template.","You saved the template."
+"Something went wrong while saving the template.","Something went wrong while saving the template."
+"The template has been deleted.","The template has been deleted."
+"We can't find a template to delete.","We can't find a template to delete."
+"Page Builder","Page Builder"
+"Manage Templates","Manage Templates"
+"This template no longer exists.","This template no longer exists."
+"Edit Template","Edit Template"
+"New Template","New Template"
+Templates,Templates
+"Magezon Page Builder Templates","Magezon Page Builder Templates"
+"A total of %1 record(s) have been deleted.","A total of %1 record(s) have been deleted."
+"You duplicated the template","You duplicated the template"
+"Widget Title","Widget Title"
+"Title Alignment","Title Alignment"
+"Title Tag","Title Tag"
+"Show Line","Show Line"
+"Widget Description","Widget Description"
+Gap,Gap
+"Active Sections","Active Sections"
+"Enter active sections number. Comma-separated. Leave empty or enter non-existing number to close all sections on page load.","Enter active sections number. Comma-separated. Leave empty or enter non-existing number to close all sections on page load."
+"Allow Collapse All","Allow Collapse All"
+"Allow collapse multiple sections.","Allow collapse multiple sections."
+"At Least Once Open","At Least Once Open"
+Icon,Icon
+"Icon Position","Icon Position"
+"Active Icon","Active Icon"
+"Do not fill content area?","Do not fill content area?"
+"Hide Empty Section","Hide Empty Section"
+Section,Section
+Alignment,Alignment
+Spacing,Spacing
+"Title Font Size","Title Font Size"
+"Border Width","Border Width"
+"Border Radius","Border Radius"
+"Border Style","Border Style"
+"Theme defaults","Theme defaults"
+"Title Colors","Title Colors"
+Normal,Normal
+"Text Color","Text Color"
+"Background Color","Background Color"
+"Border Color","Border Color"
+Hover,Hover
+Active,Active
+"Content Background Color","Content Background Color"
+"Content Padding","Content Padding"
+None,None
+Chevron,Chevron
+Plus,Plus
+Triangle,Triangle
+Dot,Dot
+Custom,Custom
+Title,Title
+"Add Icon","Add Icon"
+Text,Text
+Link,Link
+"On Click Code","On Click Code"
+"Element Auto Width","Element Auto Width"
+"Display multiple buttons in same row","Display multiple buttons in same row"
+"Button Design","Button Design"
+"Button Style","Button Style"
+"Button Size","Button Size"
+"Set Full Width Button","Set Full Width Button"
+"Gradient Color 1","Gradient Color 1"
+"Gradient Color 2","Gradient Color 2"
+"BoxShadow Color","BoxShadow Color"
+Colors,Colors
+"Inline CSS","Inline CSS"
+Modern,Modern
+Flat,Flat
+3D,3D
+Gradient,Gradient
+"Title HTML Tag","Title HTML Tag"
+Description,Description
+"Content Position","Content Position"
+"Content Alignment","Content Alignment"
+"Content Hover Animation","Content Hover Animation"
+"Animation Duration (ms)","Animation Duration (ms)"
+"Sequenced Animation","Sequenced Animation"
+Image,Image
+"Image Position","Image Position"
+"Image Min Width","Image Min Width"
+"Image Min Height","Image Min Height"
+"Image Hover Animation","Image Hover Animation"
+"Icon Size","Icon Size"
+Label,Label
+"Label Position","Label Position"
+"Label Distance","Label Distance"
+"Box Link","Box Link"
+Style,Style
+"Content Wrapper Width","Content Wrapper Width"
+"Content Width","Content Width"
+"Content Min Height","Content Min Height"
+"Box Border Radius","Box Border Radius"
+"Title Spacing","Title Spacing"
+"Description Spacing","Description Spacing"
+"Icon Spacing","Icon Spacing"
+"Title Color","Title Color"
+"Description Color","Description Color"
+"Overlay Color","Overlay Color"
+"Label Color","Label Color"
+"Label Background Color","Label Background Color"
+"Icon Color","Icon Color"
+"Button Position","Button Position"
+Zoom,Zoom
+Border,Border
+"Border Zoom","Border Zoom"
+Flashed,Flashed
+"Flashed Zoom","Flashed Zoom"
+Shadow,Shadow
+"Shadow Zoom ","Shadow Zoom "
+Cover,Cover
+Top,Top
+Right,Right
+Left,Left
+"Line Position","Line Position"
+"Line Color","Line Color"
+"Line Width","Line Width"
+Categories,Categories
+"Search category by name","Search category by name"
+"Show product counts","Show product counts"
+"Show hierarchy","Show hierarchy"
+"Link Color","Link Color"
+"Link Hover Color","Link Hover Color"
+"Link Font Size","Link Font Size"
+"Link Font Weight","Link Font Weight"
+"Link Border Width","Link Border Width"
+"Link Border Color","Link Border Color"
+Width,Width
+"Show Title","Show Title"
+"Show Description","Show Description"
+Sliders,Sliders
+Content,Content
+"Heading ","Heading "
+"Sub Heading ","Sub Heading "
+Day,Day
+Month,Month
+Year,Year
+Hours,Hours
+Minutes,Minutes
+"Time Zone","Time Zone"
+"Link Text","Link Text"
+"Link Url","Link Url"
+Layout,Layout
+"Number Color","Number Color"
+"Number Size","Number Size"
+"Number Background Color","Number Background Color"
+"Number Border Radius","Number Border Radius"
+"Number Padding","Number Padding"
+"Number Spacing","Number Spacing"
+"Text Size","Text Size"
+"Text Inline","Text Inline"
+"Show Time Separators","Show Time Separators"
+"Separator Type","Separator Type"
+"Separator Color","Separator Color"
+"Separator Size","Separator Size"
+"Circle Size","Circle Size"
+"Circle Stroke Size","Circle Stroke Size"
+"Circle Color1","Circle Color1"
+"Circle Color2","Circle Color2"
+"Circle Background Color","Circle Background Color"
+"Heading Color","Heading Color"
+"Heading Font Size","Heading Font Size"
+"Sub Heading Color","Sub Heading Color"
+"Sub Heading Font Size","Sub Heading Font Size"
+Numbers,Numbers
+"Numbers & Circles","Numbers & Circles"
+Colon,Colon
+Line,Line
+"Facebook Page URL","Facebook Page URL"
+"The absolute URL that comments posted in the plugin will be permanently associated with. All stories shared on Facebook about comments posted using the comments plugin will link to this URL.","The absolute URL that comments posted in the plugin will be permanently associated with. All stories shared on Facebook about comments posted using the comments plugin will link to this URL."
+"Number of Posts","Number of Posts"
+"The number of comments to show by default.","The number of comments to show by default."
+"URL to Like","URL to Like"
+"Leave empty to like the current page url","Leave empty to like the current page url"
+"Action Type","Action Type"
+"Show Friends' Faces","Show Friends' Faces"
+"Show profile photos when 2 or more friends like this","Show profile photos when 2 or more friends like this"
+"Include Share Button","Include Share Button"
+"Includes a Share button beside the Like button","Includes a Share button beside the Like button"
+standard,standard
+box_count,box_count
+button_count,button_count
+button,button
+like,like
+recommend,recommend
+small,small
+large,large
+"The URL of the Facebook Page","The URL of the Facebook Page"
+Tabs,Tabs
+"The pixel width of the embed (Min. 180 to Max. 500)","The pixel width of the embed (Min. 180 to Max. 500)"
+Height,Height
+"Use Small Header","Use Small Header"
+"Uses a smaller version of the page header","Uses a smaller version of the page header"
+"Hide Cover Photo","Hide Cover Photo"
+"Hide the cover photo in the header","Hide the cover photo in the header"
+"Adapt to plugin container width","Adapt to plugin container width"
+"Plugin will try to fit inside the container","Plugin will try to fit inside the container"
+"Show Friend's Faces","Show Friend's Faces"
+"Show profile photos when friends like this","Show profile photos when friends like this"
+"Flickr API Key","Flickr API Key"
+"Your API application key. See <a href=""%1"" target=""_blank"">here</a> for more details.","Your API application key. See <a href=""%1"" target=""_blank"">here</a> for more details."
+"Flickr Album ID","Flickr Album ID"
+"Show Photo Title","Show Photo Title"
+"Gap pixel between grid elements.","Gap pixel between grid elements."
+Thumbnail,Thumbnail
+Small,Small
+Large,Large
+Original,Original
+"Open Magnific Popup","Open Magnific Popup"
+"Open Photo Link","Open Photo Link"
+Username,Username
+Hashtag,Hashtag
+"Large Square(150x150)","Large Square(150x150)"
+Thumbnail(100x75),Thumbnail(100x75)
+Small(240x180),Small(240x180)
+Small(320x240),Small(320x240)
+Medium(500x375),Medium(500x375)
+Medium(640x480),Medium(640x480)
+Medium(800x600),Medium(800x600)
+Large(1024x768),Large(1024x768)
+Flickr,Flickr
+"Flip Direction","Flip Direction"
+"Flip Effect","Flip Effect"
+"Flip Duration","Flip Duration"
+"Box Min Height","Box Min Height"
+"Box Border Width","Box Border Width"
+"Title Font Weight","Title Font Weight"
+"Icon Spin","Icon Spin"
+Circle,Circle
+"Circle Boder Width","Circle Boder Width"
+"Circle Border Color","Circle Border Color"
+"Primary Block","Primary Block"
+"Primary Title","Primary Title"
+"Primary Alignment","Primary Alignment"
+Color,Color
+"Primary Text","Primary Text"
+"Hover Block","Hover Block"
+"Hover Title","Hover Title"
+"Hover Alignment","Hover Alignment"
+"Hover Image","Hover Image"
+"Hover Text","Hover Text"
+Up,Up
+Down,Down
+Classic,Classic
+URL,URL
+"Icon Design","Icon Design"
+"Icon & Text Design","Icon & Text Design"
+"Text Font Weight","Text Font Weight"
+"Icon Colors","Icon Colors"
+"Text Colors","Text Colors"
+"Icon List","Icon List"
+Horizontal,Horizontal
+Vertical,Vertical
+Images,Images
+"On click action","On click action"
+"Popup Image","Popup Image"
+"Popup Title","Popup Title"
+"Custom Link","Custom Link"
+"Video or Map","Video or Map"
+"Image Size","Image Size"
+"Hover Effect","Hover Effect"
+"Display Content on Hover","Display Content on Hover"
+"Content Fullwidth","Content Fullwidth"
+"Content Color","Content Color"
+"Content Background","Content Background"
+"Description Font Size","Description Font Size"
+"Description Font Weight","Description Font Weight"
+"Open Custom Link","Open Custom Link"
+"Gallery Type","Gallery Type"
+Type,Type
+"Full Image","Full Image"
+"Image Link","Image Link"
+"Video Url","Video Url"
+Caption,Caption
+"Fotorama Options","Fotorama Options"
+"Check more details at <a href=""%1"" target=""_blank"">here</a>","Check more details at <a href=""%1"" target=""_blank"">here</a>"
+"Navigation Style","Navigation Style"
+"Navigation Position","Navigation Position"
+Margin,Margin
+"Horizontal margins for frames in pixels.","Horizontal margins for frames in pixels."
+"Thumbnail Width","Thumbnail Width"
+"Thumbnail Height","Thumbnail Height"
+"Thumbnail Margin","Thumbnail Margin"
+"Allows Fullscreen","Allows Fullscreen"
+Captions,Captions
+"Captions visibility","Captions visibility"
+Loop,Loop
+Arrows,Arrows
+"Turns on navigation arrows over the frames.","Turns on navigation arrows over the frames."
+"Auto Play","Auto Play"
+"Enables slideshow. Turn it on with true or any interval in milliseconds","Enables slideshow. Turn it on with true or any interval in milliseconds"
+"Stop autoplay on touch","Stop autoplay on touch"
+"Stops slideshow at any user action with the fotorama.","Stops slideshow at any user action with the fotorama."
+Click,Click
+"Moving between frames by clicking.","Moving between frames by clicking."
+Swipe,Swipe
+"Moving between frames by swiping.","Moving between frames by swiping."
+Keyboard,Keyboard
+"Enables keyboard navigation.","Enables keyboard navigation."
+Trackpad,Trackpad
+"Enables trackpad support and horizontal mouse wheel as well.","Enables trackpad support and horizontal mouse wheel as well."
+Shuffle,Shuffle
+"Shuffles frames at launch.","Shuffles frames at launch."
+Shadows,Shadows
+RTL,RTL
+Hash,Hash
+Fit,Fit
+"How to fit an image into a fotorama","How to fit an image into a fotorama"
+Transition,Transition
+"Start Index","Start Index"
+"Index or id of the frame that will be shown upon initialization of the fotorama.","Index or id of the frame that will be shown upon initialization of the fotorama."
+Ratio,Ratio
+"Width divided by height. Recommended if you’re using percentage width.","Width divided by height. Recommended if you’re using percentage width."
+"Stage container width in pixels or percents.","Stage container width in pixels or percents."
+"Min Width","Min Width"
+"Stage container minimum width in pixels or percents.","Stage container minimum width in pixels or percents."
+"Max Width","Max Width"
+"Stage container maximum width in pixels or percents.","Stage container maximum width in pixels or percents."
+"Stage container height in pixels or percents.","Stage container height in pixels or percents."
+"Min Height","Min Height"
+"Stage container minimum height in pixels or percents.","Stage container minimum height in pixels or percents."
+"Max Height","Max Height"
+"Stage container maximum height in pixels or percents.","Stage container maximum height in pixels or percents."
+Fotorama,Fotorama
+OwlCarousel,OwlCarousel
+"Media Library","Media Library"
+"External Link","External Link"
+Video,Video
+contain,contain
+cover,cover
+scaledown,scaledown
+none,none
+slide,slide
+crossfade,crossfade
+dissolve,dissolve
+dots,dots
+thumbs,thumbs
+false,false
+top,top
+bottom,bottom
+"Instagram Options","Instagram Options"
+Key,Key
+"Number of photos","Number of photos"
+"Link Target","Link Target"
+"Display ""likes""","Display ""likes"""
+"Display ""comments""","Display ""comments"""
+"Text Font Size","Text Font Size"
+PhotoSwipe,PhotoSwipe
+"Same window","Same window"
+"New window","New window"
+Instagram,Instagram
+"I am message box. Click edit button to change this text.","I am message box. Click edit button to change this text."
+"Message Text","Message Text"
+"Message Box Design","Message Box Design"
+"Message Box Presets","Message Box Presets"
+"Icon Background Color","Icon Background Color"
+Informational,Informational
+Warning,Warning
+Success,Success
+Error,Error
+"Number Type","Number Type"
+"Number Position","Number Position"
+"Count Down","Count Down"
+Linecap,Linecap
+Number,Number
+Max,Max
+"Text Before Number","Text Before Number"
+"Text to appear above the number. Leave it empty for none.","Text to appear above the number. Leave it empty for none."
+"Text After Number","Text After Number"
+"Text to appear after the number. Leave it empty for none.","Text to appear after the number. Leave it empty for none."
+"Number Prefix","Number Prefix"
+"For example, if your number is US$ 10, your prefix would be ""US$ "".","For example, if your number is US$ 10, your prefix would be ""US$ ""."
+"Number Suffix","Number Suffix"
+"For example, if your number is 10%, your suffix would be ""%"".","For example, if your number is 10%, your suffix would be ""%""."
+"Animation Speed(seconds)","Animation Speed(seconds)"
+"Number of seconds to complete the animation.","Number of seconds to complete the animation."
+Delay(seconds),Delay(seconds)
+"Before Text Color","Before Text Color"
+"Before Text Size","Before Text Size"
+"After Text Color","After Text Color"
+"After Text Size","After Text Size"
+"Bar Color","Bar Color"
+"Bar Background Color","Bar Background Color"
+"Only Number","Only Number"
+"Circle Counter","Circle Counter"
+"Bars Counter","Bars Counter"
+Percent,Percent
+Standard,Standard
+"Inside Bar","Inside Bar"
+"Above Bar","Above Bar"
+"Below Bar","Below Bar"
+"Select Template","Select Template"
+"Choose which template load for this location.","Choose which template load for this location."
+"Show Pin counts","Show Pin counts"
+"Button Round","Button Round"
+"Button Large","Button Large"
+Items,Items
+"Sub Title","Sub Title"
+Price,Price
+Currency,Currency
+Period,Period
+"Is Featured","Is Featured"
+"Custom Classes","Custom Classes"
+Features,Features
+Button,Button
+"Button Text","Button Text"
+"Button Link","Button Link"
+Position,Position
+Heading,Heading
+"Font Size","Font Size"
+"Font Weight","Font Weight"
+Featured,Featured
+"Price Color","Price Color"
+"Box Background Color","Box Background Color"
+"Text Align","Text Align"
+"Button Colors","Button Colors"
+"Display Style","Display Style"
+"Items per page","Items per page"
+"Carousel Options","Carousel Options"
+"Pause on Mouse Hover","Pause on Mouse Hover"
+"Auto Play Timeout","Auto Play Timeout"
+"Dots Navigation","Dots Navigation"
+"Show all","Show all"
+Pagination,Pagination
+"Text Position","Text Position"
+Units,Units
+"Add Stripes","Add Stripes"
+"Bar Height","Bar Height"
+"Bar Border Radius","Bar Border Radius"
+"Label Font Size","Label Font Size"
+"Label Font Weight","Label Font Weight"
+Bars,Bars
+Value,Value
+"Filled Color","Filled Color"
+"Unfilled Color","Unfilled Color"
+Inside,Inside
+Below,Below
+"Raw HTML","Raw HTML"
+"Enter your HTML content.","Enter your HTML content."
+"JavaScript Code","JavaScript Code"
+"Enter your JavaScript code.","Enter your JavaScript code."
+"Total Items","Total Items"
+Product,Product
+"Search product by name","Search product by name"
+"Review Options","Review Options"
+"Show Date","Show Date"
+"Show Customer","Show Customer"
+"Show Rating Star","Show Rating Star"
+"Show Product Name","Show Product Name"
+"Show Product Image","Show Product Image"
+"Show Content","Show Content"
+"Character Limit","Character Limit"
+"If review text exceeds the character limit, View more link will be added.","If review text exceeds the character limit, View more link will be added."
+"Equal Height","Equal Height"
+"Star Color","Star Color"
+"Recent Reviews","Recent Reviews"
+"Product Sku","Product Sku"
+"Search product by name, sku or id","Search product by name, sku or id"
+"Product Display","Product Display"
+"Border Hover Color","Border Hover Color"
+Grid,Grid
+List,List
+"Slider Height","Slider Height"
+"Image Hover Effect","Image Hover Effect"
+Slides,Slides
+"Background Type","Background Type"
+"Youtube Video ID","Youtube Video ID"
+"Vimeo Video ID","Vimeo Video ID"
+"Local Video","Local Video"
+Animation,Animation
+"Animation Delay(s)","Animation Delay(s)"
+"Line Height","Line Height"
+Padding,Padding
+Distance,Distance
+Caption1,Caption1
+Caption2,Caption2
+"Slide Link","Slide Link"
+"Slide Link Type","Slide Link Type"
+Button1,Button1
+Size,Size
+"Hover Text Color","Hover Text Color"
+"Hover Background Color","Hover Background Color"
+"Hover Border Color","Hover Border Color"
+Button2,Button2
+"Video Options","Video Options"
+Autoplay,Autoplay
+Mute,Mute
+"Player Controls","Player Controls"
+"Navigation Buttons","Navigation Buttons"
+"Navigation Size","Navigation Size"
+"Dots Inside","Dots Inside"
+"Dots Speed","Dots Speed"
+Lazyload,Lazyload
+"margin-right(px) on item.","margin-right(px) on item."
+"Auto Play Speed","Auto Play Speed"
+"Stage Padding","Stage Padding"
+"Right To Left","Right To Left"
+"Animation In","Animation In"
+"Animation Out","Animation Out"
+Youtube,Youtube
+Vimeo,Vimeo
+Local,Local
+"Full Slide","Full Slide"
+Block,Block
+"Search block by name or id","Search block by name or id"
+Box,Box
+"Box Color","Box Color"
+"Image Border Radius","Image Border Radius"
+"Content Font Size","Content Font Size"
+"Content Font Weight","Content Font Weight"
+Name,Name
+"Name Color","Name Color"
+"Name Font Size","Name Font Size"
+"Name Font Weight","Name Font Weight"
+Job,Job
+"Job Color","Job Color"
+"Job Font Size","Job Font Size"
+"Job Font Weight","Job Font Weight"
+Testimonials,Testimonials
+Type1,Type1
+Type2,Type2
+Type3,Type3
+"Toggle Title","Toggle Title"
+"Toggle content goes here, click edit button to change this text.","Toggle content goes here, click edit button to change this text."
+"Icon Style","Icon Style"
+"Default state","Default state"
+Default,Default
+Round,Round
+"Round Outline","Round Outline"
+Square,Square
+"Square Outline","Square Outline"
+"Text Only","Text Only"
+Closed,Closed
+Open,Open
+"Button Type","Button Type"
+"Share url: page URL","Share url: page URL"
+"Use the current page url to share?","Use the current page url to share?"
+"Share url: custom URL","Share url: custom URL"
+"Enter custom page url which you like to share on twitter?","Enter custom page url which you like to share on twitter?"
+"Tweet text: page title","Tweet text: page title"
+"Use the current page title as tweet text?","Use the current page title as tweet text?"
+"Tweet text: custom text","Tweet text: custom text"
+"Enter the text to be used as a tweet?","Enter the text to be used as a tweet?"
+"Via @","Via @"
+"Enter your Twitter username.","Enter your Twitter username."
+"Recommend @","Recommend @"
+"Enter the Twitter username to be recommended.","Enter the Twitter username to be recommended."
+"Hashtag #","Hashtag #"
+"Add a comma-separated list of hashtags to a Tweet using the hashtags parameter.","Add a comma-separated list of hashtags to a Tweet using the hashtags parameter."
+"User @","User @"
+"Enter username to follow.","Enter username to follow."
+"Show username","Show username"
+"Show followers count","Show followers count"
+"Do you want to display the follower count in button?","Do you want to display the follower count in button?"
+"Add hashtag to a Tweet using the hashtags parameter","Add hashtag to a Tweet using the hashtags parameter"
+"Tweet Text","Tweet Text"
+"Set custom text for tweet.","Set custom text for tweet."
+"Enter username to be recommended.","Enter username to be recommended."
+"Tweet Url","Tweet Url"
+"Tweet to @","Tweet to @"
+"Enter username where you want to send your tweet.","Enter username where you want to send your tweet."
+"Enter custom text for the tweet.","Enter custom text for the tweet."
+"Enter username to recommend.","Enter username to recommend."
+"Use large button","Use large button"
+"Do you like to display a larger Tweet button?","Do you like to display a larger Tweet button?"
+Language,Language
+"Select button display language or allow it to be automatically defined by user preferences.","Select button display language or allow it to be automatically defined by user preferences."
+"Share a link","Share a link"
+Follow,Follow
+Mention,Mention
+English,English
+Arabic,Arabic
+Bengali,Bengali
+Czech,Czech
+Danish,Danish
+German,German
+Greek,Greek
+Spanish,Spanish
+Persian,Persian
+Finnish,Finnish
+Filipino,Filipino
+French,French
+Hebrew,Hebrew
+Hindi,Hindi
+Hungarian,Hungarian
+Indonesian,Indonesian
+Italian,Italian
+Japanese,Japanese
+Korean,Korean
+Malay,Malay
+Dutch,Dutch
+Norwegian,Norwegian
+Polish,Polish
+Portuguese,Portuguese
+Romanian,Romanian
+Russian,Russian
+Swedish,Swedish
+Thai,Thai
+Turkish,Turkish
+Ukrainian,Ukrainian
+Urdu,Urdu
+Vietnamese,Vietnamese
+"Chinese (Simplified)","Chinese (Simplified)"
+"Chinese (Traditional)","Chinese (Traditional)"
+"Timeline URL","Timeline URL"
+"Number of Tweets","Number of Tweets"
+"Show Replies","Show Replies"
+Chrome,Chrome
+Theme,Theme
+Automatic,Automatic
+Source,Source
+"Video Title","Video Title"
+"Video Description","Video Description"
+"Video Aspect Ratio","Video Aspect Ratio"
+"Start Time","Start Time"
+"Specify a start time (in seconds)","Specify a start time (in seconds)"
+"End Time","End Time"
+"Specify a end time (in seconds)","Specify a end time (in seconds)"
+"Intro Title","Intro Title"
+"Intro Portrait","Intro Portrait"
+"Intro Byline","Intro Byline"
+"Controls Color","Controls Color"
+"Modest Branding","Modest Branding"
+"Show Related Videos","Show Related Videos"
+"Privacy Mode","Privacy Mode"
+"When you turn on privacy mode, YouTube won't store information about visitors on your website unless they play the video.","When you turn on privacy mode, YouTube won't store information about visitors on your website unless they play the video."
+"Show Preview Image","Show Preview Image"
+"Preview Image","Preview Image"
+Lightbox,Lightbox
+"Lightbox Width","Lightbox Width"
+"Show Play Icon","Show Play Icon"
+"Play Icon Size(px)","Play Icon Size(px)"
+"Play Icon Color","Play Icon Color"
+"Custom Play Icon","Custom Play Icon"
+YouTube,YouTube
+"Save Template","Save Template"
+"Save current layout as a template","Save current layout as a template"
+"My Templates","My Templates"
+"Template Library","Template Library"
+Edit,Edit
+"Delete %1","Delete %1"
+"Are you sure you want to delete a %1 record?","Are you sure you want to delete a %1 record?"
+"WYSIWYG Editor","WYSIWYG Editor"
+"Active Magezon Page Builder","Active Magezon Page Builder"
+"Deactivate Magezon Page Builder","Deactivate Magezon Page Builder"
+Hour,Hour
+Minute,Minute
+Second,Second
+Facebook,Facebook
+"Pin It","Pin It"
+"Add to Cart","Add to Cart"
+"In stock","In stock"
+"Out of stock","Out of stock"
+"Add to Wish List","Add to Wish List"
+"Add to Compare","Add to Compare"
+"Learn More","Learn More"
+"View more","View more"
+"Your browser does not support the video tag.","Your browser does not support the video tag."
+Tweet,Tweet
+"Follow @%1","Follow @%1"
+"Tweet #%1","Tweet #%1"
+"Tweet to @A1","Tweet to @A1"
+Cancel,Cancel
+Submit,Submit
+Template,Template
+"Magezon Page Builder","Magezon Page Builder"
+"General Settings","General Settings"
+"Current Version","Current Version"
+"Enable Magezon Page Builder","Enable Magezon Page Builder"
+"Enable for CMS Pages","Enable for CMS Pages"
+"Enable for Blocks","Enable for Blocks"
+"Enable for Products","Enable for Products"
+"Enable for Categories","Enable for Categories"
+Accordion,Accordion
+Toggle,Toggle
+Slider,Slider
+"Image Carousel","Image Carousel"
+"Image Gallery","Image Gallery"
+"Facebook Like","Facebook Like"
+"Facebook Page","Facebook Page"
+"Facebook Comments","Facebook Comments"
+"Twitter Button","Twitter Button"
+"Twitter Timeline","Twitter Timeline"
+Pinterest,Pinterest
+"Flickr Widget","Flickr Widget"
+"Video Player","Video Player"
+"Message Box","Message Box"
+"Progress Bar","Progress Bar"
+"Number Counter","Number Counter"
+Countdown,Countdown
+"Flip Box","Flip Box"
+"Content Slider","Content Slider"
+"Raw JS","Raw JS"
+"Call to Action","Call to Action"
+"Pricing Table","Pricing Table"
+"Magezon Page Builder Template","Magezon Page Builder Template"
+"Static Block","Static Block"
+"Contact Form","Contact Form"
+"Single Product","Single Product"
+"Product Slider","Product Slider"
+"Product Grid","Product Grid"
+"Product List","Product List"
+"Template Information","Template Information"
+"Enable Template","Enable Template"
+"Add New Template","Add New Template"
+"Delete items","Delete items"
+"Are you sure you wan't to delete selected items?","Are you sure you wan't to delete selected items?"
+ID,ID
+DESC,DESC
+Status,Status

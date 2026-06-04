@@ -1,0 +1,30 @@
+<div class="mgz-pricing-table-wrapper mgz-pricing-table-{{ element.table_type }}">
+	<div ng-repeat="item in element.items" class="mgz-pricing-table" ng-class="{'mgz-pricing-table-featured': item.featured}">
+		<div class="mgz-pricing-table-inner">
+			<div class="mgz-pricing-table-heading" ng-if="item.title">
+				<h2 class="mgz-pricing-table-title" ng-bind-html="item.title"></h2>
+				<span class="mgz-pricing-table-subtitle" ng-bind-html="item.sub_title"></span>
+			</div>
+			<div class="mgz-pricing-table-content-wrapper">
+				<div class="mgz-pricing-table-content-top" ng-if="item.price">
+					<div class="mgz-pricing-table-meta">
+						<span class="mgz-pricing-table-currency" ng-if="item.currency" ng-bind-html="item.currency"></span>
+						<span class="mgz-pricing-table-price" ng-if="item.price" ng-bind-html="item.price"></span>
+						<span class="mgz-pricing-table-period" ng-if="item.period" ng-bind-html="item.period"></span>
+					</div>
+				</div>
+				<div class="mgz-pricing-table-content" ng-if="item.features">
+					<ul>
+						<li ng-repeat="feature in item.features">
+							<i class="{{ feature.icon }}" ng-if="feature.icon" ng-style="{'color': feature.icon_color}"></i>
+							<span ng-bind-html="feature.title"></span>
+						</li>
+					</ul>
+				</div>
+				<div class="mgz-pricing-table-button" ng-if="item.button_text">
+					<a class="mgz-btn" ng-href="item.button_link" ng-bind-html="item.button_text"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

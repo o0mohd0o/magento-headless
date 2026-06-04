@@ -1,0 +1,40 @@
+<?php
+$coreHelper                = $this->helper('\Magezon\Core\Helper\Data');
+$element                   = $this->getElement();
+$title                     = $coreHelper->filter($element->getData('title'));
+$titleAlign                = $element->getData('title_align');
+$titleTag                  = $element->getData('title_tag') ? $element->getData('title_tag') : 'h2';
+$description               = $coreHelper->filter($element->getData('description'));
+$showLine                  = $element->getData('show_line');
+$options['apiKey']         = $element->getData('flickr_api_key');
+$options['photosetId']     = $element->getData('flickr_album_id');
+$options['showPhotoTitle'] = $element->getData('show_photo_title');
+$options['thumSize']       = $element->getData('thum_size');
+$maxItems                  = $element->getData('max_items');
+if ($maxItems) $options['photosLimit'] = $maxItems;
+$xl = $element->getData('item_xl');
+$lg = $element->getData('item_lg');
+$md = $element->getData('item_md');
+$sm = $element->getData('item_sm');
+$xs = $element->getData('item_xs');
+?>
+<div class="mgz-block">
+	<?php if ($title || $description) { ?>
+	<div class="mgz-block-heading mgz-block-heading-align-<?= $titleAlign ?><?= $showLine ? ' mgz-block-heading-line' : '' ?>">
+		<?php if ($title) { ?>
+			<<?= $titleTag ?> class="title"><?= $title ?></<?= $titleTag ?>>
+		<?php } ?>
+		<?php if ($description) { ?>
+			<div class="info"><?= $description ?></div>
+		<?php } ?>
+	</div>
+	<?php } ?>
+	<div class="mgz-block-content">
+		<div class="mgz-flick" data-mage-init='{"Magezon_PageBuilder/js/flickr":<?= $coreHelper->serialize($options) ?>}'>
+			<div class="spinner-wrapper">
+                <div class="spinner"></div>
+            </div>
+			<div class="gallery-container mgz-grid-col-xl-<?= $xl ?> mgz-grid-col-lg-<?= $lg ?> mgz-grid-col-md-<?= $md ?> mgz-grid-col-sm-<?= $sm ?> mgz-grid-col-xs-<?= $xs ?>"></div>
+		</div>
+	</div>
+</div>

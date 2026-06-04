@@ -1,0 +1,71 @@
+<?php
+$coreHelper            = $this->helper('\Magezon\Core\Helper\Data');
+$builderHelper         = $this->helper('\Magezon\Builder\Helper\Data');
+$element               = $this->getElement();
+$contentPosition       = $element->getData('content_position');
+$imagePosition         = $element->getData('image_position');
+$boxLink               = $this->getLinkParams($element->getData('box_link'));
+$title                 = $coreHelper->filter(trim($element->getData('title')));
+$titleType             = $element->getData('title_type');
+$image                 = $builderHelper->getImageUrl($element->getData('image'));
+$description           = $coreHelper->filter(trim($element->getData('description')));
+$enableButton          = $element->getData('enable_button');
+$buttonTitle           = trim($element->getData('button_title'));
+$buttonLink            = $this->getLinkParams($element->getData('button_link'));
+$btnStyle              = $element->getData('button_style');
+$btnSize               = $element->getData('button_size');
+$icon                  = $element->getData('icon');
+$iconSize              = $element->getData('icon_size');
+$label                 = $element->getData('label');
+$labelPosition         = $element->getData('label_position');
+$imageHoverAnimation   = $element->getData('image_hover_animation');
+$contentHoverAnimation = $element->getData('content_hover_animation');
+$sequencedAnimation    = $element->getData('sequenced_animation');
+
+$classes = [];
+if ($label) $classes[] = 'mgz-cta-label-' . $labelPosition;
+if ($sequencedAnimation) $classes[] = 'mgz-cta-sequenced-animation';
+if ($image) $classes[] = 'mgz-cta-image-' . $imagePosition;
+if ($image && $imageHoverAnimation) $classes[] = 'mgz-bg-transform-' . $imageHoverAnimation;
+if ($label) $classes[] = 'has-label';
+?>
+<div class="mgz-cta mgz-animated-content <?= implode(' ', $classes) ?>">
+	<?php if ($boxLink['url']) { ?>
+		<a class="mgz-absolute-link" href="<?= $boxLink['url'] ?>" title="<?= $block->escapeHtml($boxLink['title']) ?>" <?= $boxLink['blank'] ? 'target="_blank"' : '' ?> <?= $boxLink['nofollow'] ? 'rel="nofollow"' : '' ?>></a>
+	<?php } ?>
+		<?php if ($image) { ?>
+		<div class="mgz-cta-bg-wrapper mgz-bg-transform-wrapper">
+			<div class="mgz-cta-bg mgz-bg" style="background-image: url(<?= $image ?>);"></div>
+			<div class="mgz-cta-bg-overlay"></div>
+		</div>
+		<?php } ?>
+		<div class="mgz-cta-content mgz-flex-position-<?= $contentPosition ?>">
+			<?php if ($icon || $title || $description || ($enableButton && $buttonTitle)) { ?>
+			<div class="mgz-cta-content-inner">
+				<?php if ($icon) { ?>
+					<div class="mgz-cta-content-item <?= $contentHoverAnimation ? 'mgz-animated-item--' . $contentHoverAnimation : '' ?>">
+						<div class="mgz-icon-wrapper mgz-icon-size-<?= $iconSize ?> mgz-animated-item--<?= $contentHoverAnimation ?>">
+							<i class="mgz-icon-element <?= $icon ?>"></i>
+						</div>
+					</div>
+				<?php } ?>
+				<?php if ($title) { ?>
+					<<?= $titleType ?> class="mgz-cta-content-item mgz-cta-title <?= $contentHoverAnimation ? 'mgz-animated-item--' . $contentHoverAnimation : '' ?>"><?= $title ?></<?= $titleType ?>>
+				<?php } ?>
+				<?php if ($description) { ?>
+					<div class="mgz-cta-content-item mgz-cta-description <?= $contentHoverAnimation ? 'mgz-animated-item--' . $contentHoverAnimation : '' ?>"><?= $description ?></div>
+				<?php } ?>
+				<?php if ($enableButton && $buttonTitle) { ?>
+				<div class="mgz-cta-content-item mgz-cta-button-wrapper mgz-btn-style-<?= $btnStyle ?> mgz-btn-size-<?= $btnSize ?> <?= $contentHoverAnimation ? 'mgz-animated-item--' . $contentHoverAnimation : '' ?>">
+					<a href="<?= $buttonLink['url'] ?>" class="mgz-btn mgz-link" title="<?= $block->escapeHtml($buttonLink['title']) ?>" <?= $buttonLink['blank'] ? 'target="_blank"' : '' ?> <?= $buttonLink['nofollow'] ? 'rel="nofollow"' : '' ?>><?= $buttonTitle ?></a>
+				</div>
+				<?php } ?>
+			</div>
+			<?php } ?>
+		</div>
+		<?php if ($label) { ?>
+			<div class="mgz-cta-label">
+				<div class="mgz-cta-label-inner"><?= $label ?></div>
+			</div>
+		<?php } ?>
+</div>

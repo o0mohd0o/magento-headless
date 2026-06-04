@@ -1,0 +1,23 @@
+<div class="mgz-cta mgz-animated-content {{ element.label ? 'mgz-cta-label-' + element.label_position : '' }} {{ element.sequenced_animation ? 'mgz-cta-sequenced-animation' : '' }} {{ element.image ? 'mgz-cta-image-' + element.image_position : '' }} {{ element.image && element.image_hover_animation ? 'mgz-bg-transform-' + element.image_hover_animation : '' }} {{ element.label ? 'has-label' : '' }}">
+	<div ng-if="element.image" class="mgz-cta-bg-wrapper mgz-bg-transform-wrapper">
+		<div class="mgz-cta-bg mgz-bg"></div>
+		<div class="mgz-cta-bg-overlay"></div>
+	</div>
+	<div class="mgz-cta-content mgz-flex-position-{{ element.content_position }}">
+		<div class="mgz-cta-content-inner">
+			<div ng-if="element.icon" class="mgz-cta-content-item {{ element.content_hover_animation ? 'mgz-animated-item--' + element.content_hover_animation : '' }}">
+				<div class="mgz-icon-wrapper mgz-icon-size-{{ element.icon_size }} mgz-animated-item--{{ element.content_hover_animation }}">
+					<i class="mgz-icon-element {{ element.icon }}"></i>
+				</div>
+			</div>
+			<div class="mgz-cta-content-item" ng-bind-html="getTrustedHtml(getTitleHtml())"></div>
+			<div ng-if="element.description" class="mgz-cta-content-item mgz-cta-description {{ element.content_hover_animation ? 'mgz-animated-item--' + element.content_hover_animation : '' }}" ng-bind-html="element.description"></div>
+			<div ng-if="element.enable_button&&element.button_title" class="mgz-cta-content-item mgz-cta-button-wrapper mgz-btn-style-{{ element.button_style }} mgz-btn-size-{{ element.button_size }} {{ element.content_hover_animation ? 'mgz-animated-item--' + element.content_hover_animation : '' }}">
+				<a href="#" class="mgz-btn" ng-bind-html="element.button_title"></a>
+			</div>
+		</div>
+	</div>
+	<div ng-if="element.label" class="mgz-cta-label">
+		<div class="mgz-cta-label-inner" ng-bind-html="element.label"></div>
+	</div>
+</div>

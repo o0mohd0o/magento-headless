@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magezon
+ *
+ * This source file is subject to the Magezon Software License, which is available at https://www.magezon.com/license.
+ * Do not edit or add to this file if you wish to upgrade the to newer versions in the future.
+ * If you wish to customize this module for your needs.
+ * Please refer to https://www.magezon.com for more information.
+ *
+ * @category  Magezon
+ * @package   Magezon_PageBuilderPageableContainer
+ * @author    quanth@magezon.com
+ * @copyright Copyright (C) 2020 Magezon (https://www.magezon.com)
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<type name="Magezon\Builder\Data\Elements">
+		<arguments>
+			<argument name="elements" xsi:type="array">
+				<item name="pageable_container" xsi:type="array">
+					<item name="name" xsi:type="string" translate="true">Pageable Container</item>
+					<item name="class" xsi:type="string">Magezon\PageBuilderPageableContainer\Data\Element\PageableContainer</item>
+					<item name="element" xsi:type="string">Magezon_PageBuilderPageableContainer/js/builder/element/pageable_container</item>
+					<item name="template" xsi:type="string">Magezon_PageBuilderPageableContainer::element/pageable_container.phtml</item>
+					<item name="block" xsi:type="string">Magezon\PageBuilderPageableContainer\Block\Element\PageableContainer</item>
+					<item name="sortOrder" xsi:type="number">850</item>
+					<item name="icon" xsi:type="string">mgz-icon mgz-icon-slideshow</item>
+					<item name="icon_styles" xsi:type="array">
+						<item name="background-color" xsi:type="string">rgb(242, 99, 34)</item>
+						<item name="color" xsi:type="string">#ffffff</item>
+						<item name="font-size" xsi:type="string">35px</item>
+					</item>
+					<item name="allowed_types" xsi:type="string">tab</item>
+					<item name="children" xsi:type="string">item_pageable_container</item>
+					<item name="childrenCount" xsi:type="string">2</item>
+					<item name="group" xsi:type="string">content</item>
+					<item name="description" xsi:type="string">Display 50+ child elements in a slider</item>
+					<item name="demo_link" xsi:type="string">http://192.168.1.107/magezon/pagebuilder/tabs</item>
+					<item name="is_collection" xsi:type="boolean">true</item>
+				</item>
+				<item name="item_pageable_container" xsi:type="array">
+					<item name="name" xsi:type="string" translate="true">Item</item>
+					<item name="class" xsi:type="string">Magezon\PageBuilderPageableContainer\Data\Element\Item</item>
+					<item name="template" xsi:type="string">Magezon_PageBuilderPageableContainer::element/list.phtml</item>
+					<item name="sortOrder" xsi:type="number">90</item>
+					<item name="excluded_types" xsi:type="string">tab</item>
+					<item name="modalVisible" xsi:type="boolean">false</item>
+					<item name="is_collection" xsi:type="boolean">true</item>
+				</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

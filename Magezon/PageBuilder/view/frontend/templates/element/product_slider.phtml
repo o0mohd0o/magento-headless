@@ -1,0 +1,151 @@
+<?php
+use Magento\Framework\App\Action\Action;
+
+$coreHelper           = $this->helper('\Magezon\Core\Helper\Data');
+$compareHelper        = $this->helper('Magento\Catalog\Helper\Product\Compare');
+$element              = $this->getElement();
+$title                = $coreHelper->filter($element->getData('title'));
+$titleAlign           = $element->getData('title_align');
+$titleTag             = $element->getData('title_tag') ? $element->getData('title_tag') : 'h2';
+$description          = $coreHelper->filter($element->getData('description'));
+$showLine             = $element->getData('show_line');
+$linePosition         = $element->getData('line_position');
+$carouselOptions      = $this->getOwlCarouselOptions();
+$lazyLoad             = $element->getData('owl_lazyload');
+$items                = $this->getItems();
+$imageId              = 'category_page_grid';
+$templateType         = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+$showImage            = $element->getData('product_image');
+$showName             = $element->getData('product_name');
+$showPrice            = $element->getData('product_price');
+$showShortDescription = $element->getData('product_shortdescription');
+$showWishlist         = $element->getData('product_wishlist');
+$showCompare          = $element->getData('product_compare');
+$showCart             = $element->getData('product_addtocart');
+$showReview           = $element->getData('product_review');
+$swatches             = $element->getData('product_swatches');
+$htmlId               = $element->getHtmlId();
+$id                   = time() . uniqid();
+$classes              = $this->getOwlCarouselClasses();
+?>
+<div class="mgz-block">
+	<?php if ($title || $description) { ?>
+	<div class="mgz-block-heading mgz-block-heading-align-<?= $titleAlign ?><?= $showLine ? ' mgz-block-heading-line' : '' ?> mgz-block-heading-line-position-<?= $linePosition ?>">
+		<?php if ($title) { ?>
+			<<?= $titleTag ?> class="title"><?= $title ?></<?= $titleTag ?>>
+		<?php } ?>
+		<?php if ($description) { ?>
+			<div class="info"><?= $description ?></div>
+		<?php } ?>
+	</div>
+	<?php } ?>
+	<div class="mgz-block-content">
+		<?php if (count($items)) { ?>
+			<div id="<?= $id ?>" class="mgz-carousel owl-carousel mgz-product-items <?= implode(' ', $classes) ?>">
+				<?php foreach ($items as $_items) { ?>
+					<div class="item product product-item <?= (count($_items) > 1) ? 'mgz-carousel-multirow' : '' ?>">
+						<?php foreach ($_items as $_product) { ?>
+						<div class="product-item-info">
+							<?php if ($showImage) { ?>
+							<?php $productImage = $block->getImage($_product, $imageId); ?>
+		                    <a href="<?= $_product->getProductUrl() ?>" class="product photo product-item-photo" tabindex="-1">
+		                    	<?php
+		                    	$imgHtml = $productImage->toHtml();
+		                    	if ($lazyLoad) $imgHtml = $coreHelper->filterCarouselLazyImage($imgHtml);
+		                    	?>
+		                        <?= $imgHtml ?>
+		                    </a>
+							<?php } ?>
+							<div class="product details product-item-details">
+								<?php if ($showName) { ?>
+									<strong class="product-item-name">
+										<a title="<?= $block->escapeHtml($_product->getName()) ?>"
+											href="<?= $block->getProductUrl($_product) ?>"
+											class="product-item-link">
+											<?= $block->escapeHtml($_product->getName()) ?>
+										</a>
+									</strong>
+								<?php } ?>
+
+								<?= $showPrice ? $block->getProductPrice($_product) : '' ?>
+
+								<?= $swatches ? $this->getSwatchesHtml($_product) : '' ?>
+
+								<?= ($templateType && $showReview) ? $block->getReviewsSummaryHtml($_product, $templateType) : '' ?>
+
+								<?php if ($showShortDescription) { ?>
+									<div class="product-item-shortdescription"><?= $coreHelper->filter($_product->getShortDescription()) ?></div>
+								<?php } ?>
+
+								<?php if ($showWishlist || $showCompare || $showCart) { ?>
+									<div class="product-item-actions">
+										<?php if ($showCart) { ?>
+											<div class="actions-primary">
+												<?php if ($_product->isSaleable()) { ?>
+													<?php $postParams = $block->getAddToCartPostParams($_product); ?>
+													<form data-role="tocart-form" action="<?= $postParams['action']; ?>" method="post">
+														<input type="hidden" name="product" value="<?= $postParams['data']['product']; ?>">
+														<input type="hidden" name="<?= Action::PARAM_NAME_URL_ENCODED; ?>" value="<?= $postParams['data'][Action::PARAM_NAME_URL_ENCODED]; ?>">
+														<?php if ($formKey = $block->getProductFormKey()) { ?>
+															<input name="form_key" type="hidden" value="<?= $formKey ?>" />
+															<?php } else { ?>
+															<?= $block->getBlockHtml('formkey')?>
+															<?php } ?>
+															<button type="submit"
+															title="<?= $block->escapeHtml(__('Add to Cart')); ?>"
+															class="action tocart primary">
+															<span><?= __('Add to Cart') ?></span>
+														</button>
+													</form>
+												<?php } else { ?>
+													<?php if ($_product->getIsSalable()) { ?>
+														<div class="stock available"><span><?= __('In stock') ?></span></div>
+													<?php } else { ?>
+														<div class="stock unavailable"><span><?= __('Out of stock') ?></span></div>
+													<?php } ?>
+												<?php } ?>
+											</div>
+										<?php } ?>
+										<?php if ($showWishlist || $showCompare) { ?>
+											<div class="actions-secondary" data-role="add-to-links">
+												<?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow() && $showWishlist) { ?>
+													<a href="#"
+														data-post='<?= $block->getAddToWishlistParams($_product) ?>'
+														class="action towishlist" data-action="add-to-wishlist"
+														title="<?= __('Add to Wish List') ?>">
+														<span><?= __('Add to Wish List') ?></span>
+													</a>
+												<?php } ?>
+												<?php if ($block->getAddToCompareUrl() && $showCompare) { ?>
+													<a href="#" class="action tocompare"
+														data-post='<?= $compareHelper->getPostDataParams($_product) ?>'
+														title="<?= __('Add to Compare') ?>">
+														<span><?= __('Add to Compare') ?></span>
+													</a>
+												<?php } ?>
+											</div>
+										<?php } ?>
+									</div>
+								<?php } ?>
+							</div>
+						</div>
+						<?php } ?>
+					</div>
+				<?php } ?>
+			</div>
+			<script>
+				require(['jquery', 'Magezon_Builder/js/carousel'], function($) {
+					$('#<?= $id ?>').carousel(<?= $coreHelper->serialize($carouselOptions) ?>);
+				})
+			</script>
+		<?php } ?>
+	</div>
+</div>
+<script type="text/x-magento-init">
+{
+    ".<?= $htmlId ?> [data-role=tocart-form]": {
+        "catalogAddToCart": {
+        }
+    }
+}
+</script>

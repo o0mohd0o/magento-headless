@@ -1,0 +1,10 @@
+<div class="mgz-view-mode-wrapper" ng-mouseenter="onMouseEnter()">
+	<a class="mgz-navbar-btn" ng-class="{'mgz-spinner': loading}" ng-click="openPreview('1column')" title="Preview Changes">
+		<i ng-class="{'fas mgz-fa-eye': !loading}"></i>
+	</a>
+	<ul class="mgz-dropdown-list">
+		<li ng-repeat="layout in ::layouts" ng-click="openPreview(layout.value)">
+			<a class="mgz-navbar-btn" title="{{ ::layout.label }}">{{ layout.label }}</a>
+		</li>
+	</ul>
+</div>

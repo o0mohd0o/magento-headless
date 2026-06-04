@@ -1,0 +1,27 @@
+ <div class="mgz-icon-box-container">
+	<div ng-if="element.icon && element.icon_position=='left'" class="mgz-icon-box-wrapper mgz-icon-box-size-{{ element.icon_size }} mgz-icon-box-left">
+		<i class="mgz-icon-box-element {{ element.icon }}"></i>
+	</div>
+	<div class="btn-position">
+		<div ng-if="element.icon && element.icon_position=='top'" class="mgz-icon-box-wrapper mgz-icon-box-size-{{ element.icon_size }}">
+			<i class="mgz-icon-box-element {{ element.icon }}"></i>
+		</div>
+		<div class="mgz-icon-box-text-wrapper">
+			<div class="mgz-heading-text"></div>
+		</div>
+		<div class="mgz-description" ng-bind-html="getTrustedHtml(element.description)"></div>
+		<div ng-if="element.add_button" class="mgz-button mgz-btn-style-{{ element.button_style }} mgz-btn-size-{{ element.button_size }}">
+			<a ng-href="element.button_link" title="{{ element.button_title }}" ng-class="{'mgz-icon-box-btn': !element.display_as_link}">
+				<i class="{{ element.icon_button }}" ng-if="element.add_icon && element.icon_button && element.icon_button_position=='left'"></i>
+				<span ng-bind-html="element.button_title"></span>
+				<i class="{{ element.icon_button }}" ng-if="element.add_icon && element.icon_button && element.icon_button_position=='right'"></i>
+			</a>
+		</div>
+		<div ng-if="element.icon && element.icon_position=='bottom'" class="mgz-icon-box-wrapper mgz-icon-box-size-{{ element.icon_size }}">
+			<i class="mgz-icon-box-element {{ element.icon }}"></i>
+		</div>
+	</div>
+	<div ng-if="element.icon && element.icon_position=='right'" class="mgz-icon-box-wrapper mgz-icon-box-size-{{ element.icon_size }} mgz-icon-box-right">
+		<i class="mgz-icon-box-element {{ element.icon }}"></i>
+	</div>
+</div>

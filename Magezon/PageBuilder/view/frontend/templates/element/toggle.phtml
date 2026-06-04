@@ -1,0 +1,32 @@
+<?php
+$coreHelper    = $this->helper('\Magezon\Core\Helper\Data');
+$element       = $this->getElement();
+$toggleTitle   = $element->getData('toggle_title');
+$toggleContent = $element->getData('toggle_content');
+$icon          = $element->getData('icon');
+$activeIcon    = $element->getData('active_icon');
+$iconStyle     = $element->getData('icon_style');
+$iconSize      = $element->getData('icon_size');
+$open          = $element->getData('open');
+if ($iconStyle =='text_only') $icon = $activeIcon = '';
+?>
+<div class="mgz-toggle <?= $icon ? 'mgz-toggle-icon' : '' ?> mgz-toggle-icon-<?= $iconStyle ?> mgz-toggle-icon-size-<?= $iconSize ?>" data-mage-init='{"collapsible":{
+        "active": <?= $open ? 'true' : 'false' ?>,
+        "openedState": "mgz-active",
+        "animate": {"duration":400,"easing":"easeOutCubic"},
+        "collapsible": true,
+        "icons": {"header": "<?= $icon ?>", "activeHeader": "<?= $activeIcon ?>"}
+     }}'>
+    <?php if ($toggleTitle) { ?>
+        <div class="mgz-toggle-title" data-role="title">
+            <h4 data-role="trigger">
+                <span><?= $toggleTitle ?></span>
+            </h4>
+        </div>
+    <?php } ?>
+    <?php if ($toggleContent) { ?>
+        <div class="mgz-toggle-content" data-role="content" <?php if (!$open) { ?>style="display: none;"<?php } ?>>
+            <?= $coreHelper->filter($toggleContent) ?>
+        </div>
+    <?php } ?>
+</div>

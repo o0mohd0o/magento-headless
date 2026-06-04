@@ -1,0 +1,50 @@
+	<?php
+/**
+ * @var $block \Magezon\Builder\Block\Element
+ */
+?>
+
+<?php
+$elements          			 = $this->getElements();
+$count             			 = count($elements);
+$element           			 = $this->getElement();
+$id_owl            			 = $element->getId();
+$coreHelper                  = $this->helper('\Magezon\Core\Helper\Data');
+$carouselOptions             = $this->getOwlCarouselOptions();
+$classes                     = $this->getOwlCarouselClasses();
+?>
+
+<?php if ($count) { ?>
+	<?php
+	$items = [];
+	foreach ($elements as $index => $_element) {
+		$_html = $_element->toHtml();
+			$items[] = [
+				'element' => $_element,
+				'html'    => $_html
+			];
+	} ?>
+	<div id="<?= $id_owl ?>" class="mgz-carousel owl-carousel <?= implode(' ', $classes) ?>">
+		<?php foreach ($items as $index => $item) { ?>
+			<?php
+			$_element = $item['element'];
+			$id       = $_element->getId();
+			?>
+			<?php 
+			$html = $item['html'];
+			if ($html) {
+			?>
+				<div class="item mgz-carousel-item">
+					<?= $html ?>
+				</div>
+			<?php } ?>
+		<?php } ?>
+	</div>
+<?php } ?>
+
+<script>
+	require(['jquery', 'Magezon_PageBuilder/js/slider'], function($) {
+		$('#<?= $id_owl ?>').sliders(<?= $coreHelper->serialize($carouselOptions) ?>);
+	})
+</script>
+

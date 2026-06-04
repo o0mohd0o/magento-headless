@@ -1,0 +1,97 @@
+<?php
+$coreHelper      = $this->helper('\Magezon\Core\Helper\Data');
+$builderHelper   = $this->helper('\Magezon\Builder\Helper\Data');
+$element         = $this->getElement();
+$testimonialTyle = $element->getData('testimonial_type');
+$imageWidth      = $element->getData('image_width');
+$imageHeight     = $element->getData('image_height');
+$items           = $this->toObjectArray($element->getData('items'));
+$carouselOptions = $this->getOwlCarouselOptions();
+$classes         = $this->getOwlCarouselClasses();
+?>
+<div class="mgz-testimonials mgz-testimonials-<?= $testimonialTyle ?> mgz-carousel owl-carousel <?= implode(' ', $classes) ?>" data-mage-init='{"Magezon_Builder/js/carousel":<?= $coreHelper->serialize($carouselOptions) ?>}'>
+	<?php foreach ($items as $i => $item) { ?>
+		<?php $image = $builderHelper->getImageUrl($item['image']); ?>
+		<div class="mgz-testimonial mgz-testimonial<?= $i ?>">
+			<?php if ($testimonialTyle == 'type1') { ?>
+				<?php if ($image) { ?>
+					<div class="mgz-testimonial-image">
+						<img src="<?= $image ?>" alt="<?= $block->escapeHtml($item['name']) ?>" <?= $imageWidth ? 'width="' . $imageWidth . '"' : '' ?> <?= $imageHeight ? 'height="' . $imageHeight . '"' : '' ?>/>
+					</div>
+				<?php } ?>
+				<div class="mgz-testimonial-content"><?= $coreHelper->filter($item['content']) ?></div>
+				<div class="mgz-testimonial-meta">
+					<?php if ($item['name'] || $item['job']) { ?>
+						<div class="mgz-testimonial-details">
+							<?php if ($item['name']) { ?>
+								<span class="mgz-testimonial-name">
+									<?php if ($item['link']) { ?>
+										<a href="<?= $item['link'] ?>">
+										<?php } ?>
+										<span><?= $item['name'] ?></span><?php if ($item['job']) { ?>,<?php } ?>
+										<?php if ($item['link']) { ?></a>
+									<?php } ?>
+								</span>
+							<?php } ?>
+							<?php if ($item['job']) { ?>
+								<span class="mgz-testimonial-job"><?= $item['job'] ?></span>
+							<?php } ?>
+						</div>
+					<?php } ?>
+				</div>
+			<?php } ?>
+			<?php if ($testimonialTyle == 'type2') { ?>
+				<div class="mgz-testimonial-content"><?= $coreHelper->filter($item['content']) ?></div>
+				<div class="mgz-testimonial-meta">
+					<?php if ($image) { ?>
+						<div class="mgz-testimonial-image">
+							<img src="<?= $image ?>" alt="<?= $block->escapeHtml($item['name']) ?>" <?= $imageWidth ? 'width="' . $imageWidth . '"' : '' ?> <?= $imageHeight ? 'height="' . $imageHeight . '"' : '' ?>/>
+						</div>
+					<?php } ?>
+					<?php if ($item['name'] || $item['job']) { ?>
+						<div class="mgz-testimonial-details">
+							<?php if ($item['name']) { ?>
+								<div class="mgz-testimonial-name">
+									<?php if ($item['link']) { ?>
+										<a href="<?= $item['link'] ?>">
+										<?php } ?>
+										<?= $item['name'] ?>
+										<?php if ($item['link']) { ?>
+										</a>
+									<?php } ?>
+								</div>
+							<?php } ?>
+							<?php if ($item['job']) { ?>
+								<div class="mgz-testimonial-job"><?= $item['job'] ?></div>
+							<?php } ?>
+						</div>
+					<?php } ?>
+				</div>
+			<?php } ?>
+			<?php if ($testimonialTyle == 'type3') { ?>
+				<div class="mgz-testimonial-content"><?= $coreHelper->filter($item['content']) ?></div>
+				<div class="mgz-testimonial-meta">
+					<?php if ($image) { ?>
+						<span class="mgz-testimonial-image">
+							<img src="<?= $image ?>" alt="<?= $block->escapeHtml($item['name']) ?>" <?= $imageWidth ? 'width="' . $imageWidth . '"' : '' ?> <?= $imageHeight ? 'height="' . $imageHeight . '"' : '' ?>/>
+						</span>
+					<?php } ?>
+					<?php if ($item['name']) { ?>
+						<span class="mgz-testimonial-name">
+							<?php if ($item['link']) { ?>
+								<a href="<?= $item['link'] ?>">
+								<?php } ?>
+								<?= $item['name'] ?><?php if ($item['job']) { ?>,&nbsp;<?php } ?>
+								<?php if ($item['link']) { ?>
+								</a>
+							<?php } ?>
+						</span>
+					<?php } ?>
+					<?php if ($item['job']) { ?>
+						<span class="mgz-testimonial-job"><?= $item['job'] ?></span>
+					<?php } ?>
+				</div>
+			<?php } ?>
+		</div>
+	<?php } ?>
+</div>

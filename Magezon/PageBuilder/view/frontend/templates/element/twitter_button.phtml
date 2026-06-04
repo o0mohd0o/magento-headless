@@ -1,0 +1,69 @@
+<?php
+$element    = $this->getElement();
+$type       = $element->getButtonType();
+$attributes = [];
+$href = $attrs = $text = '';
+$attributes['data-lang'] = $element->getData('lang');
+if ($element->getLargeButton()) $attributes['data-size'] = 'large';
+
+switch ($type) {
+	case 'share':
+		$text = __('Tweet');
+		$href = 'https://twitter.com/share';
+		if (!$element->getData('page_url') && $element->getData('share_use_custom_url')) $attributes['data-url'] = $element->getData('share_use_custom_url');
+		if (!$element->getData('share_text_page_title') && $element->getData('share_text_custom_text')) $attributes['data-text'] = $element->getData('share_text_custom_text');
+		if ($element->getData('share_via')) $attributes['data-via'] = $element->getData('share_via');
+		if ($element->getData('share_recommend')) $attributes['data-related'] = $element->getData('share_recommend');
+		if ($element->getData('share_hashtag')) $attributes['data-hashtags'] = $element->getData('share_hashtag');
+		break;
+
+	case 'follow':
+		if ($followUser = $element->getData('follow_user')) {
+			$href = 'https://twitter.com/' . $followUser;
+			$attributes['data-show-count'] = $element->getShowFollowersCount() ? 'true' : 'false';
+			$attributes['data-show-screen-name'] = $element->getFollowShowUsername() ? 'true' : 'false';
+			if ($element->getFollowShowUsername()) {
+				$text = __('Follow @%1', $followUser);
+			} else {
+				$text = __('Follow');
+			}
+		}
+		break;
+
+	case 'hashtag':
+		if ($hashtagHash = $element->getData('hashtag_hash')) {
+			$text = __('Tweet #%1', $hashtagHash);
+			$href = 'https://twitter.com/intent/tweet?button_hashtag=' . $hashtagHash;
+			if ($element->getData('hashtag_tweet_url')) $attributes['data-url'] = $element->getData('hashtag_tweet_url');
+			if ($element->getData('hashtag_tweet_text')) {
+				$href .= '&text=' . $element->getData('hashtag_tweet_text');
+			}
+			$related = [];
+			if ($element->getData('hashtag_recommend_1')) $related[] = $element->getData('hashtag_recommend_1');
+			if ($element->getData('hashtag_recommend_2')) $related[] = $element->getData('hashtag_recommend_2');
+			if ($related) $attributes['data-related'] = implode(',', $related);
+		}
+		break;
+
+	case 'mention':
+		if ($mentionTweetTo = $element->getData('mention_tweet_to')) {
+			$text = __('Tweet to @A1', $mentionTweetTo);
+			$href = 'https://twitter.com/intent/tweet?screen_name=' . $mentionTweetTo;
+			if ($mentionTweetText = $element->getData('mention_tweet_text')) {
+				$href .= '&text=' . $mentionTweetText;
+			}
+			$related = [];
+			if ($element->getData('mention_recommend_1')) $related[] = $element->getData('mention_recommend_1');
+			if ($element->getData('mention_recommend_2')) $related[] = $element->getData('mention_recommend_2');
+			if ($related) $attributes['data-related'] = implode(',', $related);
+		}
+		break;
+}
+$attrs = $this->parseAttributes($attributes);
+?>
+
+<?php if ($href) { ?>
+	<a href="<?= $href ?>" class="twitter-<?= $type ?>-button" <?= $attrs ?>><?= $text ?></a>
+<?php } ?>
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>

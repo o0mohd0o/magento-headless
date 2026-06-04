@@ -1,0 +1,104 @@
+<?php
+/**
+ * @var $block \Magezon\PageBuilderIconBox\Block\Element\IconBox
+ */
+?>
+<?php
+$coreHelper 		 = $this->helper('\Magezon\Core\Helper\Data');
+$element    		 = $this->getElement();
+$description   	  	 = $element->getData('description');
+$titleType 			 = $element->getData('title_type');
+$title    	  		 = $coreHelper->filter($element->getData('title'));
+$link       		 = $this->getLinkParams($element->getData('link'));
+$fontSize   		 = $element->getData('font_size');
+$icon				 = $element->getData('icon');
+$iconSize  			 = $element->getData('icon_size');
+$buttonTitle   		 = $element->getData('button_title');
+$btnStyle      		 = $element->getData('button_style');
+$btnSize       		 = $element->getData('button_size');
+$onclickCode   	     = $element->getData('onclick_code');
+$addButtonIcon   	 = $element->getData('add_icon');
+$addButton	   		 = $element->getData('add_button');
+$iconPosition 		 = $element->getData('icon_position');
+$iconButtonPosition  = $element->getData('icon_button_position');
+$iconButton    		 = $element->getData('icon_button');
+$linkButton    		 = $this->getLinkParams($element->getData('button_link'));
+$displayAsLink 		 = $element->getData('display_as_link');
+?>
+<div class="mgz-icon-box-container">
+	<?php if($icon && $iconPosition == 'left') {?> 
+		<div class="mgz-icon-box-wrapper mgz-icon-box-size-<?= $iconSize ?> mgz-icon-box-left">
+			<?php if ($link['url']) { ?>
+				<a href="<?= $link['url'] ?>" title="<?= $block->escapeHtml($link['title']) ?>" <?= $link['blank'] ? 'target="_blank"' : '' ?> <?= $link['nofollow'] ? 'rel="nofollow"' : '' ?>>
+			<?php } ?>
+				<i class="mgz-icon-box-element <?= $icon ?>"></i>	
+			<?php if ($link['url']) { ?>
+				</a>
+			<?php } ?>
+		</div>
+	<?php }?>
+	<div class="btn-position">
+		<?php if($icon && $iconPosition == 'top') {?> 
+		<div class="mgz-icon-box-wrapper mgz-icon-box-size-<?= $iconSize ?>">
+			<?php if ($link['url']) { ?>
+				<a href="<?= $link['url'] ?>" title="<?= $block->escapeHtml($link['title']) ?>" <?= $link['blank'] ? 'target="_blank"' : '' ?> <?= $link['nofollow'] ? 'rel="nofollow"' : '' ?>>
+			<?php } ?>
+				<i class="mgz-icon-box-element <?= $icon ?>"></i>	
+			<?php if ($link['url']) { ?>
+				</a>
+			<?php } ?>
+		</div>
+		<?php }?>
+		<?php if ($title) { ?>
+			<<?= $titleType ?> class="mgz-heading-text" 
+			<?php if ($fontSize) { ?>
+			data-inline-fontsize="true" 
+			data-fontsize="<?= $fontSize ?>" 
+			<?php } ?>>
+			<?php if ($link['url']) { ?>
+				<a href="<?= $link['url'] ?>" title="<?= $block->escapeHtml($link['title']) ?>" <?= $link['blank'] ? 'target="_blank"' : '' ?> <?= $link['nofollow'] ? 'rel="nofollow"' : '' ?>>
+			<?php } ?>
+				<?= $title ?>
+			<?php if ($link) { ?>
+				</a>
+			<?php } ?>
+			</<?= $titleType ?>>
+		<?php } ?>
+	<div class="mgz-description"><?= $description ?></div>
+	<?php if($addButton) {?>
+		<div class="mgz-button mgz-btn-style-<?= $btnStyle ?> mgz-btn-size-<?= $btnSize ?>">
+			<a href="<?= $linkButton['url'] ?>" class="<?= !$displayAsLink ? 'mgz-icon-box-btn' : '' ?>" title="<?= $block->escapeHtml($linkButton['title']) ?>" <?= $onclickCode ? 'onclick="' . $block->escapeHtmlAttr($onclickCode) . '"' : '' ?> <?= $linkButton['blank'] ? 'target="_blank"' : '' ?> <?= $linkButton['nofollow'] ? 'rel="nofollow"' : '' ?>>
+				<?php if ($addButtonIcon && $iconButton && $iconButtonPosition == 'left') { ?>
+					<i class="<?= $iconButton ?>"></i>
+				<?php } ?>
+				<?= $buttonTitle ?>
+				<?php if ($addButtonIcon && $iconButton && $iconButtonPosition == 'right') { ?>
+					<i class="<?= $iconButton ?>"></i>
+				<?php } ?>
+			</a>
+		</div>
+	<?php }?>
+		<?php if($icon && $iconPosition == 'bottom') {?> 
+			<div class="mgz-icon-box-wrapper mgz-icon-box-size-<?= $iconSize ?>">
+				<?php if ($link['url']) { ?>
+					<a href="<?= $link['url'] ?>" title="<?= $block->escapeHtml($link['title']) ?>" <?= $link['blank'] ? 'target="_blank"' : '' ?> <?= $link['nofollow'] ? 'rel="nofollow"' : '' ?>>
+				<?php } ?>
+					<i class="mgz-icon-box-element <?= $icon ?>"></i>	
+				<?php if ($link['url']) { ?>
+					</a>
+				<?php } ?>
+			</div>
+		<?php }?>
+	</div>
+	<?php if($icon && $iconPosition == 'right') {?> 
+		<div class="mgz-icon-box-wrapper mgz-icon-box-size-<?= $iconSize ?> mgz-icon-box-right">
+			<?php if ($link['url']) { ?>
+				<a href="<?= $link['url'] ?>" title="<?= $block->escapeHtml($link['title']) ?>" <?= $link['blank'] ? 'target="_blank"' : '' ?> <?= $link['nofollow'] ? 'rel="nofollow"' : '' ?>>
+			<?php } ?>
+				<i class="mgz-icon-box-element <?= $icon ?>"></i>	
+			<?php if ($link['url']) { ?>
+				</a>
+			<?php } ?>
+		</div>
+	<?php }?>
+</div>

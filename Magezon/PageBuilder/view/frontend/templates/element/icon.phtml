@@ -1,0 +1,16 @@
+<?php
+$coreHelper = $this->helper('\Magezon\Core\Helper\Data');
+$element    = $this->getElement();
+$link       = $this->getLinkParams($element->getData('link_url'));
+$icon       = $element->getData('icon');
+$iconSize   = $element->getData('icon_size');
+?>
+<div class="mgz-icon-wrapper mgz-icon-size-<?= $iconSize ?>">
+	<?php if ($link['url']) { ?>
+		<a href="<?= $link['url'] ?>" title="<?= $block->escapeHtml($link['title']) ?>" <?= $link['blank'] ? 'target="_blank"' : '' ?> <?= $link['nofollow'] ? 'rel="nofollow"' : '' ?>>
+	<?php } ?>
+		<i class="mgz-icon-element <?= $icon ?>"></i>	
+	<?php if ($link['url']) { ?>
+		</a>
+	<?php } ?>
+</div>

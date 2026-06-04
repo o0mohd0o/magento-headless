@@ -1,0 +1,4 @@
+<?php
+$dataHelper = $this->helper('\Magezon\PageBuilder\Helper\Data');
+$template   = $this->getPageBuilderTemplate();
+echo $dataHelper->filter($template->getProfile());

@@ -1,0 +1,113 @@
+<?php
+$coreHelper          = $this->helper('\Magezon\Core\Helper\Data');
+$element             = $this->getElement();
+$title               = $coreHelper->filter($element->getData('title'));
+$titleAlign          = $element->getData('title_align');
+$titleTag            = $element->getData('title_tag') ? $element->getData('title_tag') : 'h2';
+$description         = $coreHelper->filter($element->getData('description'));
+$showLine            = $element->getData('show_line');
+$linePosition        = $element->getData('line_position');
+$_items              = $block->getReviewsCollection()->getItems();
+$total               = count($_items);
+$format              = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
+$imageId             = 'new_products_images_only_widget';
+$carouselOptions     = $this->getOwlCarouselOptions();
+$classes             = $this->getOwlCarouselClasses();
+$reviewCustomer      = $element->getData('review_customer');
+$reviewDate          = $element->getData('review_date');
+$reviewTitle         = $element->getData('review_title');
+$reviewRatingStar    = $element->getData('review_rating_star');
+$reviewProductName   = $element->getData('review_product_name');
+$reviewProductImage  = $element->getData('review_product_image');
+$reviewContent       = $element->getData('review_content');
+?>
+<?php if ($total) { ?>
+<div class="mgz-block mgz-recent-reviews">
+	<?php if ($title || $description) { ?>
+	<div class="mgz-block-heading mgz-block-heading-align-<?= $titleAlign ?><?= $showLine ? ' mgz-block-heading-line' : '' ?> mgz-block-heading-line-position-<?= $linePosition ?>">
+		<?php if ($title) { ?>
+			<<?= $titleTag ?> class="title"><?= $title ?></<?= $titleTag ?>>
+		<?php } ?>
+		<?php if ($description) { ?>
+			<div class="info"><?= $description ?></div>
+		<?php } ?>
+	</div>
+	<?php } ?>
+	<div class="mgz-block-content">
+		<ul class="mgz-recent-reviews-items mgz-carousel owl-carousel <?= implode(' ', $classes) ?>" data-mage-init='{"Magezon_Builder/js/carousel":<?= $coreHelper->serialize($carouselOptions) ?>}'>
+	        <?php $x = 0; ?>
+	        <?php foreach ($_items as $_review) { ?>
+		        <?php $_product = $_review->getProduct(); ?>
+	            <li class="mgz-review-item">
+            		<?php if ($reviewCustomer) { ?>
+		                <div class="mgz-review-name">
+		                    <span><?= $block->escapeHtml($_review->getNickname()) ?></span>
+		                </div>
+		            <?php } ?>
+		            <?php if ($reviewRatingStar || $reviewTitle) { ?>
+	                <div class="mgz-review-link">
+	                	<?php if ($reviewRatingStar) { ?>
+				            <?php $_totalVote = 0; $totalPercent = 0 ?>
+					        <?php if (count($_review->getRatingVotes())) { ?>
+					            <?php foreach ($_review->getRatingVotes() as $_vote) {
+					                $totalPercent += $_vote->getPercent();
+					                $_totalVote++;
+					            } ?> 
+					        <?php } ?>
+		                    <?php if ($_totalVote) { ?>
+		                    	<div class="rating-summary">
+		                    		<div class="rating-result">
+		                    			<span style="width:<?= ceil( $totalPercent / $_totalVote) ?>%"></span>
+		                    		</div>
+		                    	</div>
+		                    <?php } ?>
+	                    <?php } ?>
+	                    <?php if ($reviewTitle) { ?>
+	                    <div class="mgz-review-title">
+	                    	<?php if ($_product) { ?>
+	                    		<a href="<?= $_product->getProductUrl() ?>#review-form">
+	                    	<?php } ?>
+	                    	<?= $this->escapeHtml($_review->getTitle()) ?>
+	                    	<?php if ($_product) { ?>
+	                    		</a>
+	                    	<?php } ?>
+	                    </div>
+	                    <?php } ?>
+	                </div>
+	                <?php } ?>
+	                <?php if ($reviewDate) { ?>
+		                <div class="mgz-review-date">
+		                    <time class="mgz-review-details-value" datetime="<?= $_review->getCreatedAt() ?>"><?= $block->escapeHtml($block->formatDate($_review->getCreatedAt(), $format)) ?></time>
+		                </div>
+		            <?php } ?>
+	                <?php if ($_product && $reviewProductName) { ?>
+		                <div class="mgz-review-product">
+		                    <a href="<?= $_product->getProductUrl() ?>#review-form" title="<?= $this->escapeHtml($_product->getName()) ?>"><?= $_product->getName() ?></a>
+		                </div>
+		            <?php } ?>
+	                <?php if ($_product && $reviewProductImage) { ?>
+		                <a href="<?= $_product->getProductUrl() ?>#review-form" title="<?= $this->escapeHtml($_product->getName()) ?>" class="product-image img">
+							<?= $block->getImage($_product, $imageId)->toHtml() ?>
+						</a>
+					<?php } ?>
+					<?php if ($reviewContent) { ?>
+	                <div class="mgz-review-content">
+	                	<?php
+						$detail  = $_review->getDetail();
+						$content = $this->getReviewContent($_review);
+	                	?>
+	                	<div class="<?= ($detail !== $content) ? 'mgz-review-content-short' : '' ?>"><?= $content ?> 
+	                		<?php if ($detail !== $content) { ?><a href="#" class="mgz-review-content-more"><?= __('View more') ?></a><?php } ?>
+	                	</div>
+	                    <?php if ($detail !== $content) { ?>
+	                    	<div class="mgz-review-content-full"><?= $detail ?></div>
+	                    <?php } ?>
+	                </div>
+	                <?php } ?>
+	            </li>
+	        <?php $x++; ?>
+	        <?php } ?>
+        </ul>
+	</div>
+</div>
+<?php } ?>

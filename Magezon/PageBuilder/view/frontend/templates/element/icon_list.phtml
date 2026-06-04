@@ -1,0 +1,26 @@
+<?php
+$coreHelper = $this->helper('\Magezon\Core\Helper\Data');
+$element    = $this->getElement();
+$layout     = $element->getData('layout');
+$items      = $this->toObjectArray($element->getItems());
+?>
+<div class="mgz-icon-list mgz-icon-list-<?= $layout ?>">
+	<?php if ($items && count($items)) { ?>
+		<?php foreach ($items as $item) { ?>
+			<?php
+			$link     = $this->getLinkParams($item['link_url']);
+			$linkText = $coreHelper->filter($item['link_text']);
+			?>
+			<div class="mgz-icon-list-item">
+				<?php if ($link['url']) { ?>
+					<a href="<?= $link['url'] ?>" title="<?= $block->escapeHtml($link['title']) ?>" <?= $link['blank'] ? 'target="_blank"' : '' ?> <?= $link['nofollow'] ? 'rel="nofollow"' : '' ?>>
+				<?php } ?>
+				<?php if ($item['icon']) { ?>
+				<i class="mgz-icon-list-item-icon <?= $item['icon'] ?>"></i><?php } ?> <span class="mgz-icon-list-item-text"><?= $linkText ?></span>
+				<?php if ($link['url']) { ?>
+					</a>
+				<?php } ?>
+			</div>
+		<?php } ?>
+	<?php } ?>
+</div>

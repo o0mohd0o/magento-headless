@@ -6,10 +6,10 @@
 /src/
 /compose.versions.yaml
 
-# ─── Proprietary vendor source ────────────────────────────────────────────
-# Magezon Page Builder is commercial code (© 2019 Magezon). Install it from
-# your own Magezon license into src/app/code/Magezon — it is not redistributed.
-/Magezon/
+# Note: the Magezon Page Builder modules (top-level Magezon/) ARE committed —
+# their composer.json declares OSL-3.0 / AFL-3.0 (open source). The Magento
+# install under src/ stays ignored (the /src/ rule above also covers
+# src/app/code/Magezon).
 
 # ─── Generated TLS certificates (regenerate with `bin/setup-ssl magento.test`)
 /certs/

@@ -1,0 +1,82 @@
+<?php
+$coreHelper       = $this->helper('\Magezon\Core\Helper\Data');
+$elements         = $this->getELements();
+$count            = count($elements);
+$element          = $this->getElement();
+$title            = $coreHelper->filter($element->getData('title'));
+$titleAlign       = $element->getData('title_align');
+$titleTag         = $element->getData('title_tag') ? $element->getData('title_tag') : 'h2';
+$description      = $coreHelper->filter($element->getData('description'));
+$showLine         = $element->getData('show_line');
+$hideEmptySection = $element->getData('hide_empty_section');
+$collapsibleAll   = $element->getData('collapsible_all') ? 'true' : 'false';
+$atLeastOneOpen   = $element->getData('at_least_one_open') ? 'true' : 'false';
+$icon             = $element->getData('icon');
+$iconPosition     = $element->getData('icon_position') ? $element->getData('icon_position') : 'left';
+$activeIcon       = $element->getData('active_icon');
+$accordionIcon    = $element->getData('accordion_icon');
+$activeSections = [];
+if (!empty($element->getData('active_sections'))) {
+    $activeSections   = explode(',', $element->getData('active_sections'));
+}
+if ($accordionIcon!='custom') {
+	$icon = $activeIcon = '';
+}
+$noFillContentArea = $element->getData('no_fill_content_area');
+?>
+<?php if ($count) { ?>
+<div class="mgz-block">
+	<?php if ($title || $description) { ?>
+	<div class="mgz-block-heading mgz-block-heading-align-<?= $titleAlign ?><?= $showLine ? ' mgz-block-heading-line' : '' ?>">
+		<?php if ($title) { ?>
+			<<?= $titleTag ?> class="title"><?= $title ?></<?= $titleTag ?>>
+		<?php } ?>
+		<?php if ($description) { ?>
+			<div class="info"><?= $description ?></div>
+		<?php } ?>
+	</div>
+	<?php } ?>
+	<div class="mgz-block-content">
+			<?php
+			$tabs = [];
+			foreach ($elements as $index => $_element) {
+				$_html = $_element->toHtml();
+				if (!$hideEmptySection || ($hideEmptySection && substr_count($_html, 'mgz-element-inner') > 1)) {
+					$tabs[] = [
+						'element' => $_element,
+						'html'    => $_html
+					];
+				}
+			}
+			?>
+			<div class="mgz-panels mgz-panels-<?= $element->getId() ?> <?= $noFillContentArea ? 'mgz-panels-no-fill-content' : '' ?>" data-mage-init='{"Magezon_PageBuilder/js/collapse":{"collapsibleAll": <?= $collapsibleAll ?>,"atLeastOneOpen": <?= $atLeastOneOpen ?>,"icon": "<?= $icon ?>","activeIcon": "<?= $activeIcon ?>"}}' data-spacing="<?= ((int)$element->getSpacing()) ? '!0' : '0' ?>" data-gap="<?= ((int)$element->getGap()) ? '!0' : '0' ?>">
+			<?php foreach ($tabs as $index => $tab) { ?>
+				<?php
+				$_element      = $tab['element'];
+				$id            = $_element->getId();
+				$addIcon       = $_element->getData('add_icon');
+				$_iconPosition = $_element->getData('icon_position');
+				$_icon         = $_element->getData('icon');
+				?>
+				<div class="mgz-panel <?= in_array($index+1, $activeSections) ? ' mgz-active' : '' ?> <?= $index == 0 ? 'mgz-panel-first' : '' ?> <?= ($index == $count-1)  ? 'mgz-panel-last' : '' ?>">
+					<div class="mgz-panel-heading mgz-text-<?= $element->getData('section_align') ?> mgz-icon-position-<?= $iconPosition ?>">
+						<h4 class="mgz-panel-heading-title">
+							<a href="#tab-<?= $id ?>" class="<?= $accordionIcon ? 'has-icon' : '' ?>">
+								<?php if ($accordionIcon) { ?><i class="mgz-accoridon-icon-<?= $accordionIcon ?> <?= in_array($index+1, $activeSections) ? $activeIcon : $icon ?>"></i><?php } ?>
+								<span><?php if ($addIcon && $_icon && $_iconPosition == 'left') { ?><i class="<?= $_icon ?>"></i><?php } ?><?= $_element->getTitle() ?>
+									<?php if ($addIcon && $_icon && $_iconPosition == 'right') { ?><i class="<?= $_icon ?>"></i><?php } ?>
+								</span>
+							</a>
+						</h4>
+					</div>
+					<div class="mgz-panel-body" <?= in_array($index+1, $activeSections) ? 'style="display: block"' : '' ?> >
+						<div class="mgz-panel-body-inner">
+							<?= $tab['html'] ?>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+		</div>
+	</div>
+</div>
+<?php } ?>

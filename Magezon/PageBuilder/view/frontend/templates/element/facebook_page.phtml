@@ -1,0 +1,20 @@
+<?php
+$builderHelper = $this->helper('\Magezon\Builder\Helper\Data');
+$element       = $this->getElement();
+$attrs['data-href']                  = $element->getData('page_url');
+$attrs['data-tabs']                  = $element->getData('page_tabs') ? $element->getData('page_tabs') : 'timeline';
+if ($element->getData('page_width')) $attrs['data-width'] = $builderHelper->getStyleProperty($element->getData('page_width'));
+if ($element->getData('page_height')) $attrs['data-height'] = $builderHelper->getStyleProperty($element->getData('page_height'));
+$attrs['data-small-header']          = $element->getData('small_header') ? 'true' : 'false';
+$attrs['data-adapt-container-width'] = $element->getData('adapt_container_width') ? 'true' : 'false';
+$attrs['data-hide-cover']            = $element->getData('hide_cover') ? 'true' : 'false';
+$attrs['data-show-facepile']         = $element->getData('show_facepile') ? 'true' : 'false';
+?>
+<div class="fb-page" <?= $block->parseAttributes($attrs) ?>><blockquote cite="https://www.facebook.com/facebook" class="fb-xfbml-parse-ignore"><a href="<?= $element->getData('page_url') ?>"><?= __('Facebook') ?></a></blockquote></div>
+<script>(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+	fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>

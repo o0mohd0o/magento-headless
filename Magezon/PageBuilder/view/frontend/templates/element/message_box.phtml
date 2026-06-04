@@ -1,0 +1,11 @@
+<?php
+$element    = $this->getElement();
+$coreHelper = $this->helper('\Magezon\Core\Helper\Data');
+$boxStyle   = $element->getData('message_box_style');
+$boxShape   = $element->getData('message_box_shape');
+$icon       = $element->getData('icon');
+?>
+<div class="mgz-message-box mgz-message-box-<?= $boxStyle ?> mgz-message-box-<?= $boxShape ?>">
+	<div class="mgz-message-box-icon"><i class="<?= $icon ?>"></i></div>
+	<div class="mgz-message-box-content"><?= $coreHelper->filter($element->getContent()) ?></div>
+</div>

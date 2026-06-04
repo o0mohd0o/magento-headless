@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Magezon
+*
+* This source file is subject to the Magezon Software License, which is available at https://magezon.com/license/.
+* Do not edit or add to this file if you wish to upgrade the to newer versions in the future.
+* If you wish to customize this module for your needs.
+* Please refer to https://www.magezon.com for more information.
+*
+* @category  Magezon
+* @package   Magezon_PageBuilderPreview
+* @copyright Copyright (C) 2022 Magezon (https://magezon.com)
+*/
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="mgz_pagebuilder_preview_profile" resource="default" engine="innodb" comment="MGZ Page Builder Preview Profile Table">
+        <column xsi:type="int" name="profile_id" unsigned="false" nullable="false" identity="true" comment="Profile ID" />
+        <column xsi:type="varchar" name="builder_id" nullable="false" length="255" comment="Builder ID"/>
+        <column xsi:type="longtext" name="content" nullable="true" comment="Profile Content"/>
+        <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" comment="Profile Creation Time" />
+        <column xsi:type="timestamp" name="update_time" on_update="false" nullable="true" default="CURRENT_TIMESTAMP" comment="Profile Modification Time" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="profile_id"/>
+        </constraint>
+        <index referenceId="MGZ_PAGEBUILDER_PREVIEW_PROFILE_CONTENT" indexType="fulltext">
+            <column name="content"/>
+        </index>
+    </table>
+</schema>

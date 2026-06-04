@@ -1,0 +1,56 @@
+<?php
+/**
+ * Magezon
+ *
+ * This source file is subject to the Magezon Software License, which is available at https://www.magezon.com/license
+ * Do not edit or add to this file if you wish to upgrade the to newer versions in the future.
+ * If you wish to customize this module for your needs.
+ * Please refer to https://www.magezon.com for more information.
+ *
+ * @category  Magezon
+ * @package   Magezon_PageBuilder
+ * @copyright Copyright (C) 2019 Magezon (https://www.magezon.com)
+ */
+
+/** @var $block \Magezon\PageBuilder\Block\Element\Instagram */
+
+$element = $this->getElement();
+$options = [
+    'onclick'       => $element->getOnclick(),
+    'html_id'       => $element->getHtmlId(),
+    'swipe_options' => [],
+    'token'         => $block->getInstagramToken(),
+    'max_items'     => (int)$element->getMaxItems()
+];
+?>
+<div class="mgz-block">
+    <?php if ($block->getElementTitle() || $block->getElementDescription()) { ?>
+    <div class="mgz-block-heading mgz-block-heading-align-<?= $element->getTitleAlign() ?><?= $element->getShowLine() ? ' mgz-block-heading-line' : '' ?> mgz-block-heading-line-position-<?= $element->getLinePosition() ?>">
+        <?php if ($block->getElementTitle()) { ?>
+        <<?= $block->getTitleTag() ?> class="title"><?= $block->getElementTitle() ?></<?= $block->getTitleTag() ?>>
+<?php } ?>
+    <?php if ($block->getElementDescription()) { ?>
+        <div class="info"><?= $block->getElementDescription() ?></div>
+    <?php } ?>
+</div>
+<?php } ?>
+<div class="mgz-block-content">
+    <div id="instagram-api-data" class="mgz-grid <?= $element->getHoverEffect() ? 'mgz-image-hovers' : '' ?> <?= ($element->getOnclick()=='photoswipe') ? 'mgz-photoswipe' : '' ?> mgz-instagram <?= ($element->getOnclick() == 'magnific') ? 'mgz-magnific-gallery' : '' ?>  mgz-grid-col-xl-<?= $element->getItemXl() ?> mgz-grid-col-lg-<?= $element->getItemLg() ?> mgz-grid-col-md-<?= $element->getItemMd() ?> mgz-grid-col-sm-<?= $element->getItemSm() ?> mgz-grid-col-xs-<?= $element->getItemXs() ?>"  <?php if($element->getOnclick()=='photoswipe') { ?>data-pswp-uid="1"<?php } ?> data-type="gallery" data-mage-init='{"Magezon_PageBuilder/js/instagram":<?= json_encode($options) ?>}'>
+    </div>
+    <?php if ($element->getLinkText()) { ?>
+        <a href="<?= $block->getFollowLink($element->getInstagramUsername()) ?>" target="_blank"><?= $element->getLinkText() ?></a>
+    <?php } ?>
+
+    <script id="instagram-items" type="text/x-magento-template" data-template="instagram-gallery">
+        <div id="<%- item.id %>" class="<?= ($element->getOnclick()=='photoswipe') ? 'mgz-photoswipe-item' : '' ?> mgz-grid-item">
+            <?php if ($element->getOnclick()) { ?>
+                <a href="<%- item.media_url %>" class="mgz-flex-position-middle-center <?= $element->getHoverEffect() ? 'hover-type-' . $element->getHoverEffect() : '' ?>" data-size="<?= $block->getDataSize() ?>" title="<%- item.caption %>" target="<?= $element->getLinkTarget() ?>">
+            <?php } ?>
+                    <img src="<%- item.media_url %>"/>
+                    <figure><%- item.caption %></figure>
+            <?php if ($element->getOnclick()) { ?>
+                </a>
+            <?php } ?>
+        </div>
+    </script>
+</div>

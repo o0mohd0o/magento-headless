@@ -1,0 +1,27 @@
+<?php
+$element        = $this->getElement();
+$showPinCcounts = $element->getData('show_pin_counts') ? $element->getData('show_pin_counts') : 'above';
+$buttonLarge    = $element->getData('button_large');
+$buttonRound    = $element->getData('button_round');
+?>
+<span class="mgz-pinterest-btn-<?= $buttonRound ? 'round' : 'rectangle' ?> <?= $buttonLarge ? 'mgz-pinterest-btn-large' : 'rectangle' ?>">
+	<a class="mgz-pinterest-btn"
+		href="#"
+		data-pin-do="buttonPin"
+		data-pin-count="<?= $showPinCcounts ?>"
+		data-pin-tall="<?= $buttonLarge ? 'true' : 'false' ?>"
+		data-pin-round="<?= $buttonRound ? 'true' : 'false' ?>">
+		<img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_round_red_32.png" alt="<?= __('Pin It') ?>" title="<?= __('Pin It') ?>"/>
+	</a>
+	<script>
+		require(['jquery'], function($) {
+			$('.mgz-pinterest-btn').attr('href', '//pinterest.com/pin/create/button/?url=' + window.location.href);
+		});
+	</script>
+	<!-- PINTEREST -->
+	<script
+	    type="text/javascript"
+	    async defer
+	    src="//assets.pinterest.com/js/pinit.js"
+	></script>
+</span>

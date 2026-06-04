@@ -1,0 +1,58 @@
+.mgz-tabs-nav.mgz-pageable-container-nav > .mgz-tabs-tab-title:not(.mgz-active) > a,
+.mgz-tabs-content.mgz-pageable-container-content > .mgz-tabs-tab-title:not(.mgz-active) > a {
+  	background: rgba(0, 0, 0, 0.6);
+}
+.mgz-tabs-nav.mgz-pageable-container-nav > .mgz-tabs-tab-title:not(.mgz-active) > a:hover,
+.mgz-tabs-content.mgz-pageable-container-content > .mgz-tabs-tab-title:not(.mgz-active) > a:hover {
+  	background: rgba(0, 0, 0, 0.8);
+}
+
+.mgz-tabs-nav.mgz-pageable-container-nav > .mgz-tabs-tab-title.mgz-active > a,
+.mgz-tabs-content.mgz-pageable-container-content > .mgz-tabs-tab-title.mgz-active > a {
+  	background: rgba(0, 0, 0, 0.8)
+}
+
+.mgz-tabs.mgz-pageable-container {
+	display: unset;
+}
+
+.mgz-pageable-container-nav {
+	margin: auto;
+	margin-top: 10px;
+	text-align: center;
+}
+.mgz-pageable-container-nav .mgz-tabs-tab-title > a {
+	border-radius: 50% !important;
+    border: none !important;
+	height: 10px;
+	margin-right: 10px !important;
+	padding: 2px !important;
+	width: 10px;
+}
+
+.mgz-builder-element-pageable_container-icon {
+	position: relative;
+}
+
+.mgz-builder-element-pageable_container-icon i:after {
+	content: '+';
+	position: absolute;
+	width: 10px;
+    height: 10px;
+    font-size: 15px;
+    line-height: 5px;
+    top: 50%;
+    margin-top: -4px;
+    left: 50%;
+    margin-left: -5px;
+    border: 1px solid #ffffff;
+    border-radius: 3px;
+}
+
+.mgz-carousel-dot-inside .mgz-pageable-container-nav {
+	position: absolute;
+    bottom: 15px;
+    width: 100%;
+    margin: 0;
+}
+

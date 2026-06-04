@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magezon
+ *
+ * This source file is subject to the Magezon Software License, which is available at https://www.magezon.com/license.
+ * Do not edit or add to this file if you wish to upgrade the to newer versions in the future.
+ * If you wish to customize this module for your needs.
+ * Please refer to https://www.magezon.com for more information.
+ *
+ * @category  Magezon
+ * @package   Magezon_PageBuilder
+ * @copyright Copyright (C) 2019 Magezon (https://www.magezon.com)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<section id="mgzpagebuilder" translate="label" sortOrder="100" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+			<class>separator-top</class>
+			<label>Magezon Page Builder</label>
+			<tab>magezon</tab>
+			<resource>Magezon_PageBuilder::settings</resource>
+			<group id="general" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+				<label>General Settings</label>
+				<field id="version" translate="label" type="text" sortOrder="10" showInDefault="1">
+					<label>Current Version</label>
+					<frontend_model>Magezon\PageBuilder\Block\Adminhtml\Renderer\Config\Version</frontend_model>
+				</field>
+				<field id="enable" translate="label comment" type="select" sortOrder="20" showInDefault="1">
+					<label>Enable Magezon Page Builder</label>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="enable_pages" translate="label comment" type="select" sortOrder="20" showInDefault="1">
+					<label>Enable for CMS Pages</label>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="enable_blocks" translate="label comment" type="select" sortOrder="20" showInDefault="1">
+					<label>Enable for Blocks</label>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="enable_products" translate="label comment" type="select" sortOrder="20" showInDefault="1">
+					<label>Enable for Products</label>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="enable_categories" translate="label comment" type="select" sortOrder="20" showInDefault="1">
+					<label>Enable for Categories</label>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+				<field id="exclude_namespaces" translate="label comment" type="textarea" sortOrder="30" showInDefault="1">
+					<label>Exclude for Namespaces</label>
+				</field>
+			</group>
+			<group id="instagram" translate="label" type="text" sortOrder="10" showInDefault="1">
+				<label>Instagrams</label>
+				<field id="user_token" translate="label" type="text" sortOrder="10" showInDefault="1">
+					<label>User Token Key</label>
+					<comment><![CDATA[Read <a href="https://developers.facebook.com/docs/instagram-basic-display-api/getting-started" target="_blank">this guide</a> to get your Instagram token.]]></comment>
+				</field>
+			</group>
+		</section>
+	</system>
+</config>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magezon
+ *
+ * This source file is subject to the Magezon Software License, which is available at https://www.magezon.com/license
+ * Do not edit or add to this file if you wish to upgrade the to newer versions in the future.
+ * If you wish to customize this module for your needs.
+ * Please refer to https://www.magezon.com for more information.
+ *
+ * @category  Magezon
+ * @package   Magezon_Newsletter
+ * @copyright Copyright (C) 2020 Magezon (https://www.magezon.com)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<type name="Magezon\Builder\Data\Elements">
+		<arguments>
+			<argument name="elements" xsi:type="array">
+				<item name="newsletter_form" xsi:type="array">
+					<item name="name" xsi:type="string" translate="true">Newsletter Form</item>
+					<item name="block" xsi:type="string">Magezon\Newsletter\Block\Element\NewsletterForm</item>
+					<item name="class" xsi:type="string">Magezon\Newsletter\Data\Element\NewsletterForm</item>
+					<item name="template" xsi:type="string">Magezon_Newsletter::element/newsletter_form.phtml</item>
+					<item name="sortOrder" xsi:type="number">550</item>
+					<item name="description" xsi:type="string">A newsletter form for your site</item>
+					<item name="icon" xsi:type="string">fab mgz-fa-magento</item>
+					<item name="icon_styles" xsi:type="array">
+						<item name="background-color" xsi:type="string">transparent</item>
+						<item name="color" xsi:type="string">#f26322</item>
+						<item name="font-size" xsi:type="string">32px</item>
+					</item>
+					<item name="builder_description" xsi:type="string">{{ element.title ? 'Title: ' + element.title : '' }} {{ element.form_width ? 'Width: ' + element.form_width : '' }}</item>
+					<item name="group" xsi:type="string">magento</item>
+					<item name="demo_link" xsi:type="string">http://192.168.1.107/magezon/pagebuilder/newsletter-form</item>
+				</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

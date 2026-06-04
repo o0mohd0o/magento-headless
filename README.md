@@ -12,41 +12,40 @@ Browser ──► Next.js (App Router) ──► Magento GraphQL ──► Maria
 
 ---
 
-## ✨ Features
+## Features
 
 **Storefront**
-- ⚡ **Headless & fast** — Next.js 16 App Router reads Magento over GraphQL in
+- **Headless & fast** — Next.js 16 App Router reads Magento over GraphQL in
   React Server Components (no CORS, ISR caching).
-- 🛒 **Full commerce flow** — browse → product → cart → multi-step checkout →
+- **Full commerce flow** — browse → product → cart → multi-step checkout →
   order, with guest and logged-in customer carts (guest cart merges on login).
-- 🔎 **Catalog** — category & search pages with **faceted filtering, sorting, and
-  autosuggest**; configurable, grouped, and bundle product types.
-- 📦 **Product pages** — image gallery, live pricing, **reviews & ratings**,
-  **wishlist**, and **product compare**.
-- 💳 **Cart & checkout** — coupons, live totals, multi-step checkout, order
+- **Catalog** — category & search pages with faceted filtering, sorting, and
+  autosuggest; configurable, grouped, and bundle product types.
+- **Product pages** — image gallery, live pricing, reviews & ratings, wishlist,
+  and product compare.
+- **Cart & checkout** — coupons, live totals, multi-step checkout, order
   confirmation.
-- 👤 **Customer accounts** — sign-in/registration, **order history + reorder**,
-  **address book**, profile editing, password reset.
-- 🔍 **SEO** — per-page metadata, canonical/OpenGraph, JSON-LD (Product,
-  Breadcrumb, Organization), `sitemap.xml`, `robots.txt`, and a universal
-  URL-rewrite resolver with 301s.
+- **Customer accounts** — sign-in/registration, order history + reorder, address
+  book, profile editing, password reset.
+- **SEO** — per-page metadata, canonical/OpenGraph, JSON-LD (Product, Breadcrumb,
+  Organization), `sitemap.xml`, `robots.txt`, and a universal URL-rewrite
+  resolver with 301s.
 
 **Headless Page Builder**
-- 🎨 **Magezon Page Builder, headless** — a custom GraphQL bridge exposes the
-  builder's element tree, rendered by a **48-component JSON-to-React renderer**
+- **Magezon Page Builder, headless** — a custom GraphQL bridge exposes the
+  builder's element tree, rendered by a 48-component JSON-to-React renderer
   (responsive 12-column grid, per-element scoped CSS).
-- 🛍️ **Live content** — product grids inside page-builder sections fetch real
+- **Live content** — product grids inside page-builder sections fetch real
   catalog data.
 
 **Engineering**
-- 🧩 Plain `fetch` + **Server Actions** (no Apollo), **strict TypeScript**,
-  **Tailwind CSS v4**.
-- ✅ **Unit + e2e tests**, **GraphQL codegen**, security headers, PWA manifest.
-- 🐳 **Dockerized** Magento 2.4.9 backend (PHP 8.5).
+- Plain `fetch` + Server Actions (no Apollo), strict TypeScript, Tailwind CSS v4.
+- Unit + e2e tests, GraphQL codegen, security headers, PWA manifest.
+- Dockerized Magento 2.4.9 backend (PHP 8.5).
 
 ---
 
-## 🧱 Tech stack
+## Tech stack
 
 | Layer | Technology |
 |-------|------------|
@@ -58,11 +57,11 @@ Browser ──► Next.js (App Router) ──► Magento GraphQL ──► Maria
 
 ---
 
-## 🚀 Getting started
+## Getting started
 
 ### Prerequisites
-- Docker Desktop (≥ 6 GB RAM), Node.js 20+, and `mkcert`
-- `magento.test` → `127.0.0.1` in `/etc/hosts`
+- Docker Desktop (>= 6 GB RAM), Node.js 20+, and `mkcert`
+- `magento.test` -> `127.0.0.1` in `/etc/hosts`
 
 ### 1 — Backend (Magento)
 
@@ -71,6 +70,9 @@ bin/download community 2.4.9      # fetch Magento 2.4.9
 bin/setup magento.test            # DB, OpenSearch, Redis, RabbitMQ, SSL, dev mode
 bin/magento sampledata:deploy && bin/magento setup:upgrade   # Luma sample data
 ```
+
+The Magezon Page Builder modules live in `Magezon/` — copy them into
+`src/app/code/Magezon`, then run `bin/magento setup:upgrade`.
 
 ### 2 — Storefront (Next.js)
 
@@ -92,7 +94,7 @@ bin/magento cache:flush
 
 ---
 
-## 🛠️ Usage
+## Usage
 
 ```bash
 bin/start            # start the Magento backend
@@ -115,9 +117,10 @@ npm run codegen      # regenerate typed GraphQL schema
 
 ---
 
-## 📁 Project structure
+## Project structure
 
 ```
+Magezon/                   # Magezon Page Builder modules (OSL-3.0 / AFL-3.0)
 magezon-headless-nextjs/   # the headless-Magezon package (GraphQL bridge + renderer)
 storefront/                # Next.js 16 storefront
   src/lib/                 #   GraphQL transport, queries, cart/auth server actions
@@ -127,9 +130,10 @@ storefront/                # Next.js 16 storefront
 bin/  compose.*.yaml  env/ # Dockerized Magento 2.4.9 backend (docker-magento)
 ```
 
-> **Note:** the Magento install (`src/`) and the commercial Magezon source are
-> not committed — recreate them with the steps above and your own Magezon
-> license. The standard docker-magento dev env files are included.
+> **Note:** the Magento install itself (`src/`) is not committed (it is large and
+> must be downloaded via Composer) — recreate it with the steps above. The
+> Magezon modules under `Magezon/` are included (their `composer.json` declares
+> OSL-3.0 / AFL-3.0).
 
 ---
 

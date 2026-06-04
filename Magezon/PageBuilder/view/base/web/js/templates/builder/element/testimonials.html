@@ -1,0 +1,55 @@
+<div class="mgz-element-testimonials-content">
+	<mgz-owl-carousel additional-class="additionalClass" owl-items="owlItems" owl-properties="owlSettings">
+		<div class="mgz-testimonial mgz-testimonial{{ $index }}" ng-repeat="item in owlItems">
+			<div ng-if="element.testimonial_type=='type1'">
+				<div class="mgz-testimonial-image" ng-if="item.image">
+					<img ng-src="{{$root.magezonBuilderUrl.getImageUrl(item.image) }}" alt="{{ item.name }}" height="{{ element.image_width }}" width="{{ element.image_width }}"/>
+				</div>
+				<div class="mgz-testimonial-content" ng-if="item.content" ng-bind-html="item.content"></div>
+				<div class="mgz-testimonial-meta">
+					<div class="mgz-testimonial-details" ng-if="item.name||item.job">
+						<span class="mgz-testimonial-name" ng-if="item.name">
+							<a ng-href="item.link" ng-if="item.link">
+								<spam>{{ item.name }}</spam><span ng-if="item.job">,&nbsp;</span>
+							</a>
+							<spam ng-if="!item.link">{{ item.name }}</spam><span ng-if="item.job&&!item.link">,&nbsp;</span>
+						</span>
+						<span class="mgz-testimonial-job" ng-if="item.job">{{ item.job }}</span>
+					</div>
+				</div>
+			</div>
+			<div ng-if="element.testimonial_type=='type2'">
+				<div class="mgz-testimonial-content" ng-if="item.content" ng-bind-html="item.content"></div>
+				<div class="mgz-testimonial-meta">
+					<div class="mgz-testimonial-image" ng-if="item.image">
+						<img ng-src="{{$root.magezonBuilderUrl.getImageUrl(item.image) }}" alt="{{ item.name }}" height="{{ element.image_width }}" width="{{ element.image_width }}"/>
+					</div>
+					<div class="mgz-testimonial-details" ng-if="item.name||item.job">
+						<div class="mgz-testimonial-name" ng-if="item.name">
+							<a ng-href="item.link" ng-if="item.link">
+								<spam>{{ item.name }}</spam><span ng-if="item.job">,&nbsp;</span>
+							</a>
+							<spam ng-if="!item.link">{{ item.name }}</spam><span ng-if="item.job&&!item.link">,&nbsp;</span>
+						</div>
+						<div class="mgz-testimonial-job" ng-if="item.job">{{ item.job }}</div>
+					</div>
+				</div>
+			</div>
+			<div ng-if="element.testimonial_type=='type3'">
+				<div class="mgz-testimonial-content" ng-if="item.content" ng-bind-html="item.content"></div>
+				<div class="mgz-testimonial-meta">
+					<div class="mgz-testimonial-image" ng-if="item.image">
+						<img ng-src="{{$root.magezonBuilderUrl.getImageUrl(item.image) }}" alt="{{ item.name }}" height="{{ element.image_width }}" width="{{ element.image_width }}"/>
+					</div>
+					<span class="mgz-testimonial-name" ng-if="item.name">
+						<a ng-href="item.link" ng-if="item.link">
+							<spam>{{ item.name }}</spam><span ng-if="item.job">,&nbsp;</span>
+						</a>
+						<spam ng-if="!item.link">{{ item.name }}</spam><span ng-if="item.job&&!item.link">,&nbsp;</span>
+					</span>
+					<span class="mgz-testimonial-job" ng-if="item.job">{{ item.job }}</span>
+				</div>
+			</div>
+		</div>
+	</mgz-owl-carousel>
+</div>

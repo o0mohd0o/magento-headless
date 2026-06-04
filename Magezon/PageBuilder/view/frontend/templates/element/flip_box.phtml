@@ -1,0 +1,56 @@
+<?php
+$coreHelper    = $this->helper('\Magezon\Core\Helper\Data');
+$builderHelper = $this->helper('\Magezon\Builder\Helper\Data');
+$element       = $this->getElement();
+$primaryTitle  = $coreHelper->filter($element->getData('primary_title'));
+$primaryText   = $coreHelper->filter($element->getData('primary_text'));
+$primaryImage  = $element->getData('primary_image') ? $builderHelper->getImageUrl($element->getData('primary_image')) : '';
+$hoverTitle    = $coreHelper->filter($element->getData('hover_title'));
+$hoverText     = $coreHelper->filter($element->getData('hover_text'));
+$hoverImage    = $element->getData('hover_image') ? $builderHelper->getImageUrl($element->getData('hover_image')) : '';
+$flipDirection = $element->getData('flip_direction');
+$enableButton  = $element->getData('enable_button');
+$buttonTitle   = $element->getData('button_title');
+$buttonLink    = $this->getLinkParams($element->getData('button_link'));
+$boxMinHeight  = $element->getData('box_min_height');
+$icon          = $element->getData('icon');
+$flipEffect    = $element->getData('flip_effect');
+$circle        = $element->getData('circle');
+$spin          = $element->getData('icon_spin');
+$btnStyle      = $element->getData('button_style');
+$btnSize       = $element->getData('button_size');
+?>
+<div class="mgz-flipbox mgz-flipbox-rotate-<?= $flipDirection ?> <?= $flipEffect ?>" data-min-height="<?= $boxMinHeight ?>">
+	<div class="mgz-flipbox-inner">
+		<div class="mgz-flipbox-block mgz-flipbox-front" <?php if ($primaryImage) { ?>style="background-image: url('<?= $primaryImage ?>')"<?php } ?>>
+			<div class="mgz-flipbox-block-inner mgz-flipbox-front-inner">
+				<?php if ($icon) { ?>
+					<div class="mgz-flipbox-circle <?= !$circle ? 'flipbox-no-circle' : '' ?>">
+						<i class="mgz-icon-element <?= $icon ?> <?= $spin ? 'mgz-fa-spin' : '' ?>"></i>
+					</div>
+				<?php } ?>
+				<?php if ($primaryTitle) { ?>
+					<h2 class="mgz-flipbox-title"><?= $primaryTitle ?></h2>
+				<?php } ?>
+				<?php if ($primaryText) { ?>
+					<div class="mgz-flipbox-front-inner-text"><?= $primaryText ?></div>
+				<?php } ?>
+			</div>
+		</div>
+		<div class="mgz-flipbox-block mgz-flipbox-back" <?php if ($hoverImage) { ?>style="background-image: url('<?= $hoverImage ?>')"<?php } ?>>
+			<div class="mgz-flipbox-block-inner mgz-flipbox-back-inner">
+				<?php if ($hoverTitle) { ?>
+					<h2 class="mgz-flipbox-title"><?= $hoverTitle ?></h2>
+				<?php } ?>
+				<?php if ($hoverText) { ?>
+					<div class="mgz-flipbox-back-inner-text"><?= $hoverText ?></div>
+				<?php } ?>
+				<?php if ($enableButton) { ?>
+					<div class="mgz-flipbox-actions mgz-btn-style-<?= $btnStyle ?> mgz-btn-size-<?= $btnSize ?>">
+						<a href="<?= $buttonLink['url'] ?>" class="mgz-link mgz-btn" title="<?= $block->escapeHtml($buttonLink['title']) ?>" <?= $buttonLink['blank'] ? 'target="_blank"' : '' ?> <?= $buttonLink['nofollow'] ? 'rel="nofollow"' : '' ?>><?= $buttonTitle ?></a>
+					</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</div>

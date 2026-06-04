@@ -1,0 +1,62 @@
+<?php
+$builderHelper = $this->helper('\Magezon\Builder\Helper\Data');
+$element       = $this->getElement();
+$items         = $this->toObjectArray($element->getData('items'));
+$onclick       = $element->getOnclick();
+$options       = [];
+$options['nav']                 = $element->getData('nav');
+$options['navposition']         = $element->getData('navposition');
+$options['thumbwidth']          = $element->getData('thumbwidth');
+$options['thumbheight']         = $element->getData('thumbheight');
+$options['thumbmargin']         = $element->getData('thumbmargin');
+$options['allowfullscreen']     = $element->getData('allowfullscreen');
+$options['captions']            = $element->getData('captions');
+$options['loop']                = $element->getData('loop');
+$options['arrows']              = $element->getData('arrows');
+$options['autoplay']            = $element->getData('autoplay');
+$options['stopautoplayontouch'] = $element->getData('stopautoplayontouch');
+$options['click']               = $element->getData('click');
+$options['swipe']               = $element->getData('swipe');
+$options['keyboard']            = $element->getData('keyboard');
+$options['margin']              = (int)$element->getData('margin');
+$options['trackpad']            = $element->getData('trackpad');
+$options['shuffle']             = $element->getData('shuffle');
+$options['shadows']             = $element->getData('shadows');
+$options['direction']           = $element->getData('rtl') ? 'rtl' : 'ltr';
+$options['hash']                = $element->getData('hash');
+$options['fit']                 = $element->getData('fit');
+$options['transition']          = $element->getData('transition');
+$options['startindex']          = (int) $element->getData('startindex');
+$options['ratio']               = $element->getData('ratio');
+$options['width']               = $element->getData('width');
+$options['minwidth']            = $element->getData('minwidth');
+$options['maxwidth']            = $element->getData('maxwidth');
+$options['height']              = $element->getData('height');
+$options['minheight']           = $element->getData('minheight');
+$options['maxheight']           = $element->getData('maxheight');
+
+$startIndex = (int) $element->getData('startindex');
+if ($startIndex > count($items) - 1) $startIndex = 0;
+?>
+<?php if ($items && count($items)) { ?>
+	<div class="mgz-fotorama" data-mage-init='{"Magezon_PageBuilder/js/gallery":<?= json_encode($options) ?>}'>
+		<?php foreach ($items as $index => $item) { ?>
+			<?php
+				$link = $fullLink = '';
+				$type = $item->getType();
+				$imageUrl = $builderHelper->getImageUrl($item->getImage());
+				if ($type == 'media' || $type == 'video') $link = $imageUrl;
+				if ($type == 'link') $link = $item->getLink();
+				if ($type == 'video') $link = $item->getVideoUrl();
+				if ($type == 'media' && $item->getData('full_image')) {
+					$fullLink = $builderHelper->getImageUrl($item->getData('full_image'));
+				}
+			?>
+			<a style="display: none"  href="<?= $link ?>" data-caption="<?= $block->escapeHtml($item['caption']) ?>" <?php if ($fullLink) { ?>data-full="<?= $fullLink ?>"<?php } ?>>
+				<?php if ($type == 'video' && $imageUrl) { ?>
+					<img src="<?= $imageUrl ?>"/>
+				<?php } ?>
+			</a>
+		<?php } ?>
+	</div>
+<?php } ?>

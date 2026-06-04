@@ -1,0 +1,9 @@
+<div class="mgz-toggle {{ (element.icon && element.icon_style!='text_only') ? 'mgz-toggle-icon' : '' }} mgz-toggle-icon-{{ element.icon_style }}  mgz-toggle-icon-size-{{ element.icon_size }}">
+<div class="mgz-toggle-title" data-role="title" ng-if="element.toggle_title">
+    <h3 data-role="trigger">
+        <span ng-bind-html="element.toggle_title"></span>
+    </h3>
+</div>
+    <div class="mgz-toggle-content" data-role="content" ng-style="!element.open ? {'display':'none'} : ''" ng-if="element.toggle_content" ng-bind-html="getTrustedHtml(element.toggle_content)">
+    </div>
+</div>
