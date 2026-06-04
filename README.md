@@ -59,6 +59,10 @@ Browser ──► Next.js (App Router) ──► Magento GraphQL ──► Maria
 
 ## Getting started
 
+> **Full step-by-step setup and troubleshooting:** see **[SETUP.md](SETUP.md)** —
+> including how to install the Page Builder bridge module and fix a blank
+> homepage. The summary below assumes you've read it.
+
 ### Prerequisites
 - Docker Desktop (>= 6 GB RAM), Node.js 20+, and `mkcert`
 - `magento.test` -> `127.0.0.1` in `/etc/hosts`
@@ -71,8 +75,12 @@ bin/setup magento.test            # DB, OpenSearch, Redis, RabbitMQ, SSL, dev mo
 bin/magento sampledata:deploy && bin/magento setup:upgrade   # Luma sample data
 ```
 
-The Magezon Page Builder modules live in `Magezon/` — copy them into
-`src/app/code/Magezon`, then run `bin/magento setup:upgrade`.
+Install the Page Builder modules — both the Magezon suite (`Magezon/` →
+`src/app/code/Magezon`) **and** the headless bridge
+(`magezon-headless-nextjs/magento-module/app/code/QasrAlawani` →
+`src/app/code/QasrAlawani`), then `bin/magento setup:upgrade`. The bridge adds
+the `magezonContent` GraphQL query the storefront homepage needs — see
+[SETUP.md](SETUP.md) for the exact commands.
 
 ### 2 — Storefront (Next.js)
 
