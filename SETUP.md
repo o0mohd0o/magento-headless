@@ -87,6 +87,15 @@ should now return `has_pagebuilder:true`.
 
 ## 4. Configure & run the storefront
 
+> **Running the full Docker stack?** As of the headless-isolation setup the
+> storefront runs as a container automatically with `bin/start` (service
+> `storefront`, config `env/storefront.env`), reachable through the `app`
+> front-door at `https://magento.test/`. In that mode the public domain serves
+> only the storefront + media/static, and Magento's `/graphql` `/rest` `/soap`
+> return **404** — the storefront reaches GraphQL privately at
+> `http://app:8181`. See **[HEADLESS.md](HEADLESS.md)**. The steps below are for
+> running the storefront standalone with `npm run dev` on the host instead.
+
 The storefront talks to Magento over **HTTPS**, so Node must trust the mkcert CA.
 This cert is **not** in the repo — you must provide your own:
 

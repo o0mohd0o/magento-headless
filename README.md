@@ -5,10 +5,18 @@ A **headless commerce** storefront built on **Magento Open Source 2.4.9** and
 **Magezon Page Builder** content rendered headlessly as React components.
 
 ```
-Browser ──► Next.js (App Router) ──► Magento GraphQL ──► MariaDB / OpenSearch / Redis
-            • Server-side reads (RSC) — no CORS
-            • Server Actions for cart & checkout
+Browser ──HTTPS──► Next.js (App Router) ──private──► Magento GraphQL ──► MariaDB / OpenSearch / Redis
+   │                • Server-side reads (RSC) — no CORS
+   │                • Server Actions for cart & checkout
+   └─ never talks to Magento directly; the backend's /graphql /rest /soap
+      are NOT exposed on the public domain (returns 404). The storefront
+      reaches Magento privately over the container network.
 ```
+
+The backend is **network-isolated**, not just app-decoupled: Magento's API
+surface lives off the public domain and is reachable only by the storefront over
+a private path. See **[HEADLESS.md](HEADLESS.md)** for the full topology,
+rationale, and verification commands.
 
 ---
 

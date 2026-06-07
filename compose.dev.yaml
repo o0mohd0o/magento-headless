@@ -10,7 +10,11 @@ services:
       - ./src/grunt-config.json.sample:/var/www/html/grunt-config.json:cached
       - ./src/Gruntfile.js.sample:/var/www/html/Gruntfile.js:cached
       - ./src/dev/tools/grunt/configs:/var/www/html/dev/tools/grunt/configs:cached
-      - ./src/nginx.conf.sample:/var/www/html/nginx.conf:cached
+      ## HEADLESS: public domain serves the Next.js storefront; Magento
+      ## /graphql /rest /soap return 404. Replaces Magento's nginx.conf.sample.
+      - ./docker/app/nginx-headless.conf:/var/www/html/nginx.conf:cached
+      ## HEADLESS: internal-only :8181 Magento listener the storefront reads from.
+      - ./docker/app/conf.d-headless.conf:/etc/nginx/conf.d/zz-headless.conf:cached
       - ./src/package.json.sample:/var/www/html/package.json:cached
       - ./src/generated:/var/www/html/generated:cached
       - ./src/var:/var/www/html/var:cached
@@ -23,6 +27,19 @@ services:
 
   phpfpm-xdebug:
     volumes: *appvolumes
+
+  ## Headless storefront (Next.js 16) — internal-only; reached through the
+  ## `app` front-door, never published to the host directly. It fetches Magento
+  ## GraphQL privately at http://app:8181 (see env/storefront.env).
+  storefront:
+    build: ./storefront
+    env_file: env/storefront.env
+    volumes:
+      - ./storefront:/app
+      - /app/node_modules
+    depends_on:
+      - app
+    restart: unless-stopped
 
   phpmyadmin:
     image: linuxserver/phpmyadmin
