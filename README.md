@@ -1,156 +1,189 @@
 # Magento Headless Storefront
 
-A **headless commerce** storefront built on **Magento Open Source 2.4.9** and
-**Next.js 16** — a fast, modern React frontend over Magento's GraphQL API, with
-**Magezon Page Builder** content rendered headlessly as React components.
+Headless Magento Open Source 2.4.9 with a Next.js 16 storefront.
 
-```
-Browser ──HTTPS──► Next.js (App Router) ──private──► Magento GraphQL ──► MariaDB / OpenSearch / Redis
-   │                • Server-side reads (RSC) — no CORS
-   │                • Server Actions for cart & checkout
-   └─ never talks to Magento directly; the backend's /graphql /rest /soap
-      are NOT exposed on the public domain (returns 404). The storefront
-      reaches Magento privately over the container network.
+This project is based on `markshust/docker-magento`, but the public web surface
+is intentionally changed: `https://magento.test/` serves the Next.js storefront,
+while Magento GraphQL/REST/SOAP stay off the public domain.
+
+```text
+Browser
+  -> https://magento.test/
+  -> app nginx :8443
+  -> storefront:3000
+
+storefront container
+  -> http://app:8181/graphql
+  -> Magento PHP-FPM
+  -> MariaDB / OpenSearch / Redis / RabbitMQ
 ```
 
-The backend is **network-isolated**, not just app-decoupled: Magento's API
-surface lives off the public domain and is reachable only by the storefront over
-a private path. See **[HEADLESS.md](HEADLESS.md)** for the full topology,
-rationale, and verification commands.
+Public Magento API paths are not exposed:
+
+```bash
+curl -sk -o /dev/null -w '%{http_code}\n' https://magento.test/graphql   # 404
+curl -sk -o /dev/null -w '%{http_code}\n' https://magento.test/rest/V1/  # 404
+curl -sk -o /dev/null -w '%{http_code}\n' https://magento.test/soap      # 404
+```
+
+See [HEADLESS.md](HEADLESS.md) for the full isolation design.
 
 ---
 
-## Features
+## What Is Included
 
-**Storefront**
-- **Headless & fast** — Next.js 16 App Router reads Magento over GraphQL in
-  React Server Components (no CORS, ISR caching).
-- **Full commerce flow** — browse → product → cart → multi-step checkout →
-  order, with guest and logged-in customer carts (guest cart merges on login).
-- **Catalog** — category & search pages with faceted filtering, sorting, and
-  autosuggest; configurable, grouped, and bundle product types.
-- **Product pages** — image gallery, live pricing, reviews & ratings, wishlist,
-  and product compare.
-- **Cart & checkout** — coupons, live totals, multi-step checkout, order
-  confirmation.
-- **Customer accounts** — sign-in/registration, order history + reorder, address
-  book, profile editing, password reset.
-- **SEO** — per-page metadata, canonical/OpenGraph, JSON-LD (Product, Breadcrumb,
-  Organization), `sitemap.xml`, `robots.txt`, and a universal URL-rewrite
-  resolver with 301s.
+### Storefront
 
-**Headless Page Builder**
-- **Magezon Page Builder, headless** — a custom GraphQL bridge exposes the
-  builder's element tree, rendered by a 48-component JSON-to-React renderer
-  (responsive 12-column grid, per-element scoped CSS).
-- **Live content** — product grids inside page-builder sections fetch real
-  catalog data.
+- Next.js 16 App Router, React 19, TypeScript, Tailwind CSS v4.
+- Server-side Magento GraphQL reads from React Server Components.
+- Same-origin BFF route for browser GraphQL calls: `/api/graphql`.
+- Catalog browsing, category pages, search, autosuggest, facets, sorting.
+- Product detail pages, image gallery, reviews, wishlist, compare.
+- Guest and customer carts, coupons, checkout flow, account area.
+- SEO metadata, JSON-LD, sitemap, robots, and URL rewrite routing.
 
-**Engineering**
-- Plain `fetch` + Server Actions (no Apollo), strict TypeScript, Tailwind CSS v4.
-- Unit + e2e tests, GraphQL codegen, security headers, PWA manifest.
-- Dockerized Magento 2.4.9 backend (PHP 8.5).
+### Headless Page Builder
+
+- Magezon Page Builder content rendered in Next.js.
+- Custom Magento GraphQL bridge exposing `magezonContent`.
+- Page Builder homepage imported as `headless-home`.
+- Magezon product sections fetch live Magento catalog data.
+
+### Docker Topology
+
+- Magento runs inside the markshust Docker stack.
+- Storefront runs as a Docker service in `compose.dev.yaml`.
+- Storefront port `3000` is internal only; it is not published to the host.
+- Public domain keeps only storefront, media/static assets, and admin.
+- Private GraphQL listener runs at `app:8181` and is not host-published.
 
 ---
 
-## Tech stack
+## Tech Stack
 
 | Layer | Technology |
-|-------|------------|
-| Frontend | Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4 |
-| API | Magento GraphQL |
-| Backend | Magento Open Source CE 2.4.9, PHP 8.5 |
-| Data / infra | MariaDB, OpenSearch, Redis, RabbitMQ, Docker |
-| Page Builder | Magezon Page Builder + custom headless GraphQL bridge |
+| --- | --- |
+| Storefront | Next.js 16, React 19, TypeScript, Tailwind CSS v4 |
+| Commerce API | Magento GraphQL, private Docker network |
+| Backend | Magento Open Source 2.4.9, PHP 8.5 |
+| Data | MariaDB, OpenSearch, Redis/Valkey, RabbitMQ |
+| Content | Magezon Page Builder + custom headless bridge |
+| Dev stack | Docker Desktop, mkcert, markshust/docker-magento |
 
 ---
 
-## Getting started
+## Quick Start
 
-> **Full step-by-step setup and troubleshooting:** see **[SETUP.md](SETUP.md)** —
-> including how to install the Page Builder bridge module and fix a blank
-> homepage. The summary below assumes you've read it.
-
-### Prerequisites
-- Docker Desktop (>= 6 GB RAM), Node.js 20+, and `mkcert`
-- `magento.test` -> `127.0.0.1` in `/etc/hosts`
-
-### 1 — Backend (Magento)
+Read [SETUP.md](SETUP.md) for the full install path. If Magento is already
+installed in this checkout, the usual development flow is:
 
 ```bash
-bin/download community 2.4.9      # fetch Magento 2.4.9
-bin/setup magento.test            # DB, OpenSearch, Redis, RabbitMQ, SSL, dev mode
-bin/magento sampledata:deploy && bin/magento setup:upgrade   # Luma sample data
+git checkout headless-isolation
+bin/start
 ```
 
-Install the Page Builder modules — both the Magezon suite (`Magezon/` →
-`src/app/code/Magezon`) **and** the headless bridge
-(`magezon-headless-nextjs/magento-module/app/code/QasrAlawani` →
-`src/app/code/QasrAlawani`), then `bin/magento setup:upgrade`. The bridge adds
-the `magezonContent` GraphQL query the storefront homepage needs — see
-[SETUP.md](SETUP.md) for the exact commands.
-
-### 2 — Storefront (Next.js)
+Then verify the public/private split:
 
 ```bash
+# Public storefront and browser assets
+curl -sk -o /dev/null -w '%{http_code}\n' https://magento.test/
+curl -sk -o /dev/null -w '%{http_code}\n' https://magento.test/media/
+
+# Public backend APIs must stay hidden
+curl -sk -o /dev/null -w '%{http_code}\n' https://magento.test/graphql
+curl -sk -o /dev/null -w '%{http_code}\n' https://magento.test/rest/V1/
+curl -sk -o /dev/null -w '%{http_code}\n' https://magento.test/soap
+
+# Private GraphQL from inside the Docker network
+bin/docker-compose exec storefront wget -qO- \
+  --post-data '{"query":"{storeConfig{store_code}}"}' \
+  --header 'Content-Type: application/json' \
+  http://app:8181/graphql
+```
+
+Expected result:
+
+- `/` -> `200`
+- `/media/` -> `200`
+- `/graphql`, `/rest/V1/`, `/soap` -> `404`
+- private GraphQL returns `{"data":{"storeConfig":{"store_code":"default"}}}`
+
+---
+
+## Service URLs
+
+| Service | URL / access |
+| --- | --- |
+| Public storefront | `https://magento.test/` |
+| Magento admin | `https://magento.test/admin/` |
+| Public GraphQL | intentionally `404` |
+| Private GraphQL | `http://app:8181/graphql` from containers only |
+| Storefront dev server | `storefront:3000` inside Docker only |
+| Mailcatcher | `http://localhost:1080` |
+| phpMyAdmin | `http://localhost:8080` |
+
+Use `bin/docker-compose` for dev-stack commands. Bare `docker compose` only sees
+the base compose files unless you manually pass the same `-f` arguments.
+
+---
+
+## Common Commands
+
+```bash
+bin/start                         # start the full dev stack
+bin/stop                          # stop the stack
+bin/status                        # show container status
+bin/magento <cmd>                 # run Magento CLI
+bin/docker-compose logs storefront
+bin/docker-compose exec storefront sh
+
 cd storefront
-cp .env.example .env.local        # point at your Magento GraphQL endpoint
-npm install
-npm run dev                       # → http://localhost:3000
-```
-
-### 3 — Page Builder homepage (optional)
-
-```bash
-cd storefront
-node scripts/build-homepage.mjs                                   # generate the profile
-bin/clinotty mysql -h db -u magento -pmagento magento < ../_homepage.sql
-bin/magento cache:flush
+npm test
+npm run lint
+npm run build
+npm run codegen
 ```
 
 ---
 
-## Usage
+## Payments
 
-```bash
-bin/start            # start the Magento backend
-bin/stop             # stop it
-bin/magento <cmd>    # run a Magento CLI command
-cd storefront
+Online payment-gateway verification is intentionally not a next step in this
+repo. Real gateway tests require provider credentials, secrets, webhooks, and
+account configuration that should not be committed or shared.
 
-npm run dev          # storefront dev server (http://localhost:3000)
-npm run build        # production build
-npm test             # unit tests
-npm run test:e2e     # integration tests
-npm run codegen      # regenerate typed GraphQL schema
-```
-
-| Service | URL |
-|---------|-----|
-| Headless storefront (Next.js) | http://localhost:3000 |
-| Magento admin | https://magento.test/admin/ |
-| GraphQL endpoint | https://magento.test/graphql |
+Use Magento offline/test payment methods for checkout smoke testing. Add live
+payment-provider setup only when credentials and a safe test account are
+available.
 
 ---
 
-## Project structure
+## Project Structure
 
-```
-Magezon/                   # Magezon Page Builder modules (OSL-3.0 / AFL-3.0)
-magezon-headless-nextjs/   # the headless-Magezon package (GraphQL bridge + renderer)
-storefront/                # Next.js 16 storefront
-  src/lib/                 #   GraphQL transport, queries, cart/auth server actions
-  src/lib/magezon/         #   48-element JSON-to-React page-builder renderer
-  src/components/          #   Header, ProductCard, Gallery, AddToCart …
-  src/app/                 #   routes (home, category, product, cart, checkout, account …)
-bin/  compose.*.yaml  env/ # Dockerized Magento 2.4.9 backend (docker-magento)
+```text
+Magezon/                   Magezon Page Builder modules
+magezon-headless-nextjs/   Magento bridge module + renderer source
+storefront/                Next.js storefront
+  src/app/                 App Router routes
+  src/components/          Product, cart, account, checkout UI
+  src/lib/                 GraphQL transport, queries, actions
+  src/lib/magezon/         Page Builder JSON-to-React renderer
+docker/app/                Headless nginx fragments
+env/                       Container environment files
+bin/                       markshust/docker-magento helper scripts
+compose*.yaml              Docker Compose stack
+HEADLESS.md                Public/private topology notes
+SETUP.md                   Full install and troubleshooting guide
 ```
 
-> **Note:** the Magento install itself (`src/`) is not committed (it is large and
-> must be downloaded via Composer) — recreate it with the steps above. The
-> Magezon modules under `Magezon/` are included (their `composer.json` declares
-> OSL-3.0 / AFL-3.0).
+The Magento application under `src/` is large and normally recreated with
+`bin/download` and Composer. The Page Builder modules in `Magezon/` are included
+for local setup.
 
 ---
 
-Built with Magento Open Source, Next.js, and Magezon Page Builder.
+## Documentation
+
+- [SETUP.md](SETUP.md): installation, homepage import, verification, debugging.
+- [HEADLESS.md](HEADLESS.md): isolation topology and rationale.
+- [BLUEPRINT.md](BLUEPRINT.md): project planning notes and larger feature map.

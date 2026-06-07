@@ -37,6 +37,7 @@ services:
     volumes:
       - ./storefront:/app
       - /app/node_modules
+      - /app/.next
     depends_on:
       - app
     restart: unless-stopped

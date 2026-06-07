@@ -9,6 +9,11 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1 \
     NODE_ENV=development
 
+# Provide wget for in-network smoke tests from the storefront container.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends wget \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install dependencies first for better layer caching.
 COPY package.json package-lock.json ./
 RUN npm ci

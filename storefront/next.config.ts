@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["magento.test"],
   images: {
     // Product/category media is served absolute from Magento, e.g.
     // https://magento.test/media/catalog/product/cache/.../foo.jpg
