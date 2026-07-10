@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
 
-// Next's Manifest type doesn't know scope_extensions yet (W3C draft).
+// Next's Manifest type doesn't know these members yet (W3C drafts / vendor).
 type ManifestWithExtensions = MetadataRoute.Manifest & {
   scope_extensions?: { type: string; origin: string }[];
+  edge_side_panel?: { preferred_width: number };
 };
 
 // Served at /manifest.webmanifest (auto-linked in <head> by Next). Relative
@@ -40,6 +41,10 @@ export default function manifest(): MetadataRoute.Manifest {
     // Parent brand origin (docs/courses live on *.mageforge.io). Takes real
     // effect only if that origin serves .well-known/web-app-origin-association.
     scope_extensions: [{ type: "origin", origin: "https://mageforge.io" }],
+    // web+luma:<term> deep links open catalog search in the installed app.
+    protocol_handlers: [{ protocol: "web+luma", url: "/search?q=%s" }],
+    // The responsive storefront works at side-panel widths (Edge sidebar).
+    edge_side_panel: { preferred_width: 400 },
     launch_handler: { client_mode: "navigate-existing" },
     icons: [
       // purpose is spelled out even though "any" is the default — PWABuilder's
