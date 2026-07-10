@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildProductFilter, buildSort } from "./filters.ts";
+import { buildProductFilter, buildSort, decodeHtmlEntities } from "./filters.ts";
 
 test("buildProductFilter: category + attribute + price", () => {
   const f = buildProductFilter(
@@ -23,4 +23,17 @@ test("buildSort: maps fields/direction", () => {
   assert.deepEqual(buildSort("name_ASC"), { name: "ASC" });
   assert.deepEqual(buildSort(""), {});
   assert.deepEqual(buildSort(undefined), {});
+});
+
+test("decodeHtmlEntities: named, numeric, and passthrough", () => {
+  assert.equal(
+    decodeHtmlEntities("Cocona&reg; performance fabric"),
+    "Cocona® performance fabric",
+  );
+  assert.equal(decodeHtmlEntities("Tees &amp; Tanks"), "Tees & Tanks");
+  assert.equal(decodeHtmlEntities("&quot;Zip&quot; &apos;Up&apos;"), "\"Zip\" 'Up'");
+  assert.equal(decodeHtmlEntities("&#174; &#x2122;"), "® ™");
+  // unknown/malformed entities pass through untouched
+  assert.equal(decodeHtmlEntities("&bogus; &#; A&B"), "&bogus; &#; A&B");
+  assert.equal(decodeHtmlEntities("plain label"), "plain label");
 });

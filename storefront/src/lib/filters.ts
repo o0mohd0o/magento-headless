@@ -56,3 +56,37 @@ export const HIDDEN_FACETS = new Set([
   "category_id",
   "price_buckets",
 ]);
+
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: "&",
+  lt: "<",
+  gt: ">",
+  quot: '"',
+  apos: "'",
+  nbsp: " ",
+  reg: "®",
+  trade: "™",
+  copy: "©",
+  deg: "°",
+};
+
+/**
+ * Magento attribute/option labels arrive HTML-encoded (e.g. the Luma
+ * material facet "Cocona&reg; performance fabric"). React escapes output,
+ * so entities render literally unless decoded here. Handles the named
+ * entities Magento emits plus numeric forms; unknown entities pass through.
+ */
+export function decodeHtmlEntities(s: string): string {
+  return s.replace(/&(#[xX]?[0-9a-fA-F]+|[a-zA-Z]+);/g, (match, body: string) => {
+    if (body[0] === "#") {
+      const code =
+        body[1] === "x" || body[1] === "X"
+          ? parseInt(body.slice(2), 16)
+          : parseInt(body.slice(1), 10);
+      return Number.isFinite(code) && code > 0 && code <= 0x10ffff
+        ? String.fromCodePoint(code)
+        : match;
+    }
+    return NAMED_ENTITIES[body] ?? match;
+  });
+}

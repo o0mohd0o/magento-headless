@@ -1,7 +1,12 @@
 import "server-only";
 import { magentoFetch } from "./magento";
 import { CATEGORY_INFO, PLP_PRODUCTS } from "./queries";
-import { buildProductFilter, buildSort, type SearchParamsObj } from "./filters";
+import {
+  buildProductFilter,
+  buildSort,
+  decodeHtmlEntities,
+  type SearchParamsObj,
+} from "./filters";
 import type { Aggregation, Category, PageInfo, Product } from "./types";
 
 export type CategoryInfo = Category & {
@@ -65,7 +70,16 @@ export async function getPlp(opts: {
       items: products.items,
       totalCount: products.total_count,
       pageInfo: products.page_info,
-      aggregations: products.aggregations ?? [],
+      // Facet labels come back HTML-encoded ("Cocona&reg; …") — decode once
+      // here so every consumer (sidebar, active-filter chips) renders clean.
+      aggregations: (products.aggregations ?? []).map((agg) => ({
+        ...agg,
+        label: decodeHtmlEntities(agg.label),
+        options: agg.options.map((o) => ({
+          ...o,
+          label: decodeHtmlEntities(o.label),
+        })),
+      })),
     };
   } catch {
     return {
