@@ -68,6 +68,19 @@ const NAMED_ENTITIES: Record<string, string> = {
   trade: "™",
   copy: "©",
   deg: "°",
+  frac14: "¼",
+  frac12: "½",
+  frac34: "¾",
+  ndash: "–",
+  mdash: "—",
+  hellip: "…",
+  lsquo: "‘",
+  rsquo: "’",
+  ldquo: "“",
+  rdquo: "”",
+  middot: "·",
+  bull: "•",
+  times: "×",
 };
 
 /**
@@ -77,7 +90,7 @@ const NAMED_ENTITIES: Record<string, string> = {
  * entities Magento emits plus numeric forms; unknown entities pass through.
  */
 export function decodeHtmlEntities(s: string): string {
-  return s.replace(/&(#[xX]?[0-9a-fA-F]+|[a-zA-Z]+);/g, (match, body: string) => {
+  return s.replace(/&(#[xX]?[0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]*);/g, (match, body: string) => {
     if (body[0] === "#") {
       const code =
         body[1] === "x" || body[1] === "X"

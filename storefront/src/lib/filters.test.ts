@@ -33,6 +33,7 @@ test("decodeHtmlEntities: named, numeric, and passthrough", () => {
   assert.equal(decodeHtmlEntities("Tees &amp; Tanks"), "Tees & Tanks");
   assert.equal(decodeHtmlEntities("&quot;Zip&quot; &apos;Up&apos;"), "\"Zip\" 'Up'");
   assert.equal(decodeHtmlEntities("&#174; &#x2122;"), "® ™");
+  assert.equal(decodeHtmlEntities("&frac14; zip"), "¼ zip");
   // unknown/malformed entities pass through untouched
   assert.equal(decodeHtmlEntities("&bogus; &#; A&B"), "&bogus; &#; A&B");
   assert.equal(decodeHtmlEntities("plain label"), "plain label");
