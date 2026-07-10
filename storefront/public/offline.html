@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#4f46e5" />
+    <title>Offline · Luma Headless</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        color: #111827;
+        text-align: center;
+        padding: 24px;
+      }
+      .mark {
+        width: 72px;
+        height: 72px;
+        border-radius: 18px;
+        background: #4f46e5;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+      }
+      h1 { font-size: 1.5rem; margin-bottom: 8px; }
+      p { color: #6b7280; font-size: 0.95rem; margin-bottom: 24px; }
+      .ar { direction: rtl; font-size: 0.9rem; }
+      button {
+        background: #4f46e5;
+        color: #fff;
+        border: 0;
+        border-radius: 9999px;
+        padding: 12px 28px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      button:hover { background: #4338ca; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="mark" aria-hidden="true">
+        <svg width="44" height="44" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <rect x="146" y="148" width="58" height="216" rx="8" fill="#ffffff" />
+          <rect x="146" y="306" width="150" height="58" rx="8" fill="#ffffff" />
+          <circle cx="336" cy="335" r="30" fill="#c7d2fe" />
+        </svg>
+      </div>
+      <h1>You&rsquo;re offline</h1>
+      <p>
+        Luma Headless needs a connection to load the live catalog.<br />
+        <span class="ar">لا يوجد اتصال بالإنترنت — أعد المحاولة عند عودة الاتصال.</span>
+      </p>
+      <button onclick="location.reload()">Try again</button>
+    </main>
+  </body>
+</html>
