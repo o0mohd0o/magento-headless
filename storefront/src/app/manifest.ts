@@ -5,6 +5,7 @@ import { SITE_URL } from "@/lib/seo";
 type ManifestWithExtensions = MetadataRoute.Manifest & {
   scope_extensions?: { type: string; origin: string }[];
   edge_side_panel?: { preferred_width: number };
+  note_taking?: { new_note_url: string };
 };
 
 // Served at /manifest.webmanifest (auto-linked in <head> by Next). Relative
@@ -45,6 +46,12 @@ export default function manifest(): MetadataRoute.Manifest {
     protocol_handlers: [{ protocol: "web+luma", url: "/search?q=%s" }],
     // The responsive storefront works at side-panel widths (Edge sidebar).
     edge_side_panel: { preferred_width: 400 },
+    // Opening a .lumalist shopping-list file lands on /list (launchQueue).
+    file_handlers: [
+      { action: "/list", accept: { "application/json": [".lumalist"] } },
+    ],
+    // OS "new note" actions open a fresh local shopping note.
+    note_taking: { new_note_url: "/notes?new=1" },
     launch_handler: { client_mode: "navigate-existing" },
     icons: [
       // purpose is spelled out even though "any" is the default — PWABuilder's

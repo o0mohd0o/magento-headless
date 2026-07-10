@@ -1,0 +1,8 @@
+{
+  "name": "Weekend training kit",
+  "items": [
+    { "sku": "WH01", "label": "Miko Pullover Hoodie", "qty": 1 },
+    { "sku": "MSH06", "label": "Lono Yoga Short", "qty": 2 },
+    { "sku": "24-MB02", "label": "Fusion Backpack", "qty": 1 }
+  ]
+}
