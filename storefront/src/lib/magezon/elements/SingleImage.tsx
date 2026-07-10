@@ -34,8 +34,8 @@ export function SingleImage({ element, ctx }: MagezonElementProps) {
   const contentPosition = str(element.content_position);
   const hoverEffect = str(element.image_hover_effect);
   const hoverImage = element.hover_image ? mediaUrl(element.hover_image, ctx) : '';
-  const overlayColor = element.overlay_color;
-  const hoverOverlayColor = element.hover_overlay_color;
+  const overlayColor = str(element.overlay_color);
+  const hoverOverlayColor = str(element.hover_overlay_color);
   const responsive = str(element.responsive_images) === 'custom';
 
   const tablet = element.tablet_image ? mediaUrl(element.tablet_image, ctx) : '';

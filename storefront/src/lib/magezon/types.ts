@@ -35,6 +35,9 @@ export interface MagezonContent {
   has_pagebuilder: boolean;
   /** JSON string of `{ elements: [...] }`, or null. Parse with parseProfile(). */
   profile_json: string | null;
+  /** Last-saved timestamp when the resolver exposes it; used by the admin
+   *  preview poller for change detection. */
+  updated_at?: string | null;
   media_base_url: string | null;
   raw_html: string | null;
 }

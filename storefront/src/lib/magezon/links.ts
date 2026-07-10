@@ -32,8 +32,8 @@ export function getLinkParams(data: unknown): MagezonLink {
   }
 
   // Normalize "true"/"false" strings to 0/1 like the PHP does.
-  params.blank = params.blank === 'true' || params.blank === true || params.blank === 1 ? 1 : 0;
-  params.nofollow = params.nofollow === 'true' || params.nofollow === true || params.nofollow === 1 ? 1 : 0;
+  params.blank = String(params.blank) === 'true' || params.blank === 1 ? 1 : 0;
+  params.nofollow = String(params.nofollow) === 'true' || params.nofollow === 1 ? 1 : 0;
 
   return params;
 }
