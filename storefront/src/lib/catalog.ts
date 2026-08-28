@@ -35,6 +35,33 @@ export type PlpResult = {
   aggregations: Aggregation[];
 };
 
+/**
+ * Build PLP variables, omitting anything empty.
+ *
+ * Magento's products resolver throws a generic "Internal server error" when a
+ * nullable argument is supplied as an EXPLICIT null; leaving the variable out
+ * entirely is the supported way to say "not provided". Category pages always
+ * carry a filter, which is why only search hit this. `position` sorting also
+ * needs a category context, so search falls back to relevance.
+ */
+function buildPlpVariables(o: {
+  search?: string;
+  filter: Record<string, unknown>;
+  sort: Record<string, "ASC" | "DESC">;
+  pageSize: number;
+  page: number;
+}): Record<string, unknown> {
+  const vars: Record<string, unknown> = {
+    pageSize: o.pageSize,
+    currentPage: o.page,
+  };
+  if (o.search) vars.search = o.search;
+  if (Object.keys(o.filter).length) vars.filter = o.filter;
+  if (Object.keys(o.sort).length) vars.sort = o.sort;
+  else vars.sort = o.search ? { relevance: "DESC" } : { position: "ASC" };
+  return vars;
+}
+
 export async function getPlp(opts: {
   categoryUid?: string;
   search?: string;
@@ -55,14 +82,7 @@ export async function getPlp(opts: {
         items: Product[];
       };
     }>(PLP_PRODUCTS, {
-      variables: {
-        search: search || null,
-        filter: Object.keys(filter).length ? filter : null,
-        // Magento rejects a null sort — default to catalog position.
-        sort: Object.keys(sort).length ? sort : { position: "ASC" },
-        pageSize,
-        currentPage: page,
-      },
+      variables: buildPlpVariables({ search, filter, sort, pageSize, page }),
       revalidate: 60,
       tags: ["catalog"],
     });
@@ -81,7 +101,9 @@ export async function getPlp(opts: {
         })),
       })),
     };
-  } catch {
+  } catch (e) {
+    // Never swallow silently — a failure here renders an empty catalogue.
+    console.error("getPlp failed", { search, categoryUid, page }, e);
     return {
       items: [],
       totalCount: 0,
