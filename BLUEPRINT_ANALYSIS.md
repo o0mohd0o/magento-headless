@@ -5,6 +5,21 @@ Method: static reading of `storefront/src` (about 27,700 lines of TS/TSX across 
 against the 204-feature ledger in `BLUEPRINT.md`. No Magento instance was reachable from
 this session, so every grade below is "present and wired in code", not "verified at runtime".
 
+## 0. Implemented on 2026-11-04
+
+The recommendations in section 7 were actioned on this branch:
+
+- **Section 8 of `BLUEPRINT.md` retired**; sections 1 to 7 kept under a dated banner. `STATUS.md` holds the regraded ledger and the open-work list.
+- **Revalidation**: tag taxonomy in `lib/revalidate-request.ts`, `revalidateTag(tag, "max")` helpers in `lib/revalidate.ts`, per-product tags on PDP reads, and a bearer-authenticated `POST /api/revalidate` webhook. The layout-wide purge now lives in one function.
+- **Errors**: `lib/errors.ts` with `cleanMessage()`, `fail()`, `ActionResult`, `FormState`. The five duplicated helpers are gone; auth errors, reCAPTCHA failures and outages map to user copy.
+- **Config gating**: cancel-order button reads `storeConfig.order_cancellation_enabled`. Store/currency switcher is a working client component backed by cookies, validated Server Actions, and `Store` / `Content-Currency` headers in `magentoFetch` (which also scopes the fetch cache).
+- **Virtual carts**: `CHECKOUT_CART` reads `billing_address`; `deriveCheckoutState()` skips shipping for `is_virtual`; a billing step with "same as shipping" or a separate address form was added, backed by a new `setBillingAddressOnCart` mutation.
+- **reCAPTCHA**: `useRecaptcha()` hook and `RecaptchaField` component mint v3 tokens; login, register, place-order, contact, newsletter and review actions forward them as `X-ReCaptcha`. Everything is a no-op while Magento reports `is_enabled: false`.
+- **Tests**: 18 new unit tests (22 total) covering error normalisation, checkout gating for guest/customer/physical/virtual carts, `placeOrder` interpretation, and webhook validation. `tsc --noEmit` and `next build` pass.
+- **Cleanup**: unused Magento compare-list operations removed from `queries.ts`; `storefront/README.md` replaced; stale `sellerCatalogConfig` comment removed from `next.config.ts`; `REVALIDATE_SECRET` documented in `env/storefront.env`.
+
+Not done, and why: `typescript-operations` codegen needs a reachable Magento schema; a CSP needs the Magezon embed origins enumerated first; the critical-path browser test needs a running stack. All three are listed in `STATUS.md`.
+
 ## 1. Verdict
 
 `BLUEPRINT.md` is a snapshot of the storefront as it existed in the initial commit

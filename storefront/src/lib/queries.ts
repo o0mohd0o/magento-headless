@@ -23,6 +23,7 @@ export const STORE_CONFIG = /* GraphQL */ `
       base_currency_code
       base_media_url
       locale
+      order_cancellation_enabled
     }
   }
 `;
@@ -338,27 +339,6 @@ export const ROUTE_RESOLVER = /* GraphQL */ `
 
 /* ---------- Compare ---------- */
 
-const COMPARE_FIELDS = `
-  uid
-  item_count
-  attributes { code label }
-  items {
-    uid
-    product {
-      uid sku name url_key
-      small_image { url label }
-      price_range { minimum_price { final_price { value currency } } }
-    }
-    attributes { code value }
-  }
-`;
-
-export const COMPARE_LIST = /* GraphQL */ `
-  query CompareList($uid: ID!) {
-    compareList(uid: $uid) { ${COMPARE_FIELDS} }
-  }
-`;
-
 /**
  * Cookie-based compare (Magento's guest compareList is broken on this instance —
  * catalog_compare_item never populates). We store SKUs in a cookie and build
@@ -377,28 +357,6 @@ export const COMPARE_PRODUCTS = /* GraphQL */ `
         price_range { minimum_price { final_price { value currency } } }
         description { html }
       }
-    }
-  }
-`;
-
-export const CREATE_COMPARE_LIST = /* GraphQL */ `
-  mutation CreateCompareList($productUid: ID!) {
-    createCompareList(input: { products: [$productUid] }) { uid item_count }
-  }
-`;
-
-export const ADD_TO_COMPARE = /* GraphQL */ `
-  mutation AddToCompare($uid: ID!, $productUid: ID!) {
-    addProductsToCompareList(input: { uid: $uid, products: [$productUid] }) {
-      uid item_count
-    }
-  }
-`;
-
-export const REMOVE_FROM_COMPARE = /* GraphQL */ `
-  mutation RemoveFromCompare($uid: ID!, $productUid: ID!) {
-    removeProductsFromCompareList(input: { uid: $uid, products: [$productUid] }) {
-      uid item_count
     }
   }
 `;
@@ -681,6 +639,16 @@ export const CHECKOUT_CART = /* GraphQL */ `
           amount { value currency }
         }
       }
+      billing_address {
+        firstname
+        lastname
+        street
+        city
+        postcode
+        telephone
+        region { code label }
+        country { code }
+      }
       available_payment_methods { code title }
       selected_payment_method { code title }
       prices {
@@ -735,6 +703,19 @@ export const SET_BILLING_SAME_AS_SHIPPING = /* GraphQL */ `
       input: { cart_id: $cartId, billing_address: { same_as_shipping: true } }
     ) {
       cart {
+        available_payment_methods { code title }
+      }
+    }
+  }
+`;
+
+export const SET_BILLING_ADDRESS = /* GraphQL */ `
+  mutation SetBillingAddress($cartId: String!, $address: CartAddressInput!) {
+    setBillingAddressOnCart(
+      input: { cart_id: $cartId, billing_address: { address: $address } }
+    ) {
+      cart {
+        billing_address { city }
         available_payment_methods { code title }
       }
     }

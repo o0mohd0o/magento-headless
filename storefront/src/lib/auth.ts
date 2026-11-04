@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import { magentoFetch } from "./magento";
 import {
   CREATE_CUSTOMER,
@@ -20,6 +19,9 @@ import {
   getCustomerToken,
   getGuestCartId,
 } from "./cart-cookies";
+import { cleanMessage } from "./errors";
+import { recaptchaTokenFrom } from "./recaptcha";
+import { revalidateSession } from "./revalidate";
 
 // Magento customer tokens live ~1 hour by default.
 const TOKEN_MAX_AGE = 60 * 60;
@@ -59,10 +61,6 @@ async function mergeGuestCart(token: string) {
 
 export type AuthState = { error?: string };
 
-function cleanMessage(e: unknown): string {
-  return (e as Error).message.replace(/^Magento GraphQL (error|HTTP \d+): /, "");
-}
-
 export async function loginAction(
   _prev: AuthState,
   formData: FormData,
@@ -72,20 +70,31 @@ export async function loginAction(
   if (!email || !password) {
     return { error: "Email and password are required." };
   }
+  const recaptchaToken = recaptchaTokenFrom(formData);
 
   let token: string;
   try {
     const data = await magentoFetch<{
       generateCustomerToken: { token: string };
-    }>(GENERATE_CUSTOMER_TOKEN, { variables: { email, password } });
+    }>(GENERATE_CUSTOMER_TOKEN, {
+      variables: { email, password },
+      recaptchaToken,
+    });
     token = data.generateCustomerToken.token;
-  } catch {
-    return { error: "Invalid email or password." };
+  } catch (e) {
+    // Magento's wrong-credentials message names the account; keep it generic,
+    // but let reCAPTCHA / outage copy through so the shopper knows what to do.
+    const msg = cleanMessage(e);
+    return {
+      error: /sign-in was incorrect|not authorized|session has expired/i.test(msg)
+        ? "Invalid email or password."
+        : msg,
+    };
   }
 
   await setTokenCookie(token);
   await mergeGuestCart(token);
-  revalidatePath("/", "layout");
+  revalidateSession();
   redirect("/account");
 }
 
@@ -100,6 +109,7 @@ export async function registerAction(
   if (!firstname || !lastname || !email || !password) {
     return { error: "All fields are required." };
   }
+  const recaptchaToken = recaptchaTokenFrom(formData);
 
   // Friendly pre-check so we can say "email taken" before attempting creation.
   try {
@@ -116,6 +126,7 @@ export async function registerAction(
   try {
     await magentoFetch(CREATE_CUSTOMER, {
       variables: { firstname, lastname, email, password },
+      recaptchaToken,
     });
   } catch (e) {
     return { error: cleanMessage(e) };
@@ -134,7 +145,7 @@ export async function registerAction(
 
   await setTokenCookie(token);
   await mergeGuestCart(token);
-  revalidatePath("/", "layout");
+  revalidateSession();
   redirect("/account");
 }
 
@@ -145,7 +156,10 @@ export async function requestPasswordResetAction(
   const email = String(formData.get("email") ?? "").trim();
   if (!email) return { error: "Email is required." };
   try {
-    await magentoFetch(REQUEST_PASSWORD_RESET, { variables: { email } });
+    await magentoFetch(REQUEST_PASSWORD_RESET, {
+      variables: { email },
+      recaptchaToken: recaptchaTokenFrom(formData),
+    });
     return { sent: true };
   } catch {
     // Magento returns success regardless to avoid email enumeration; treat as sent.
@@ -185,6 +199,6 @@ export async function logoutAction() {
   const store = await cookies();
   store.delete(CUSTOMER_TOKEN_COOKIE);
   store.delete(GUEST_CART_COOKIE);
-  revalidatePath("/", "layout");
+  revalidateSession();
   redirect("/");
 }

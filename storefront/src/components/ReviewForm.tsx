@@ -2,18 +2,23 @@
 
 import { useActionState, useState } from "react";
 import { createReviewAction, type ReviewState } from "@/lib/review-actions";
+import RecaptchaField from "@/components/recaptcha/RecaptchaField";
 
 const inputClass =
   "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100";
 
 export default function ReviewForm({
   sku,
+  urlKey,
   ratingId,
   ratingValues,
+  recaptchaSiteKey = null,
 }: {
   sku: string;
+  urlKey: string;
   ratingId: string;
   ratingValues: { value_id: string; value: string }[];
+  recaptchaSiteKey?: string | null;
 }) {
   const [state, action, pending] = useActionState<ReviewState, FormData>(
     createReviewAction,
@@ -35,7 +40,9 @@ export default function ReviewForm({
 
   return (
     <form action={action} className="max-w-lg space-y-3">
+      <RecaptchaField siteKey={recaptchaSiteKey} action="product_review" />
       <input type="hidden" name="sku" value={sku} />
+      <input type="hidden" name="urlKey" value={urlKey} />
       <input type="hidden" name="ratingId" value={ratingId} />
       <input type="hidden" name="valueId" value={valueIdFor(stars)} />
 
@@ -60,7 +67,11 @@ export default function ReviewForm({
       <input name="summary" required placeholder="Review summary" className={inputClass} />
       <textarea name="text" required rows={3} placeholder="Your review" className={inputClass} />
 
-      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
+      {state.error && (
+        <p role="alert" className="text-sm text-red-600">
+          {state.error}
+        </p>
+      )}
 
       <button
         disabled={pending}

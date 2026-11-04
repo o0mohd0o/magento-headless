@@ -5,9 +5,11 @@ import type { ProductDetail, ReviewMetadata } from "@/lib/types";
 export default function ReviewsSection({
   product,
   metadata,
+  recaptchaSiteKey = null,
 }: {
   product: ProductDetail;
   metadata: ReviewMetadata | null;
+  recaptchaSiteKey?: string | null;
 }) {
   const reviews = product.reviews?.items ?? [];
   const count = product.review_count ?? 0;
@@ -50,8 +52,10 @@ export default function ReviewsSection({
           </h3>
           <ReviewForm
             sku={product.sku}
+            urlKey={product.url_key}
             ratingId={metadata.id}
             ratingValues={metadata.values}
+            recaptchaSiteKey={recaptchaSiteKey}
           />
         </div>
       )}

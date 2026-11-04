@@ -3,11 +3,10 @@
 import { magentoFetch } from "./magento";
 import { CONTACT_US, SEND_EMAIL_TO_FRIEND, SUBSCRIBE_NEWSLETTER } from "./queries";
 
-export type FormResult = { ok?: boolean; error?: string; message?: string };
+import { cleanMessage as clean, type FormState } from "./errors";
+import { recaptchaTokenFrom } from "./recaptcha";
 
-function clean(e: unknown): string {
-  return (e as Error).message.replace(/^Magento GraphQL (error|HTTP \d+): /, "");
-}
+export type FormResult = FormState;
 
 export async function subscribeNewsletterAction(
   _prev: FormResult,
@@ -16,7 +15,10 @@ export async function subscribeNewsletterAction(
   const email = String(formData.get("email") ?? "").trim();
   if (!email) return { error: "Email is required." };
   try {
-    await magentoFetch(SUBSCRIBE_NEWSLETTER, { variables: { email } });
+    await magentoFetch(SUBSCRIBE_NEWSLETTER, {
+      variables: { email },
+      recaptchaToken: recaptchaTokenFrom(formData),
+    });
     return { ok: true, message: "You're subscribed!" };
   } catch (e) {
     return { error: clean(e) };
@@ -37,6 +39,7 @@ export async function contactUsAction(
   try {
     await magentoFetch(CONTACT_US, {
       variables: { name, email, comment, telephone },
+      recaptchaToken: recaptchaTokenFrom(formData),
     });
     return { ok: true, message: "Thanks — we'll be in touch shortly." };
   } catch (e) {
@@ -74,6 +77,7 @@ export async function emailToFriendAction(
         recipientName,
         recipientEmail,
       },
+      recaptchaToken: recaptchaTokenFrom(formData),
     });
     return { ok: true, message: "Sent!" };
   } catch (e) {

@@ -1,7 +1,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
 import { magentoFetch } from "./magento";
 import {
   ADD_PRODUCTS_TO_CART,
@@ -20,6 +19,8 @@ import {
   resolveCartContext,
 } from "./cart-cookies";
 import type { UserError } from "./types";
+import { NO_CART, cleanMessage, fail, type ActionResult } from "./errors";
+import { revalidateCartViews } from "./revalidate";
 
 type WritableCart = { token?: string; cartId: string };
 
@@ -79,8 +80,7 @@ export async function addToCartAction(
       token,
     });
 
-    revalidatePath("/", "layout");
-    revalidatePath("/cart");
+    revalidateCartViews();
     return {
       ok: addProductsToCart.user_errors.length === 0,
       errors: addProductsToCart.user_errors,
@@ -88,7 +88,7 @@ export async function addToCartAction(
   } catch (e) {
     return {
       ok: false,
-      errors: [{ code: "EXCEPTION", message: (e as Error).message }],
+      errors: [{ code: "EXCEPTION", message: cleanMessage(e) }],
     };
   }
 }
@@ -111,82 +111,80 @@ export async function addGroupedAction(
       },
       token,
     });
-    revalidatePath("/", "layout");
-    revalidatePath("/cart");
+    revalidateCartViews();
     return {
       ok: addProductsToCart.user_errors.length === 0,
       errors: addProductsToCart.user_errors,
     };
   } catch (e) {
-    return { ok: false, errors: [{ code: "EXCEPTION", message: (e as Error).message }] };
+    return { ok: false, errors: [{ code: "EXCEPTION", message: cleanMessage(e) }] };
   }
 }
 
-export async function updateItemQtyAction(uid: string, quantity: number) {
-  const { token, cartId } = await getWritableCart();
-  await magentoFetch(UPDATE_CART_ITEMS, {
-    variables: { cartId, items: [{ cart_item_uid: uid, quantity }] },
-    token,
-  });
-  revalidatePath("/cart");
-  revalidatePath("/", "layout");
+export async function updateItemQtyAction(
+  uid: string,
+  quantity: number,
+): Promise<ActionResult> {
+  try {
+    const { token, cartId } = await getWritableCart();
+    await magentoFetch(UPDATE_CART_ITEMS, {
+      variables: { cartId, items: [{ cart_item_uid: uid, quantity }] },
+      token,
+    });
+    revalidateCartViews();
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
 }
 
-export async function removeItemAction(uid: string) {
-  const { token, cartId } = await getWritableCart();
-  await magentoFetch(REMOVE_ITEM_FROM_CART, {
-    variables: { cartId, uid },
-    token,
-  });
-  revalidatePath("/cart");
-  revalidatePath("/", "layout");
+export async function removeItemAction(uid: string): Promise<ActionResult> {
+  try {
+    const { token, cartId } = await getWritableCart();
+    await magentoFetch(REMOVE_ITEM_FROM_CART, {
+      variables: { cartId, uid },
+      token,
+    });
+    revalidateCartViews();
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
 }
 
-export async function clearCartAction(): Promise<void> {
+export async function clearCartAction(): Promise<ActionResult> {
   const { token, cartId } = await resolveCartContext();
-  if (!cartId) return;
+  if (!cartId) return { ok: true };
   try {
     await magentoFetch(CLEAR_CART, { variables: { cartId }, token });
-  } catch {
-    // ignore
+    revalidateCartViews();
+    return { ok: true };
+  } catch (e) {
+    revalidateCartViews();
+    return fail(e);
   }
-  revalidatePath("/cart");
-  revalidatePath("/", "layout");
 }
 
-export async function applyCouponAction(
-  code: string,
-): Promise<{ ok: boolean; error?: string }> {
+export async function applyCouponAction(code: string): Promise<ActionResult> {
   const { token, cartId } = await resolveCartContext();
-  if (!cartId) return { ok: false, error: "Your cart could not be found." };
+  if (!cartId) return NO_CART;
   try {
     await magentoFetch(APPLY_COUPON, { variables: { cartId, code }, token });
-    revalidatePath("/cart");
-    revalidatePath("/checkout");
+    revalidateCartViews();
     return { ok: true };
   } catch (e) {
-    return {
-      ok: false,
-      error: (e as Error).message.replace(/^Magento GraphQL (error|HTTP \d+): /, ""),
-    };
+    return fail(e);
   }
 }
 
-export async function removeCouponAction(): Promise<{
-  ok: boolean;
-  error?: string;
-}> {
+export async function removeCouponAction(): Promise<ActionResult> {
   const { token, cartId } = await resolveCartContext();
-  if (!cartId) return { ok: false, error: "Your cart could not be found." };
+  if (!cartId) return NO_CART;
   try {
     await magentoFetch(REMOVE_COUPON, { variables: { cartId }, token });
-    revalidatePath("/cart");
-    revalidatePath("/checkout");
+    revalidateCartViews();
     return { ok: true };
   } catch (e) {
-    return {
-      ok: false,
-      error: (e as Error).message.replace(/^Magento GraphQL (error|HTTP \d+): /, ""),
-    };
+    return fail(e);
   }
 }

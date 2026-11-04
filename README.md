@@ -186,4 +186,5 @@ for local setup.
 
 - [SETUP.md](SETUP.md): installation, homepage import, verification, debugging.
 - [HEADLESS.md](HEADLESS.md): isolation topology and rationale.
-- [BLUEPRINT.md](BLUEPRINT.md): project planning notes and larger feature map.
+- [STATUS.md](STATUS.md): feature status ledger and open work.
+- [BLUEPRINT.md](BLUEPRINT.md): original design record (architecture, risks, recommendations).

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getOrder } from "@/lib/account";
+import { getStoreConfig } from "@/lib/store";
 import { formatMoney } from "@/lib/format";
 import ReorderButton from "@/components/account/ReorderButton";
 import CancelOrderButton from "@/components/account/CancelOrderButton";
@@ -21,8 +22,17 @@ export default async function OrderDetailPage({
   params: Promise<{ number: string }>;
 }) {
   const { number } = await params;
-  const order = await getOrder(number);
+  const [order, storeConfig] = await Promise.all([
+    getOrder(number),
+    getStoreConfig(),
+  ]);
   if (!order) notFound();
+  // Sales > Order Cancellation must be enabled in admin, or the mutation
+  // rejects every request; hide the control rather than show a dead button.
+  const canCancel =
+    storeConfig?.order_cancellation_enabled === true &&
+    order.available_actions?.includes("CANCEL") &&
+    !!order.id;
 
   const ship = order.shipping_address;
 
@@ -38,9 +48,7 @@ export default async function OrderDetailPage({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-2xl font-bold text-gray-900">Order #{order.number}</h2>
         <div className="flex items-center gap-2">
-          {order.available_actions?.includes("CANCEL") && order.id && (
-            <CancelOrderButton orderId={order.id} />
-          )}
+          {canCancel && order.id && <CancelOrderButton orderId={order.id} />}
           <ReorderButton number={order.number} />
         </div>
       </div>
