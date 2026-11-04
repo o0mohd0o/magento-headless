@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { revalidateCartViews, revalidateSession } from "./revalidate";
 import { magentoFetch } from "./magento";
 import {
   CANCEL_ORDER,
@@ -21,12 +22,15 @@ import {
   getCustomerToken,
 } from "./cart-cookies";
 
-export type ActionResult = { ok: boolean; error?: string };
-export type FormState = { ok?: boolean; error?: string; message?: string };
+import {
+  SIGN_IN_REQUIRED,
+  cleanMessage as clean,
+  fail,
+  type ActionResult,
+  type FormState,
+} from "./errors";
 
-function clean(e: unknown): string {
-  return (e as Error).message.replace(/^Magento GraphQL (error|HTTP \d+): /, "");
-}
+export type { ActionResult, FormState };
 
 export type CustomerAddressInputData = {
   firstname: string;
@@ -47,7 +51,7 @@ export async function saveAddressAction(
   input: CustomerAddressInputData,
 ): Promise<ActionResult> {
   const token = await getCustomerToken();
-  if (!token) return { ok: false, error: "Please sign in." };
+  if (!token) return SIGN_IN_REQUIRED;
   try {
     if (uid) {
       await magentoFetch(UPDATE_ADDRESS, { variables: { uid, input }, token });
@@ -57,19 +61,19 @@ export async function saveAddressAction(
     revalidatePath("/account/addresses");
     return { ok: true };
   } catch (e) {
-    return { ok: false, error: clean(e) };
+    return fail(e);
   }
 }
 
 export async function deleteAddressAction(uid: string): Promise<ActionResult> {
   const token = await getCustomerToken();
-  if (!token) return { ok: false, error: "Please sign in." };
+  if (!token) return SIGN_IN_REQUIRED;
   try {
     await magentoFetch(DELETE_ADDRESS, { variables: { uid }, token });
     revalidatePath("/account/addresses");
     return { ok: true };
   } catch (e) {
-    return { ok: false, error: clean(e) };
+    return fail(e);
   }
 }
 
@@ -138,7 +142,7 @@ export async function deleteAccountAction(): Promise<void> {
   const store = await cookies();
   store.delete(CUSTOMER_TOKEN_COOKIE);
   store.delete(GUEST_CART_COOKIE);
-  revalidatePath("/", "layout");
+  revalidateSession();
   redirect("/");
 }
 
@@ -147,7 +151,7 @@ export async function cancelOrderAction(
   reason: string,
 ): Promise<ActionResult> {
   const token = await getCustomerToken();
-  if (!token) return { ok: false, error: "Please sign in." };
+  if (!token) return SIGN_IN_REQUIRED;
   try {
     const { cancelOrder } = await magentoFetch<{
       cancelOrder: { error: string | null };
@@ -156,19 +160,18 @@ export async function cancelOrderAction(
     if (cancelOrder.error) return { ok: false, error: cancelOrder.error };
     return { ok: true };
   } catch (e) {
-    return { ok: false, error: clean(e) };
+    return fail(e);
   }
 }
 
 export async function reorderAction(number: string): Promise<ActionResult> {
   const token = await getCustomerToken();
-  if (!token) return { ok: false, error: "Please sign in." };
+  if (!token) return SIGN_IN_REQUIRED;
   try {
     const { reorderItems } = await magentoFetch<{
       reorderItems: { userInputErrors: { message: string }[] };
     }>(REORDER_ITEMS, { variables: { number }, token });
-    revalidatePath("/", "layout");
-    revalidatePath("/cart");
+    revalidateCartViews();
     if (reorderItems.userInputErrors?.length) {
       return {
         ok: true,
@@ -177,6 +180,6 @@ export async function reorderAction(number: string): Promise<ActionResult> {
     }
     return { ok: true };
   } catch (e) {
-    return { ok: false, error: clean(e) };
+    return fail(e);
   }
 }

@@ -5,13 +5,22 @@ import { useRouter } from "next/navigation";
 import AddressForm from "./AddressForm";
 import {
   placeOrderAction,
+  setBillingAddressAction,
+  setBillingSameAsShippingAction,
   setGuestEmailAction,
   setPaymentMethodAction,
   setShippingAddressAction,
   setShippingMethodAction,
 } from "@/lib/checkout-actions";
+import { deriveCheckoutState } from "@/lib/checkout-state";
+import { useRecaptcha } from "@/components/recaptcha/useRecaptcha";
 import { formatMoney } from "@/lib/format";
-import type { AddressInput, CheckoutCart, Country } from "@/lib/types";
+import type {
+  AddressInput,
+  CheckoutAddress,
+  CheckoutCart,
+  Country,
+} from "@/lib/types";
 
 function Step({
   n,
@@ -41,6 +50,34 @@ function Step({
   );
 }
 
+function AddressSummary({ a }: { a: CheckoutAddress }) {
+  return (
+    <address className="not-italic">
+      {a.firstname} {a.lastname}
+      <br />
+      {a.street?.join(", ")}
+      <br />
+      {a.city}
+      {a.region?.label ? `, ${a.region.label}` : ""} {a.postcode}
+      <br />
+      {a.country?.code}
+      {a.telephone ? ` · ${a.telephone}` : ""}
+    </address>
+  );
+}
+
+function sameAddress(a?: CheckoutAddress | null, b?: CheckoutAddress | null) {
+  if (!a || !b) return false;
+  return (
+    a.firstname === b.firstname &&
+    a.lastname === b.lastname &&
+    (a.street ?? []).join("|") === (b.street ?? []).join("|") &&
+    a.city === b.city &&
+    a.postcode === b.postcode &&
+    a.country?.code === b.country?.code
+  );
+}
+
 type Agreement = {
   agreement_id: number;
   name: string;
@@ -54,26 +91,29 @@ export default function CheckoutFlow({
   countries,
   loggedIn,
   agreements = [],
+  recaptchaSiteKey = null,
 }: {
   cart: CheckoutCart;
   countries: Country[];
   loggedIn: boolean;
   agreements?: Agreement[];
+  /** reCAPTCHA v3 site key when Magento has it enabled; null = off. */
+  recaptchaSiteKey?: string | null;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [err, setErr] = useState<string | null>(null);
   const [editAddr, setEditAddr] = useState(false);
+  const [editBilling, setEditBilling] = useState(false);
   const [agreed, setAgreed] = useState<Set<number>>(new Set());
+  const { execute: recaptcha } = useRecaptcha(recaptchaSiteKey);
 
+  const st = deriveCheckoutState(cart, loggedIn);
   const addr = cart.shipping_addresses?.[0];
-  const emailDone = loggedIn || !!cart.email;
-  const addressDone = !!(addr && addr.street?.length && addr.city);
-  const methodDone = !!addr?.selected_shipping_method;
-  const paymentDone = !!cart.selected_payment_method;
+  const billing = cart.billing_address;
+  const billingIsShipping = st.shippingRequired && sameAddress(addr, billing);
   const agreementsOk = agreements.every((a) => agreed.has(a.agreement_id));
-  const canPlace =
-    emailDone && addressDone && methodDone && paymentDone && agreementsOk;
+  const canPlace = st.readyToPlace && agreementsOk;
 
   function run(fn: () => Promise<{ ok: boolean; error?: string }>, after?: () => void) {
     setErr(null);
@@ -93,14 +133,19 @@ export default function CheckoutFlow({
     run(() => setGuestEmailAction(email));
   }
 
-  function submitAddress(a: AddressInput) {
+  function submitShippingAddress(a: AddressInput) {
     run(() => setShippingAddressAction(a), () => setEditAddr(false));
+  }
+
+  function submitBillingAddress(a: AddressInput) {
+    run(() => setBillingAddressAction(a), () => setEditBilling(false));
   }
 
   function place() {
     setErr(null);
     startTransition(async () => {
-      const r = await placeOrderAction();
+      const token = await recaptcha("place_order");
+      const r = await placeOrderAction(token);
       if (r && !r.ok) setErr(r.error ?? "Could not place order.");
       // success redirects server-side
     });
@@ -108,14 +153,16 @@ export default function CheckoutFlow({
 
   const methods = addr?.available_shipping_methods?.filter((m) => m.available) ?? [];
   const payments = cart.available_payment_methods ?? [];
+  // Keep a separately-entered billing address when the shipping method changes.
+  const keepBilling = st.billingDone && !billingIsShipping;
 
   let step = 1;
 
   return (
     <div className="space-y-5">
       {/* 1. Contact */}
-      <Step n={step++} title="Contact" done={emailDone}>
-        {emailDone ? (
+      <Step n={step++} title="Contact" done={st.emailDone}>
+        {st.emailDone ? (
           <p className="text-sm text-gray-600">
             {loggedIn ? "Signed in" : cart.email}
           </p>
@@ -126,6 +173,7 @@ export default function CheckoutFlow({
               type="email"
               required
               placeholder="Email address"
+              aria-label="Email address"
               className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
             />
             <button
@@ -138,21 +186,12 @@ export default function CheckoutFlow({
         )}
       </Step>
 
-      {/* 2. Shipping address */}
-      {emailDone && (
-        <Step n={step++} title="Shipping address" done={addressDone && !editAddr}>
-          {addressDone && !editAddr ? (
+      {/* 2. Shipping address (physical carts only) */}
+      {st.emailDone && st.shippingRequired && (
+        <Step n={step++} title="Shipping address" done={st.addressDone && !editAddr}>
+          {st.addressDone && !editAddr && addr ? (
             <div className="flex items-start justify-between text-sm text-gray-700">
-              <address className="not-italic">
-                {addr?.firstname} {addr?.lastname}
-                <br />
-                {addr?.street?.join(", ")}
-                <br />
-                {addr?.city}
-                {addr?.region?.label ? `, ${addr.region.label}` : ""} {addr?.postcode}
-                <br />
-                {addr?.country?.code} · {addr?.telephone}
-              </address>
+              <AddressSummary a={addr} />
               <button
                 onClick={() => setEditAddr(true)}
                 className="text-sm font-medium text-indigo-600 hover:underline"
@@ -165,15 +204,15 @@ export default function CheckoutFlow({
               countries={countries}
               pending={pending}
               error={err}
-              onSubmit={submitAddress}
+              onSubmit={submitShippingAddress}
             />
           )}
         </Step>
       )}
 
-      {/* 3. Delivery method */}
-      {addressDone && !editAddr && (
-        <Step n={step++} title="Delivery method" done={methodDone}>
+      {/* 3. Delivery method (physical carts only) */}
+      {st.shippingRequired && st.addressDone && !editAddr && (
+        <Step n={step++} title="Delivery method" done={st.methodDone}>
           {methods.length === 0 ? (
             <p className="text-sm text-gray-500">
               No shipping methods available for this address.
@@ -197,7 +236,11 @@ export default function CheckoutFlow({
                         name="ship"
                         checked={selected}
                         onChange={() =>
-                          run(() => setShippingMethodAction(m.carrier_code, m.method_code))
+                          run(() =>
+                            setShippingMethodAction(m.carrier_code, m.method_code, {
+                              keepBilling,
+                            }),
+                          )
                         }
                         disabled={pending}
                       />
@@ -214,9 +257,67 @@ export default function CheckoutFlow({
         </Step>
       )}
 
-      {/* 4. Payment */}
-      {methodDone && (
-        <Step n={step++} title="Payment" done={paymentDone}>
+      {/* 4. Billing address: required input for virtual carts, "same as shipping" with override otherwise */}
+      {st.emailDone && st.shippingDone && (
+        <Step n={step++} title="Billing address" done={st.billingDone && !editBilling}>
+          {st.billingDone && !editBilling && billing ? (
+            <div className="flex items-start justify-between text-sm text-gray-700">
+              {billingIsShipping ? (
+                <p className="text-gray-600">Same as shipping address</p>
+              ) : (
+                <AddressSummary a={billing} />
+              )}
+              <div className="flex flex-col items-end gap-1">
+                <button
+                  onClick={() => setEditBilling(true)}
+                  className="text-sm font-medium text-indigo-600 hover:underline"
+                >
+                  {billingIsShipping ? "Use a different address" : "Edit"}
+                </button>
+                {!billingIsShipping && st.shippingRequired && (
+                  <button
+                    onClick={() => run(() => setBillingSameAsShippingAction())}
+                    disabled={pending}
+                    className="text-xs text-gray-500 hover:underline"
+                  >
+                    Use shipping address
+                  </button>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {st.shippingRequired && !st.billingDone && (
+                <button
+                  onClick={() => run(() => setBillingSameAsShippingAction())}
+                  disabled={pending}
+                  className="text-sm font-medium text-indigo-600 hover:underline"
+                >
+                  Same as shipping address
+                </button>
+              )}
+              <AddressForm
+                countries={countries}
+                pending={pending}
+                error={err}
+                onSubmit={submitBillingAddress}
+              />
+              {editBilling && (
+                <button
+                  onClick={() => setEditBilling(false)}
+                  className="text-xs text-gray-500 hover:underline"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
+          )}
+        </Step>
+      )}
+
+      {/* 5. Payment */}
+      {st.paymentReady && !editBilling && (
+        <Step n={step++} title="Payment" done={st.paymentDone}>
           {payments.length === 0 ? (
             <p className="text-sm text-gray-500">No payment methods available.</p>
           ) : (
@@ -259,9 +360,8 @@ export default function CheckoutFlow({
                 onChange={() =>
                   setAgreed((s) => {
                     const n = new Set(s);
-                    n.has(a.agreement_id)
-                      ? n.delete(a.agreement_id)
-                      : n.add(a.agreement_id);
+                    if (n.has(a.agreement_id)) n.delete(a.agreement_id);
+                    else n.add(a.agreement_id);
                     return n;
                   })
                 }
@@ -273,7 +373,11 @@ export default function CheckoutFlow({
         </div>
       )}
 
-      {err && <p className="text-sm text-red-600">{err}</p>}
+      {err && (
+        <p role="alert" className="text-sm text-red-600">
+          {err}
+        </p>
+      )}
 
       <button
         onClick={place}

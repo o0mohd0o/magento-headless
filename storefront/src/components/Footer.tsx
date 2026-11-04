@@ -1,6 +1,7 @@
 import Link from "next/link";
 import NewsletterForm from "./NewsletterForm";
 import StoreSwitcher from "./StoreSwitcher";
+import { getRecaptchaSiteKey } from "@/lib/recaptcha";
 
 const links = [
   { href: "/page/about-us", label: "About us" },
@@ -12,7 +13,8 @@ const links = [
   },
 ];
 
-export default function Footer() {
+export default async function Footer() {
+  const recaptchaSiteKey = await getRecaptchaSiteKey();
   return (
     <footer className="mt-20 border-t border-gray-200 bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 py-10">
@@ -41,7 +43,7 @@ export default function Footer() {
             <p className="mb-2 text-sm font-semibold text-gray-900">
               Newsletter
             </p>
-            <NewsletterForm />
+            <NewsletterForm recaptchaSiteKey={recaptchaSiteKey} />
           </div>
         </div>
         <div className="mt-8 flex items-center justify-between">

@@ -1,46 +1,39 @@
 import { getAvailableStores, getCurrencies } from "@/lib/store";
+import { getRequestStoreContext } from "@/lib/store-context";
+import { STORE_CODE } from "@/lib/magento";
+import StoreSwitcherClient from "./StoreSwitcherClient";
 
 /**
  * Store-view + currency switcher. Renders only when the Magento backend exposes
  * more than one store view or currency; inert (renders nothing) on a
- * single-store / single-currency instance.
+ * single-store / single-currency instance. Selections are stored in httpOnly
+ * cookies and applied as `Store` / `Content-Currency` headers on every
+ * server-side GraphQL call (see lib/magento.ts), which also scopes Next's
+ * fetch cache per store/currency.
  */
 export default async function StoreSwitcher() {
-  const [stores, currencies] = await Promise.all([
+  const [stores, currencies, ctx] = await Promise.all([
     getAvailableStores(),
     getCurrencies(),
+    getRequestStoreContext(),
   ]);
 
   if (stores.length <= 1 && currencies.length <= 1) return null;
 
+  const currentStore = ctx.store ?? STORE_CODE;
+  const currentCurrency =
+    ctx.currency ??
+    stores.find((s) => s.store_code === currentStore)
+      ?.default_display_currency_code ??
+    currencies[0] ??
+    "";
+
   return (
-    <div className="flex items-center gap-2 text-sm text-gray-500">
-      {stores.length > 1 && (
-        <select
-          defaultValue={stores[0].store_code}
-          className="rounded-lg border border-gray-300 px-2 py-1"
-          aria-label="Store view"
-        >
-          {stores.map((s) => (
-            <option key={s.store_code} value={s.store_code}>
-              {s.store_name}
-            </option>
-          ))}
-        </select>
-      )}
-      {currencies.length > 1 && (
-        <select
-          defaultValue={currencies[0]}
-          className="rounded-lg border border-gray-300 px-2 py-1"
-          aria-label="Currency"
-        >
-          {currencies.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-      )}
-    </div>
+    <StoreSwitcherClient
+      stores={stores}
+      currencies={currencies}
+      currentStore={currentStore}
+      currentCurrency={currentCurrency}
+    />
   );
 }

@@ -1,4 +1,5 @@
 import "server-only";
+import { getRequestStoreContext } from "./store-context";
 
 const ENDPOINT = process.env.MAGENTO_GRAPHQL_URL ?? "https://magento.test/graphql";
 const STORE = process.env.MAGENTO_STORE_CODE ?? "default";
@@ -11,8 +12,10 @@ export type MagentoFetchOptions = {
   revalidate?: number;
   /** Cache tags for on-demand revalidation. */
   tags?: string[];
-  /** Override the Store view header. */
+  /** Override the Store view header (defaults to the shopper's cookie, then env). */
   store?: string;
+  /** Override the Content-Currency header (defaults to the shopper's cookie). */
+  currency?: string;
   /** reCAPTCHA token -> X-ReCaptcha header (when the backend has reCAPTCHA on). */
   recaptchaToken?: string;
 };
@@ -30,11 +33,17 @@ export async function magentoFetch<T>(
   query: string,
   opts: MagentoFetchOptions = {},
 ): Promise<T> {
+  // Store view / currency chosen by the shopper. Both travel as request
+  // headers, which also makes them part of Next's fetch cache key, so cached
+  // catalog reads never bleed across store views or currencies.
+  const ctx = await getRequestStoreContext();
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     Accept: "application/json",
-    Store: opts.store ?? STORE,
+    Store: opts.store ?? ctx.store ?? STORE,
   };
+  const currency = opts.currency ?? ctx.currency;
+  if (currency) headers["Content-Currency"] = currency;
   if (opts.token) headers.Authorization = `Bearer ${opts.token}`;
   if (opts.recaptchaToken) headers["X-ReCaptcha"] = opts.recaptchaToken;
 

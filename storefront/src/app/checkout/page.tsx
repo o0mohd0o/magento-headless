@@ -5,17 +5,20 @@ import {
   getCheckoutCart,
   getCountries,
 } from "@/lib/checkout";
+import { getRecaptchaSiteKey } from "@/lib/recaptcha";
 import CheckoutFlow from "@/components/checkout/CheckoutFlow";
 import OrderSummary from "@/components/checkout/OrderSummary";
 
 export const metadata: Metadata = { title: "Checkout" };
 
 export default async function CheckoutPage() {
-  const [{ cart, loggedIn }, countries, agreements] = await Promise.all([
-    getCheckoutCart(),
-    getCountries(),
-    getCheckoutAgreements(),
-  ]);
+  const [{ cart, loggedIn }, countries, agreements, recaptchaSiteKey] =
+    await Promise.all([
+      getCheckoutCart(),
+      getCountries(),
+      getCheckoutAgreements(),
+      getRecaptchaSiteKey(),
+    ]);
 
   if (!cart || !cart.items?.length) redirect("/cart");
 
@@ -29,6 +32,7 @@ export default async function CheckoutPage() {
             countries={countries}
             loggedIn={loggedIn}
             agreements={agreements}
+            recaptchaSiteKey={recaptchaSiteKey}
           />
         </div>
         <OrderSummary cart={cart} />

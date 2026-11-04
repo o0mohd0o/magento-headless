@@ -2,8 +2,13 @@
 
 import { useActionState } from "react";
 import { subscribeNewsletterAction } from "@/lib/comms-actions";
+import RecaptchaField from "@/components/recaptcha/RecaptchaField";
 
-export default function NewsletterForm() {
+export default function NewsletterForm({
+  recaptchaSiteKey = null,
+}: {
+  recaptchaSiteKey?: string | null;
+}) {
   const [state, action, pending] = useActionState(subscribeNewsletterAction, {});
 
   if (state.ok) {
@@ -12,6 +17,7 @@ export default function NewsletterForm() {
 
   return (
     <form action={action} className="flex max-w-xs gap-2">
+      <RecaptchaField siteKey={recaptchaSiteKey} action="newsletter" />
       <input
         name="email"
         type="email"
@@ -25,7 +31,11 @@ export default function NewsletterForm() {
       >
         {pending ? "…" : "Subscribe"}
       </button>
-      {state.error && <p className="text-xs text-red-600">{state.error}</p>}
+      {state.error && (
+        <p role="alert" className="text-xs text-red-600">
+          {state.error}
+        </p>
+      )}
     </form>
   );
 }

@@ -7,6 +7,8 @@ export type StoreConfig = {
   base_currency_code: string;
   base_media_url: string;
   locale: string;
+  /** Admin: Sales > Order Cancellation. Gates the customer "Cancel order" UI. */
+  order_cancellation_enabled?: boolean | null;
 };
 
 export async function getStoreConfig(): Promise<StoreConfig | null> {

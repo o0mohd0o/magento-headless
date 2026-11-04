@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { revalidateCartViews } from "./revalidate";
+import { fail } from "./errors";
 import { magentoFetch } from "./magento";
 import {
   ADD_TO_WISHLIST,
@@ -15,10 +17,6 @@ export type WishlistResult = {
   error?: string;
   needLogin?: boolean;
 };
-
-function clean(e: unknown): string {
-  return (e as Error).message.replace(/^Magento GraphQL (error|HTTP \d+): /, "");
-}
 
 async function wishlistId(token: string): Promise<string | null> {
   try {
@@ -47,7 +45,7 @@ export async function addToWishlistAction(sku: string): Promise<WishlistResult> 
     revalidatePath("/", "layout");
     return { ok: true };
   } catch (e) {
-    return { ok: false, error: clean(e) };
+    return fail(e);
   }
 }
 
@@ -67,7 +65,7 @@ export async function removeFromWishlistAction(
     revalidatePath("/", "layout");
     return { ok: true };
   } catch (e) {
-    return { ok: false, error: clean(e) };
+    return fail(e);
   }
 }
 
@@ -88,10 +86,9 @@ export async function moveWishlistItemToCartAction(
     const errs = addWishlistItemsToCart.add_wishlist_items_to_cart_user_errors;
     if (errs?.length) return { ok: false, error: errs[0].message };
     revalidatePath("/wishlist");
-    revalidatePath("/cart");
-    revalidatePath("/", "layout");
+    revalidateCartViews();
     return { ok: true };
   } catch (e) {
-    return { ok: false, error: clean(e) };
+    return fail(e);
   }
 }

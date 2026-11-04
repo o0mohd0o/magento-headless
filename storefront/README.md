@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# storefront
 
-## Getting Started
+Next.js 16 (App Router, React 19, TypeScript, Tailwind v4) storefront for the
+headless Magento 2.4.9 backend in the parent repository.
 
-First, run the development server:
+Start here:
+
+- [../README.md](../README.md) — what the project is and the public/private split.
+- [../SETUP.md](../SETUP.md) — full install path (Docker, mkcert, Magento, storefront).
+- [../HEADLESS.md](../HEADLESS.md) — network isolation design.
+- [../STATUS.md](../STATUS.md) — feature status and open work.
+- [AGENTS.md](AGENTS.md) — this Next.js build differs from stock; read
+  `node_modules/next/dist/docs/` before touching metadata, caching or image APIs.
+
+## Scripts
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev        # next dev on :3000 (inside Docker it is reached via the app front-door)
+npm run build      # production build
+npm run start      # serve the production build
+npm run lint       # eslint
+npm run test       # node --test over src/lib/*.test.ts (pure modules, no network)
+npm run test:e2e   # HTTP smoke checks against a running stack (e2e.test.ts)
+npm run codegen    # regenerate src/lib/gql-schema.generated.ts from the live schema
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Layout
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Path | Purpose |
+| --- | --- |
+| `src/app` | Routes. `[...slug]` is the Magento URL-rewrite catch-all. |
+| `src/lib/magento.ts` | Server-only GraphQL transport: Store / Content-Currency / X-ReCaptcha headers, fetch-cache tags. |
+| `src/lib/queries.ts` | Hand-written GraphQL documents. |
+| `src/lib/*-actions.ts` | Server Actions. All return `ActionResult` or `FormState` from `src/lib/errors.ts`. |
+| `src/lib/revalidate.ts` | Cache tag taxonomy and the single place that purges cart/session views. |
+| `src/app/api/revalidate` | Bearer-authenticated webhook for on-demand tag revalidation. |
+| `src/components/recaptcha` | reCAPTCHA v3 token minting; a no-op while Magento has it disabled. |
+| `src/lib/magezon` | Magezon Page Builder renderer. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See `../env/storefront.env`. `MAGENTO_GRAPHQL_URL` is the private GraphQL
+listener; `NEXT_PUBLIC_SITE_URL` is the public origin used for canonical
+URLs; `REVALIDATE_SECRET` enables `/api/revalidate`.

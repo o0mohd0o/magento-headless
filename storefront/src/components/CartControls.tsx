@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { removeItemAction, updateItemQtyAction } from "@/lib/actions";
 
@@ -13,24 +13,33 @@ export default function CartControls({
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const [err, setErr] = useState<string | null>(null);
+
+  function run(fn: () => Promise<{ ok: boolean; error?: string }>) {
+    setErr(null);
+    startTransition(async () => {
+      const r = await fn();
+      if (!r.ok) setErr(r.error ?? "Could not update the cart.");
+      router.refresh();
+    });
+  }
 
   function setQty(q: number) {
     if (q < 1) return;
-    startTransition(async () => {
-      await updateItemQtyAction(uid, q);
-      router.refresh();
-    });
+    run(() => updateItemQtyAction(uid, q));
   }
 
   function remove() {
-    startTransition(async () => {
-      await removeItemAction(uid);
-      router.refresh();
-    });
+    run(() => removeItemAction(uid));
   }
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex flex-wrap items-center gap-4">
+      {err && (
+        <p role="alert" className="w-full text-xs text-red-600">
+          {err}
+        </p>
+      )}
       <div className="inline-flex items-center rounded-full border border-gray-300">
         <button
           onClick={() => setQty(quantity - 1)}

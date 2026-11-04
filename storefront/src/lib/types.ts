@@ -184,7 +184,7 @@ export type CheckoutItem = {
   configurable_options?: { option_label: string; value_label: string }[] | null;
 };
 
-export type CheckoutShippingAddress = {
+export type CheckoutAddress = {
   firstname?: string | null;
   lastname?: string | null;
   street?: string[] | null;
@@ -193,6 +193,9 @@ export type CheckoutShippingAddress = {
   telephone?: string | null;
   region?: { code?: string | null; label?: string | null } | null;
   country?: { code: string } | null;
+};
+
+export type CheckoutShippingAddress = CheckoutAddress & {
   selected_shipping_method?: ShippingMethod | null;
   available_shipping_methods?: ShippingMethod[] | null;
 };
@@ -205,6 +208,7 @@ export type CheckoutCart = {
   items: CheckoutItem[];
   applied_coupons?: { code: string }[] | null;
   shipping_addresses: CheckoutShippingAddress[];
+  billing_address?: CheckoutAddress | null;
   available_payment_methods?: PaymentMethod[] | null;
   selected_payment_method?: PaymentMethod | null;
   prices: {

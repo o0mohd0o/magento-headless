@@ -2,9 +2,10 @@
 
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import type { ActionResult } from "./errors";
 import { COMPARE_COOKIE, COMPARE_MAX, getCompareSkus } from "./compare";
 
-export type CompareResult = { ok: boolean; error?: string };
+export type CompareResult = ActionResult;
 
 async function writeSkus(skus: string[]) {
   const store = await cookies();

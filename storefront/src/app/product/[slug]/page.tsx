@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { magentoFetch } from "@/lib/magento";
 import { PRODUCT_DETAIL } from "@/lib/queries";
+import { productTag } from "@/lib/revalidate-request";
+import { getRecaptchaSiteKey } from "@/lib/recaptcha";
 import Gallery from "@/components/Gallery";
 import Price from "@/components/Price";
 import AddToCart from "@/components/AddToCart";
@@ -25,7 +27,7 @@ async function fetchProduct(urlKey: string): Promise<ProductDetail | null> {
   try {
     const data = await magentoFetch<{ products: { items: ProductDetail[] } }>(
       PRODUCT_DETAIL,
-      { variables: { urlKey }, revalidate: 120, tags: ["catalog"] },
+      { variables: { urlKey }, revalidate: 120, tags: ["catalog", productTag(urlKey)] },
     );
     return data.products?.items?.[0] ?? null;
   } catch {
@@ -67,9 +69,10 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [product, reviewMeta] = await Promise.all([
+  const [product, reviewMeta, recaptchaSiteKey] = await Promise.all([
     fetchProduct(slug),
     getReviewMetadata(),
+    getRecaptchaSiteKey(),
   ]);
   if (!product) notFound();
 
@@ -203,7 +206,11 @@ export default async function ProductPage({
       ) : null}
 
       <div id="reviews">
-        <ReviewsSection product={product} metadata={reviewMeta} />
+        <ReviewsSection
+          product={product}
+          metadata={reviewMeta}
+          recaptchaSiteKey={recaptchaSiteKey}
+        />
       </div>
     </div>
   );

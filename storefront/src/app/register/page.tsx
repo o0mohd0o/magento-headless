@@ -2,11 +2,13 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import RegisterForm from "@/components/RegisterForm";
 import { getCustomerToken } from "@/lib/cart-cookies";
+import { getRecaptchaSiteKey } from "@/lib/recaptcha";
 
 export const metadata: Metadata = { title: "Create account" };
 
 export default async function RegisterPage() {
   if (await getCustomerToken()) redirect("/account");
+  const recaptchaSiteKey = await getRecaptchaSiteKey();
 
   return (
     <div className="mx-auto max-w-md px-4 py-16">
@@ -15,7 +17,7 @@ export default async function RegisterPage() {
         <p className="mb-6 text-sm text-gray-500">
           Join to track orders and keep your cart across visits.
         </p>
-        <RegisterForm />
+        <RegisterForm recaptchaSiteKey={recaptchaSiteKey} />
       </div>
     </div>
   );

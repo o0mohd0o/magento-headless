@@ -25,3 +25,15 @@ export async function getRecaptchaConfig(): Promise<RecaptchaConfig | null> {
     return null;
   }
 }
+
+/** Site key for client token minting, or null when reCAPTCHA is off. */
+export async function getRecaptchaSiteKey(): Promise<string | null> {
+  const cfg = await getRecaptchaConfig();
+  return cfg?.website_key ?? null;
+}
+
+/** Pull the token a RecaptchaField put on the form; undefined when absent. */
+export function recaptchaTokenFrom(formData: FormData): string | undefined {
+  const v = formData.get("recaptcha_token");
+  return typeof v === "string" && v ? v : undefined;
+}

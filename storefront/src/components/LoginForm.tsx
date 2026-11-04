@@ -3,11 +3,16 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { loginAction, type AuthState } from "@/lib/auth";
+import RecaptchaField from "@/components/recaptcha/RecaptchaField";
 
 const inputClass =
   "w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-100";
 
-export default function LoginForm() {
+export default function LoginForm({
+  recaptchaSiteKey = null,
+}: {
+  recaptchaSiteKey?: string | null;
+}) {
   const [state, action, pending] = useActionState<AuthState, FormData>(
     loginAction,
     {},
@@ -15,6 +20,7 @@ export default function LoginForm() {
 
   return (
     <form action={action} className="space-y-4">
+      <RecaptchaField siteKey={recaptchaSiteKey} action="login" />
       <div>
         <label className="mb-1 block text-sm font-medium text-gray-700">
           Email
@@ -46,7 +52,11 @@ export default function LoginForm() {
         </Link>
       </div>
 
-      {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
+      {state?.error && (
+        <p role="alert" className="text-sm text-red-600">
+          {state.error}
+        </p>
+      )}
 
       <button
         type="submit"

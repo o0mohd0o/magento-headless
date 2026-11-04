@@ -4,9 +4,8 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["magento.test"],
   experimental: {
     serverActions: {
-      // Product images travel browser -> server action -> private GraphQL
-      // hop (house upload-relay pattern). The backend cap is 5 MB per image
-      // (sellerCatalogConfig.max_image_mb); 8 MB covers multipart overhead.
+      // Headroom for form-based Server Actions (reviews, contact, addresses);
+      // nothing in the storefront uploads files today.
       bodySizeLimit: "8mb",
     },
   },
