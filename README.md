@@ -187,4 +187,5 @@ for local setup.
 - [SETUP.md](SETUP.md): installation, homepage import, verification, debugging.
 - [HEADLESS.md](HEADLESS.md): isolation topology and rationale.
 - [STATUS.md](STATUS.md): feature status ledger and open work.
+- [STOREFRONT_PLAN.md](STOREFRONT_PLAN.md): plan to rebuild on the Spree storefront + Store API contract.
 - [BLUEPRINT.md](BLUEPRINT.md): original design record (architecture, risks, recommendations).
