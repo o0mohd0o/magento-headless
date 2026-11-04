@@ -188,4 +188,5 @@ for local setup.
 - [HEADLESS.md](HEADLESS.md): isolation topology and rationale.
 - [STATUS.md](STATUS.md): feature status ledger and open work.
 - [STOREFRONT_PLAN.md](STOREFRONT_PLAN.md): plan to rebuild on the Spree storefront + Store API contract.
+- [STOREFRONT_COMPARISON.md](STOREFRONT_COMPARISON.md): Spree storefront vs the existing storefront, by the numbers.
 - [BLUEPRINT.md](BLUEPRINT.md): original design record (architecture, risks, recommendations).
